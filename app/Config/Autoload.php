@@ -46,6 +46,7 @@ class Autoload extends AutoloadConfig
         'Modules'     => ROOTPATH . 'modules',
         'App'         => APPPATH,
         'google/apiclient' => APPPATH . 'google-api/vendor/autoload.php',
+        'Myth\Auth'   => APPPATH . 'ThirdParty/myth-auth/src',
     ];
 
     /**

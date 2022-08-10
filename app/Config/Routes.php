@@ -36,6 +36,9 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', '\Modules\Dashboard\Controllers\Dashboard::index');
+$routes->get('/add', 'Home::addCalendar');
+$routes->get('/del', 'Home::delCalendar');
+$routes->get('/edit', 'Home::editCalendar');
 
 
 /*
