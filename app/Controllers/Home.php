@@ -63,7 +63,6 @@ class Home extends BaseController
 
     public function addCalendar()
     {
-        // dd(date('Y-m-d\TH:i:sP', +strtotime('+1 hour')));
         $event = new Google_Service_Calendar_Event(array(
             'summary' => 'Jadwal KKD',
             'description' => 'Fikri Bedol',
