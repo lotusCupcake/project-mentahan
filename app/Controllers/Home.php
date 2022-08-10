@@ -63,7 +63,6 @@ class Home extends BaseController
 
     public function addCalendar()
     {
-        // dd(date('Y-m-d\TH:i:sP', +strtotime('+1 hour')));
         $event = new Google_Service_Calendar_Event(array(
             'summary' => 'Jadwal KKD',
             'description' => 'Fikri Bedol',
@@ -74,14 +73,45 @@ class Home extends BaseController
             ),
             'end' => array(
                 'dateTime' => date('Y-m-d\TH:i:sP', +strtotime('+1 hour'))
-            ),
-            'attendees' => array(
-                array('email' => 'fikriansari.mfa@gmail.com'),
+                // ),
+                // 'attendees' => array(
+                //     array('email' => 'fikriansari.mfa@gmail.com'),
             ),
         ));
 
         $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
         $event = $this->service->events->insert($calendarId, $event);
+        dd($event);
+    }
+
+    public function editCalendar()
+    {
+        $event = new Google_Service_Calendar_Event(array(
+            'summary' => 'Jadwal KKD',
+            'description' => 'Fikri Ansari',
+            'location' => 'KKD Lantai 5',
+            'colorId' => 1,
+            'start' => array(
+                'dateTime' => date('Y-m-d\TH:i:sP')
+            ),
+            'end' => array(
+                'dateTime' => date('Y-m-d\TH:i:sP', +strtotime('+1 hour'))
+                // ),
+                // 'attendees' => array(
+                //     array('email' => 'fikriansari.mfa@gmail.com'),
+            ),
+        ));
+        $eventId = 'cd54e50hg7271ld7v49po17me0';
+        $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $event = $this->service->events->update($calendarId, $eventId, $event);
+        dd($event);
+    }
+
+    public function delCalendar()
+    {
+        $eventId = 'cd54e50hg7271ld7v49po17me0';
+        $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $event = $this->service->events->delete($calendarId, $eventId);
         dd($event);
     }
 

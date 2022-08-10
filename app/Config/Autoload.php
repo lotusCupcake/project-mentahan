@@ -43,8 +43,10 @@ class Autoload extends AutoloadConfig
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
+        'Modules'     => ROOTPATH . 'modules',
         'App'         => APPPATH,
         'google/apiclient' => APPPATH . 'google-api/vendor/autoload.php',
+        'Myth\Auth'   => APPPATH . 'ThirdParty/myth-auth/src',
     ];
 
     /**
