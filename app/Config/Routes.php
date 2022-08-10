@@ -35,11 +35,7 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
-$routes->get('/add', 'Home::addCalendar');
-$routes->get('/login', 'Home::login');
-$routes->get('/hash', 'Home::testhash');
-$routes->get('/loginWithGoogle', 'Home::loginWithGoogle');
+$routes->get('/', '\Modules\Dashboard\Controllers\Dashboard::index');
 
 
 /*
@@ -57,4 +53,29 @@ $routes->get('/loginWithGoogle', 'Home::loginWithGoogle');
  */
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+}
+
+/* 
+ * --------------------------------------------------------------------
+ * Include Modules Routes Files 
+ * --------------------------------------------------------------------
+ */
+// require(ROOTPATH . 'modules/Student/Config/Routes.php');
+// require(ROOTPATH . 'modules/Krs/Config/Routes.php');
+if (file_exists(ROOTPATH . 'modules')) {
+    $modulesPath = ROOTPATH . 'modules/';
+    $modules = scandir($modulesPath);
+    // dd($modules);
+
+    foreach ($modules as $module) {
+        if ($module === '.' || $module === '..') continue;
+        if (is_dir($modulesPath) . '/' . $module) {
+            $routesPath = $modulesPath . $module . '/Config/Routes.php';
+            if (file_exists($routesPath)) {
+                require($routesPath);
+            } else {
+                continue;
+            }
+        }
+    }
 }
