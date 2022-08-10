@@ -17,6 +17,6 @@ class Penjadwalan extends BaseController
             'title' => "Penjadwalan",
             'breadcrumb' => ['Home', 'Penjadwalan'],
         ];
-        return view('Modules\Penjadwalan\Views\pejadwalan', $data);
+        return view('Modules\Penjadwalan\Views\penjadwalan', $data);
     }
 }
