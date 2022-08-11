@@ -24,6 +24,8 @@ class Home extends BaseController
         $this->client = new Google_Client();
         //The json file you got after creating the service account
         $pathconf = 'config/vps-ivan-0748b26484ca.json';
+        // $pathconf = 'config/digital-schedule-9258d488752a.json';
+
         putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $pathconf);
         $this->client->useApplicationDefaultCredentials();
         $this->client->setApplicationName("schedulerFK");
@@ -33,6 +35,8 @@ class Home extends BaseController
 
         $calendarList = $this->service->calendarList->listCalendarList();
         $this->calId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        // $this->calId = 'digisched@umsu.ac.id';
+
         // print_r($calendarList);
     }
 
