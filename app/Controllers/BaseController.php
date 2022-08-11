@@ -124,11 +124,14 @@ abstract class BaseController extends Controller
     public function getFile($usr)
     {
         switch ($usr) {
+            case "General User":
+                $file = "public/menu/menuGeneralUser.json";
+                break;
             case "Superadmin":
                 $file = "public/menu/menuSuperadmin.json";
                 break;
             default:
-                $file = "public/menu/menuSuperadmin.json";
+                $file = "public/menu/menuGeneralUser.json";
         }
         return $file;
     }
