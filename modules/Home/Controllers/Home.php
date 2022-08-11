@@ -27,13 +27,7 @@ class Home extends BaseController
         putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $pathconf);
         $this->client->useApplicationDefaultCredentials();
         $this->client->setApplicationName("schedulerFK");
-        // $this->client->setClientId('985751171310-tl3b0tnpj2bmd5a9qi6gbb9u226tiakp.apps.googleusercontent.com');
-        // $this->client->setClientSecret('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');
-        // $this->client->addScope('email');
-        // $this->client->addScope('profile');
         $this->client->addScope(Google_Service_Calendar::CALENDAR);
-        // $this->client->setAccessType('offline');
-        // $this->client->setRedirectUri('http://localhost:8080/loginWithGoogle');
 
         $this->service = new Google_Service_Calendar($this->client);
 
@@ -128,9 +122,9 @@ class Home extends BaseController
     public function listCalendar()
     {
         $calendarId = $this->calId;
-        $calendarList = $this->service->events->listEvents($calendarId)->items;
+        $event = $this->service->events->listEvents($calendarId)->items;
         $data = [];
-        foreach ($calendarList as $key) {
+        foreach ($event as $key) {
             $data[] = [
                 'id' => $key->id,
                 'summary' => $key->summary,
@@ -148,9 +142,9 @@ class Home extends BaseController
     public function colorCalendar()
     {
         // $calendarId = $this->calId;
-        $calendarList = $this->service->colors->get()->event;
+        $event = $this->service->colors->get()->event;
         $data = [];
-        foreach ($calendarList as $key => $value) {
+        foreach ($event as $key => $value) {
             $data[] = [
                 'id' => $key,
                 'background' => $value->background,
