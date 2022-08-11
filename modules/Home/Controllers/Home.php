@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace Modules\Home\Controllers;
+
+use App\Controllers\BaseController;
 
 use Google\Client as Google_Client;
 use Google\Service\Calendar  as Google_Service_Calendar;
@@ -65,18 +67,21 @@ class Home extends BaseController
     {
         $event = new Google_Service_Calendar_Event(array(
             'summary' => 'Jadwal KKD',
-            'description' => 'Fikri Bedol',
-            'location' => 'KKD Lantai 2',
+            'description' => 'Sukrianto Lc, Ma',
+            'location' => 'WC Lantai 2',
             'colorId' => 1,
             'start' => array(
                 'dateTime' => date('Y-m-d\TH:i:sP')
             ),
             'end' => array(
                 'dateTime' => date('Y-m-d\TH:i:sP', +strtotime('+1 hour'))
-                // ),
-                // 'attendees' => array(
-                //     array('email' => 'fikriansari.mfa@gmail.com'),
             ),
+            'attendees' => array(
+                array('email' => 'fikriansari.mfa@gmail.com'),
+            ),
+            'guestsCanInviteOthers' => false,
+            'guestsCanModify' => false,
+            'guestsCanSeeOtherGuests' => false,
         ));
 
         $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
@@ -89,7 +94,7 @@ class Home extends BaseController
         $event = new Google_Service_Calendar_Event(array(
             'summary' => 'Jadwal KKD',
             'description' => 'Fikri Ansari',
-            'location' => 'KKD Lantai 5',
+            'location' => 'Ruang Otopsi Lantai 5',
             'colorId' => 1,
             'start' => array(
                 'dateTime' => date('Y-m-d\TH:i:sP')
@@ -100,8 +105,11 @@ class Home extends BaseController
                 // 'attendees' => array(
                 //     array('email' => 'fikriansari.mfa@gmail.com'),
             ),
+            'guestsCanInviteOthers' => false,
+            'guestsCanModify' => false,
+            'guestsCanSeeOtherGuests' => false,
         ));
-        $eventId = 'cd54e50hg7271ld7v49po17me0';
+        $eventId = '8dbvsqccu07v3ct121t99hqlms';
         $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
         $event = $this->service->events->update($calendarId, $eventId, $event);
         dd($event);
@@ -109,10 +117,45 @@ class Home extends BaseController
 
     public function delCalendar()
     {
-        $eventId = 'cd54e50hg7271ld7v49po17me0';
+        $eventId = 'mea3dpb4muvcdr6l392huat6rs';
         $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
         $event = $this->service->events->delete($calendarId, $eventId);
         dd($event);
+    }
+
+    public function listCalendar()
+    {
+        $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $calendarList = $this->service->events->listEvents($calendarId)->items;
+        $data = [];
+        foreach ($calendarList as $key) {
+            $data[] = [
+                'id' => $key->id,
+                'summary' => $key->summary,
+                'description' => $key->description,
+                'location' => $key->location,
+                'colorId' => $key->colorId,
+                'start' => $key->start->dateTime,
+                'end' => $key->end->dateTime,
+                'attendees' => $key->attendees
+            ];
+        }
+        dd($data);
+    }
+
+    public function colorCalendar()
+    {
+        // $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $calendarList = $this->service->colors->get()->event;
+        $data = [];
+        foreach ($calendarList as $key => $value) {
+            $data[] = [
+                'id' => $key,
+                'background' => $value->background,
+                'foreground' => $value->foreground,
+            ];
+        }
+        dd($data);
     }
 
     public function testhash()
