@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
                     <div class="login-brand">
-                        <a href="/forgot"><img src="<?= base_url() ?>/asset/logo-fk.webp" alt="logo" width="250"></a>
+                        <a href="/forgot"><img src="<?= base_url() ?>/template/assets/img/logo-fk.webp" alt="logo" width="250"></a>
                     </div>
 
                     <div class="card card-primary">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="simple-footer">
-                        Copyright &copy; 2021 UMSU
+                        Copyright &copy; 2022 UMSU
                     </div>
                 </div>
             </div>
