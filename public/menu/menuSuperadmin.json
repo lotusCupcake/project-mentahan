@@ -15,5 +15,68 @@
         "status": true,
         "icon": "fas fa-home",
         "pages": "/dashboard"
+    },
+    {
+        "id": "3",
+        "nama": "Data",
+        "parent": "0",
+        "level": "title",
+        "status": true,
+        "icon": "",
+        "pages": ""
+    },
+    {
+        "id": "4",
+        "nama": "Block",
+        "parent": "3",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-book-medical",
+        "pages": "/block"
+    },
+    {
+        "id": "5",
+        "nama": "Dosen",
+        "parent": "3",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-user-md",
+        "pages": "/dosen"
+    },
+    {
+        "id": "6",
+        "nama": "Proses",
+        "parent": "0",
+        "level": "title",
+        "status": true,
+        "icon": "",
+        "pages": ""
+    },
+    {
+        "id": "7",
+        "nama": "Penjadwalan",
+        "parent": "6",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-calendar-check",
+        "pages": "/penjadwalan"
+    },
+    {
+        "id": "8",
+        "nama": "User",
+        "parent": "0",
+        "level": "title",
+        "status": true,
+        "icon": "",
+        "pages": ""
+    },
+    {
+        "id": "9",
+        "nama": "Manajemen Akun",
+        "parent": "8",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-user",
+        "pages": "/manajemenAkun"
     }
 ]
