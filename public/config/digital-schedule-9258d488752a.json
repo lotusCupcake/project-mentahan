@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "digital-schedule",
+  "private_key_id": "9258d488752a20e4d27256e398c87c55beae9d6f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDBZA8zGwuIL7Cc\nF62meTXdJG+fAqIJQeXP/tC87wlP19pbosALpDYBa7hE+bM35tO7NGO8GPx8f4Lb\niCveNORistg7io5TRIxGekjN6odXhGPXH384aO6Ac/QOm42Yh6oODvpbIAozVhvP\nNqFotCdLO54xF71XnCc0h9qt03hI+PAFeCqf2BpIqQbkwtrRpN91TQyQL1vv5Gfm\nCPab17ZzKPGs+BtC6O0JODQkctHVX1rioRV1uQ6Ljw8JFUixgZmyYKKcOfrNZYlk\nkDlqoWLByqKc0Si+8I54oDplErklwJL+nUxV1x6Otk6AWfibS/FiTa+SlCG9pc9o\nAU17epkpAgMBAAECggEACncaNXdIs/l0srW7UW9swUdX/QBc+WhGAe/1psu+ssHp\nEJ1pjBe6TnBgW+cxUhydJ5vJq+OkQi56S9v+F7vAAjFQb0RruEjU2HmEmBQRd+Rz\nrLAJJ+nRwkTEF8hGLNNmmfUoiibdNnL59UgtCuf42mLjCCATQHr0Sizx4gc4EqbB\n26CpKjfGZ/KQ5DWh56sxeMTXXINKCusV1q8UoZ1pF3LSD3zuqZMLnIzQIPKk76bx\nIGoscWpk/b4X7vwZHamUDfgf5bnTRVcfHhY3RBsuDQtnQeE5EJqpIWk8lmV+j07R\naMAMj4/P6Tim1bJcQBI+60gG4Li9+HHZ1DiE6BqbswKBgQDwFMiPbyWYjhhHyZuz\nf117QZnqgTRtsH21gzc7kN3njD1edDcfGcUQ636uFF5moFcMG5ynHXDxyBncxU8l\nbb29rgQAmbWgJElB1/w6EzdvIkEQVXTmV68AKciIdv/eKCgYLgcbiiDGnw6nLyhc\nw9NgB17F68CJI0LR5uOCEdcQvwKBgQDONr0xFrcnVqo9MPyhCaejcA8V+m7amULE\nTeRLk7Bh4OYyXWM+URQuuUAPvBL7xR7F2uHdgGQ8FNbGtIXZzIDbb6ZzUVNgrQ1g\nZsQL4NHZVQLISbUxohHTT4B2Af2QeZ3FA83bpZu+52vhndbE61JiG+JzEl8vj+WW\nT/hbqcXoFwKBgBJmlWSg8TG7GlNOOXfNeD29Lm3Rz1Hk6A2ka/RNyyQ3FHEL2Tmy\nAO+mDQSMnRuiiGluKFiKoiB15L2OBd3phlRmZPoizc/jWBYK1tMgq+wBpRj6Y8ZP\nzCLoEO2cqUm+rCwGQxcyRAbVJAteSuqpO6ctiW8D/bLFGBb8ak2KzoADAoGAGitu\nNRWZ5r8j2aIm3VT5Vk95SqO+f7VleL4d082JW9KLxCZ/2r+1XPybeaO3kQYCEr/l\nXBPYJJvMaeks92fxjmeL6ySN/T3Y7bv88zjzyK32LW7VNNhJhNSZC+DSygv1DrSd\n4lsQ+dgqo7ZBNDpc+SBqy4mwVLvhOgMqFI/mEr8CgYEA7gQwBnE+C1qEnQnYLUYd\nk0zNyTPlvCj7DUk/vQuTh0W0MgIYLZkqwPF4A/k1emhNLDDyjuobTwYS3XNc8+q/\nl2GTgSk1ubTp8olOMe4jOexDtus8Ybi3jkyyHeuTzBbFXGBMjW5WfQCZaS0fqwqS\nXUgiMntpo+jTOKLTQgywoEU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "digital-schedule@digital-schedule.iam.gserviceaccount.com",
+  "client_id": "103100359955327618594",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/digital-schedule%40digital-schedule.iam.gserviceaccount.com"
+}
