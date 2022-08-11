@@ -15,5 +15,23 @@
         "status": true,
         "icon": "fas fa-home",
         "pages": "/dashboard"
+    },
+    {
+        "id": "3",
+        "nama": "User",
+        "parent": "0",
+        "level": "title",
+        "status": true,
+        "icon": "",
+        "pages": ""
+    },
+    {
+        "id": "4",
+        "nama": "Manajemen Akun",
+        "parent": "3",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-user",
+        "pages": "/manajemenAkun"
     }
 ]
