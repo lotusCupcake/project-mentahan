@@ -16,6 +16,7 @@ class Home extends BaseController
     protected $calendar;
     protected $service;
     protected $hasher;
+    protected $calId;
 
     public function __construct()
     {
@@ -37,6 +38,7 @@ class Home extends BaseController
         $this->service = new Google_Service_Calendar($this->client);
 
         $calendarList = $this->service->calendarList->listCalendarList();
+        $this->calId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
         // print_r($calendarList);
     }
 
@@ -75,16 +77,16 @@ class Home extends BaseController
             ),
             'end' => array(
                 'dateTime' => date('Y-m-d\TH:i:sP', +strtotime('+1 hour'))
-            ),
-            'attendees' => array(
-                array('email' => 'fikriansari.mfa@gmail.com'),
+                // ),
+                // 'attendees' => array(
+                //     array('email' => 'fikriansari.mfa@gmail.com'),
             ),
             'guestsCanInviteOthers' => false,
             'guestsCanModify' => false,
             'guestsCanSeeOtherGuests' => false,
         ));
 
-        $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $calendarId = $this->calId;
         $event = $this->service->events->insert($calendarId, $event);
         dd($event);
     }
@@ -110,7 +112,7 @@ class Home extends BaseController
             'guestsCanSeeOtherGuests' => false,
         ));
         $eventId = '8dbvsqccu07v3ct121t99hqlms';
-        $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $calendarId = $this->calId;
         $event = $this->service->events->update($calendarId, $eventId, $event);
         dd($event);
     }
@@ -118,14 +120,14 @@ class Home extends BaseController
     public function delCalendar()
     {
         $eventId = 'mea3dpb4muvcdr6l392huat6rs';
-        $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $calendarId = $this->calId;
         $event = $this->service->events->delete($calendarId, $eventId);
         dd($event);
     }
 
     public function listCalendar()
     {
-        $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        $calendarId = $this->calId;
         $calendarList = $this->service->events->listEvents($calendarId)->items;
         $data = [];
         foreach ($calendarList as $key) {
@@ -145,7 +147,7 @@ class Home extends BaseController
 
     public function colorCalendar()
     {
-        // $calendarId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
+        // $calendarId = $this->calId;
         $calendarList = $this->service->colors->get()->event;
         $data = [];
         foreach ($calendarList as $key => $value) {
