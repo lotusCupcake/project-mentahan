@@ -14,8 +14,9 @@ class Dashboard extends BaseController
     public function index()
     {
         $data = [
+            'menu' => $this->fetchMenu(),
             'title' => "Dashboard",
-            'breadcrumb' => ['Home', 'Dashboard'],
+            'breadcrumb' => ['Home', 'Dashboard']
         ];
         return view('Modules\Dashboard\Views\dashboard', $data);
     }
