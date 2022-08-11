@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Dosen\Models;
+namespace Modules\Blok\Models;
 
 use CodeIgniter\Model;
 
-class DosenModel extends Model
+class BlokModel extends Model
 {
     protected $curl;
     public function __construct()
@@ -12,9 +12,9 @@ class DosenModel extends Model
         $this->curl = service('curlrequest');
     }
 
-    public function getDosen()
+    public function getBlok()
     {
-        $response = $this->curl->request("GET", "https://api.umsu.ac.id/DigiSched/dosenfk", [
+        $response = $this->curl->request("GET", "https://api.umsu.ac.id/DigiSched/matkulBlokFk", [
             "headers" => [
                 "Accept" => "application/json"
             ],

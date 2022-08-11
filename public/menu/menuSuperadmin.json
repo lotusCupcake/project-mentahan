@@ -27,12 +27,12 @@
     },
     {
         "id": "4",
-        "nama": "Block",
+        "nama": "Blok",
         "parent": "3",
         "level": "child",
         "status": true,
         "icon": "fas fa-book-medical",
-        "pages": "/block"
+        "pages": "/blok"
     },
     {
         "id": "5",

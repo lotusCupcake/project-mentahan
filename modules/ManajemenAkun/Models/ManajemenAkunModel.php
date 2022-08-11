@@ -12,11 +12,16 @@ class ManajemenAkunModel extends Model
     protected $returnType = 'object';
     protected $useSoftDeletes = 'true';
 
-    public function getManajemenAkun()
+    public function getManajemenAkun($keyword = null)
     {
         $builder = $this->table('users');
         $builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'LEFT');
         $builder->join('auth_groups', 'auth_groups.id  = auth_groups_users.group_id', 'LEFT');
+        if ($keyword) {
+            $builder->like('auth_groups.name', $keyword)->where('users.deleted_at', null);
+            $builder->orlike('users.username', $keyword)->where('users.deleted_at', null);
+            $builder->orlike('users.email', $keyword)->where('users.deleted_at', null);
+        }
         $builder->orderBy('users.id', 'DESC');
         return $builder;
     }
