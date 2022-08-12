@@ -65,11 +65,18 @@ class GoogleCalendar
                 'description' => $key->description,
                 'location' => $key->location,
                 'colorId' => $key->colorId,
-                'start' => $key->start->dateTime,
+                'start' => $key->start->dateTime->getDateTime(),
                 'end' => $key->end->dateTime,
                 'attendees' => $key->attendees
             ];
         }
+        return $data;
+    }
+
+    public function listCalendarAll()
+    {
+        $event = $this->service->events->listEvents($this->calId)->items;
+        $data = $event;
         return $data;
     }
 

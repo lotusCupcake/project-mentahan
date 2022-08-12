@@ -39,7 +39,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['gcalendar', 'validation'];
+    protected $helpers = ['gcalendar', 'validation', 'time'];
 
     /**
      * Constructor.

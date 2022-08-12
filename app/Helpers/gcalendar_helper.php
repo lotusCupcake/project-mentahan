@@ -21,6 +21,13 @@ function listevent()
     return $exe;
 }
 
+function listeventall()
+{
+    $google = new App\Libraries\GoogleCalendar;
+    $exe = $google->listCalendarAll();
+    return $exe;
+}
+
 function delEvent($id)
 {
     $google = new App\Libraries\GoogleCalendar;

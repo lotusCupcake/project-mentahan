@@ -3,6 +3,8 @@
 namespace Modules\Home\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\I18n\Time;
+use CodeIdniter\I18n\DateTime as DateTime;
 
 class Home extends BaseController
 {
@@ -76,6 +78,11 @@ class Home extends BaseController
         dd(listevent());
     }
 
+    public function listCalendarAll()
+    {
+        dd(listeventall());
+    }
+
     public function colorCalendar()
     {
         dd(colorEvent());
@@ -83,5 +90,7 @@ class Home extends BaseController
 
     public function getProfile()
     {
+        $date = timeGoogleToAppLong(date('Y-m-d H:i:s'));
+        dd($date);
     }
 }
