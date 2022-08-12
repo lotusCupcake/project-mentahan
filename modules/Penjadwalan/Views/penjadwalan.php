@@ -80,8 +80,31 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label class="form-label">Jadwal</label>
+                    <div class="selectgroup selectgroup-pills">
+                        <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                            <label class="selectgroup-item">
+                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>" class="selectgroup-input" <?= ($key == 0) ? 'checked' : '' ?>>
+                                <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                            </label>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Nama Acara</label>
                     <input name="namaAcara" type="text" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Acara</label>
+                    <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Dosen</label>
+                    <select class="form-control select2" multiple="" name="dosen">
+                        <?php foreach ($dosen as $key => $dosen) : ?>
+                            <option value="">Test</option>
+                        <?php endforeach ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Nama Blok</label>
@@ -91,30 +114,34 @@
                         <?php endforeach ?>
                     </select>
                 </div>
+            </div>
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label>Deskripsi Acara</label>
-                    <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
+                    <label>Sesi</label>
+                    <select class="form-control select2" name="sesi">
+                        <?php foreach ($sesi as $key => $sesi) : ?>
+                            <option value="<?= $sesi->sesiId ?>"><?= $sesi->sesiNama ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Waktu Mulai</label>
+                            <input type="text" class="form-control datetimepicker" name="startDate">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Waktu Selesai</label>
+                            <input type="text" class="form-control datetimepicker" name="endDate">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Lokasi Acara</label>
                     <input name="lokasi" type="text" class="form-control" value="">
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Date Time Picker</label>
-                            <input type="text" class="form-control datetimepicker">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Date Time Picker</label>
-                            <input type="text" class="form-control datetimepicker">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
                 <div class="form-group">
                     <label class="form-label">Warna Acara</label>
                     <div class="row gutters-xs">
@@ -122,32 +149,9 @@
                             <?php foreach ($color as $key => $col) : ?>
                                 <label class="colorinput">
                                     <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" />
-                                    <span class="colorinput-color" style="background-color: <?= $col['background'] ?>;"></span>
+                                    <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
                                 </label>
                             <?php endforeach ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Sesi</label>
-                            <select class="form-control select2" name="sesi">
-                                <?php foreach ($sesi as $key => $sesi) : ?>
-                                    <option value="<?= $sesi->sesiId ?>"><?= $sesi->sesiNama ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Hari</label>
-                            <?php $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] ?>
-                            <select class="form-control select2" name="hari">
-                                <?php foreach ($hari as $key => $hari) : ?>
-                                    <option value="<?= $hari ?>"><?= $hari ?></option>
-                                <?php endforeach ?>
-                            </select>
                         </div>
                     </div>
                 </div>

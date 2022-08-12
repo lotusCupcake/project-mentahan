@@ -10,6 +10,7 @@ use App\Controllers\BaseController;
 use \Modules\Penjadwalan\Models\PenjadwalanModel;
 use Modules\Sesi\Models\SesiModel;
 use Modules\Blok\Models\BlokModel;
+use Modules\JenisJadwal\Models\JenisJadwalModel;
 
 class Penjadwalan extends BaseController
 {
@@ -17,12 +18,14 @@ class Penjadwalan extends BaseController
     protected $validation;
     protected $sesi;
     protected $matkulBlok;
+    protected $jenisJadwal;
 
     public function __construct()
     {
         $this->penjadwalan = new PenjadwalanModel();
         $this->sesi = new SesiModel();
         $this->matkulBlok = new BlokModel();
+        $this->jenisJadwal = new JenisJadwalModel();
         $this->validation = \Config\Services::validation();
     }
 
@@ -43,9 +46,11 @@ class Penjadwalan extends BaseController
             'validation' => $this->validation,
             'color' => colorEvent(),
             'sesi' => $this->sesi->findAll(),
+            'jenisJadwal' => $this->jenisJadwal->where('jenisJadwalIsAktif', '1')->findAll(),
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
+            'dosen' => [],
         ];
-        // dd($data['blok']);
+        // dd($data['jenisJadwal']);
         return view('Modules\Penjadwalan\Views\penjadwalan', $data);
     }
 
