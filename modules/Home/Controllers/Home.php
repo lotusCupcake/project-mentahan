@@ -4,14 +4,18 @@ namespace Modules\Home\Controllers;
 
 use App\Controllers\BaseController;
 
-
 class Home extends BaseController
 {
 
 
     public function index()
     {
-        return view('welcome_message');
+        $data = [
+            'menu' => $this->fetchMenu(),
+            'title' => "Penjadwalan",
+            'breadcrumb' => ['Home', 'Penjadwalan'],
+        ];
+        return view('Modules\Home\Views\home', $data);
     }
 
     public function addCalendar()
@@ -26,9 +30,9 @@ class Home extends BaseController
             ),
             'end' => array(
                 'dateTime' => date('Y-m-d\TH:i:sP', +strtotime('+1 hour'))
-            ),
-            'attendees' => array(
-                array('email' => 'fikriansari.mfa@gmail.com'),
+                // ),
+                // 'attendees' => array(
+                //     array('email' => 'fikriansari.mfa@gmail.com'),
             ),
             'guestsCanInviteOthers' => false,
             'guestsCanModify' => false,
@@ -63,7 +67,7 @@ class Home extends BaseController
 
     public function delCalendar()
     {
-        $id = '409ok509l6vcjbb1a3i383mi6k';
+        $id = 'atbgot6b55cf8fjl4gn6cruur8';
         dd(delEvent($id));
     }
 
@@ -75,5 +79,9 @@ class Home extends BaseController
     public function colorCalendar()
     {
         dd(colorEvent());
+    }
+
+    public function getProfile()
+    {
     }
 }

@@ -14,6 +14,7 @@ class Penjadwalan extends BaseController
     public function index()
     {
         $data = [
+            'menu' => $this->fetchMenu(),
             'title' => "Penjadwalan",
             'breadcrumb' => ['Home', 'Penjadwalan'],
         ];

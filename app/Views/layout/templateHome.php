@@ -67,7 +67,6 @@
 
   <!-- Page Specific JS File -->
   <script src="<?= base_url() ?>/template/assets/js/page/forms-advanced-forms.js"></script>
-  <script type="text/javascript" src="<?= base_url() ?>/js/signature-pad.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
 
 </body>

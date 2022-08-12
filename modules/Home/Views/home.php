@@ -1,1 +1,1 @@
-<?= $title; ?>
+<img src="<?= $title; ?>" alt="" />
