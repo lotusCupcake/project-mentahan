@@ -8,19 +8,19 @@ function timeGoogleToAppLong($string)
     $hari = $hari[date('N', strtotime($time)) - 1];
     $bulan = $bulan[date('n', strtotime($time)) - 1];
     $date = $hari . ', ' . date('d', strtotime($time)) . ' ' . $bulan . date(' Y h:i:s T', strtotime($time));
-    dd($date);
+    return $date;
 }
 
 function timeGoogleToAppShort($string)
 {
     $time = date($string);
     $date = date('Y-m-d h:i:s ', strtotime($time));
-    dd($date);
+    return $date;
 }
 
 function timeAppToGoogle($string)
 {
     $time = date($string);
     $date = date('Y-m-d\TH:i:sP', strtotime($time));
-    dd($date);
+    return $date;
 }
