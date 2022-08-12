@@ -54,6 +54,7 @@
   <script src="<?= base_url() ?>/template/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/selectric/public/jquery.selectric.min.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+  <script src="<?= base_url() ?>/template/node_modules/cleave.js/dist/cleave.min.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/cleave.js/dist/addons/cleave-phone.us.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/summernote/dist/summernote-bs4.js"></script>
 
