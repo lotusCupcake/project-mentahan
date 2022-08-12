@@ -6,19 +6,31 @@ use CodeIgniter\Model;
 
 class BlokModel extends Model
 {
-    protected $curl;
-    public function __construct()
+    protected $table = 'matkul_blok';
+    protected $primaryKey = 'matkulBlokId';
+    protected $allowedFields = ['matkulBlokKode', 'matkulBlokNama', 'matkulBlokEnglish', 'matkulBlokProdiId', 'matkulBlokProdiNama', 'matkulBlokProdiAkronim', 'matkulBlokSemester', 'matkulBlokKurikulumId', 'matkulBlokKurikulumNama', 'matkulBlokType'];
+    protected $returnType = 'object';
+
+    public function getMatkulBlok($keyword = null)
     {
-        $this->curl = service('curlrequest');
+        $builder = $this->table('matkul_blok');
+        if ($keyword) {
+            $builder->like('matkul_blok.matkulBlokKode', $keyword);
+            $builder->orlike('matkul_blok.matkulBlokNama', $keyword);
+            $builder->orlike('matkul_blok.matkulBlokEnglish', $keyword);
+            $builder->orlike('matkul_blok.matkulBlokProdiNama', $keyword);
+            $builder->orlike('matkul_blok.matkulBlokProdiAkronim', $keyword);
+            $builder->orlike('matkul_blok.matkulBlokKurikulumNama', $keyword);
+        }
+        $builder->orderBy('matkul_blok.matkulBlokId', 'DESC');
+        return $builder;
     }
 
-    public function getBlok()
+    public function dataExist($where)
     {
-        $response = $this->curl->request("GET", "https://api.umsu.ac.id/DigiSched/matkulBlokFk", [
-            "headers" => [
-                "Accept" => "application/json"
-            ],
-        ]);
-        return json_decode($response->getBody())->data;
+        $builder = $this->table('matkul_blok');
+        $builder->where($where);
+        $query = $builder->countAllResults();
+        return $query;
     }
 }
