@@ -22,4 +22,14 @@ class ApiModel extends Model
         ]);
         return json_decode($response->getBody())->data;
     }
+
+    public function getDosen()
+    {
+        $response = $this->curl->request("GET", "https://api.umsu.ac.id/DigiSched/dosenfk", [
+            "headers" => [
+                "Accept" => "application/json"
+            ],
+        ]);
+        return json_decode($response->getBody())->data;
+    }
 }

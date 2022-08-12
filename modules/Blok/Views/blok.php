@@ -31,6 +31,12 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <?php if (!empty(session()->getFlashdata('success'))) : ?>
+                        <?= view('layout/templateAlert', ['msg' => ['success', session()->getFlashdata('success')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('dataBlok')) : ?>
+                        <?= view('layout/templateAlert', ['msg' => ['danger', "<strong>Failed ! </strong>" . $validation->getError('dataBlok')]]); ?>
+                    <?php endif; ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -55,7 +61,7 @@
                                             <td style="text-align:center" scope="row"><?= $no++; ?></td>
                                             <td><?= $data->matkulBlokKode; ?></td>
                                             <td><?= $data->matkulBlokNama; ?></td>
-                                            <td><?= $data->matkulBlokEnglish; ?></td>
+                                            <td><?= ($data->matkulBlokEnglish == null) ? '-' : $data->matkulBlokEnglish; ?></td>
                                             <td><?= $data->matkulBlokProdiNama; ?> (<?= $data->matkulBlokProdiAkronim; ?>)</td>
                                             <td><?= $data->matkulBlokSemester; ?></td>
                                             <td><?= $data->matkulBlokKurikulumNama; ?></td>
@@ -138,7 +144,7 @@
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </form>

@@ -36,14 +36,20 @@ class Blok extends BaseController
             'currentPage' => $currentPage,
             'numberPage' => $this->numberPage,
             'pager' => $blok->pager,
+            'validation' => \Config\Services::validation(),
         ];
         return view('Modules\Blok\Views\blok', $data);
     }
 
     public function add()
     {
-        // dd($_POST);
         $url = $this->request->getServer('HTTP_REFERER');
+        $rules = [
+            'dataBlok' => rv('required', ['required' => 'Data Blok Harus Dipilih!']),
+        ];
+        if (!$this->validate($rules)) {
+            return redirect()->to($url)->withInput();
+        };
         $dataBlok = $this->request->getVar('dataBlok');
         $matkulBlokType = $this->request->getVar('matkulBlokType');
         foreach ($dataBlok as $blok) {
@@ -61,8 +67,23 @@ class Blok extends BaseController
                     'matkulBlokType' => $matkulBlokType
                 ]
             );
-            // $data = explode(",", $dataBlok);
+            if ($jumlah == 0) {
+                $data = [
+                    'matkulBlokKode' => explode(',', $blok)[0],
+                    'matkulBlokNama' => explode(',', $blok)[1],
+                    'matkulBlokEnglish' => explode(',', $blok)[2],
+                    'matkulBlokProdiId' => explode(',', $blok)[3],
+                    'matkulBlokProdiNama' => explode(',', $blok)[4],
+                    'matkulBlokProdiAkronim' => explode(',', $blok)[5],
+                    'matkulBlokSemester' => explode(',', $blok)[6],
+                    'matkulBlokKurikulumId' => explode(',', $blok)[7],
+                    'matkulBlokKurikulumNama' => explode(',', $blok)[8],
+                    'matkulBlokType' => $matkulBlokType
+                ];
+                $this->blokModel->insert($data);
+            }
         };
-        dd($jumlah);
+        session()->setFlashdata('success', 'Data Blok Berhasil Ditambahkan!');
+        return redirect()->to($url);
     }
 }
