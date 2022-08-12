@@ -9,16 +9,20 @@ namespace Modules\Penjadwalan\Controllers;
 use App\Controllers\BaseController;
 use \Modules\Penjadwalan\Models\PenjadwalanModel;
 use Modules\Sesi\Models\SesiModel;
+use Modules\Blok\Models\BlokModel;
 
 class Penjadwalan extends BaseController
 {
     protected $penjadwalan;
     protected $validation;
+    protected $sesi;
+    protected $matkulBlok;
 
     public function __construct()
     {
         $this->penjadwalan = new PenjadwalanModel();
         $this->sesi = new SesiModel();
+        $this->matkulBlok = new BlokModel();
         $this->validation = \Config\Services::validation();
     }
 
@@ -39,7 +43,9 @@ class Penjadwalan extends BaseController
             'validation' => $this->validation,
             'color' => colorEvent(),
             'sesi' => $this->sesi->findAll(),
+            'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
         ];
+        // dd($data['blok']);
         return view('Modules\Penjadwalan\Views\penjadwalan', $data);
     }
 

@@ -84,6 +84,14 @@
                     <input name="namaAcara" type="text" class="form-control" value="">
                 </div>
                 <div class="form-group">
+                    <label>Nama Blok</label>
+                    <select class="form-control select2" name="blok">
+                        <?php foreach ($blok as $key => $blok) : ?>
+                            <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Deskripsi Acara</label>
                     <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
                 </div>
@@ -122,7 +130,6 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-
                         <div class="form-group">
                             <label>Sesi</label>
                             <select class="form-control select2" name="sesi">
