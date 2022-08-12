@@ -8,7 +8,7 @@
 <div class="main-content">
     <section class=" section">
         <div class="section-header">
-            <h1>Selamat Datang di Aplikasi Digisched UMSU</h1>
+            <h1 id="judul"><?= $title ?></h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item"><a href="#"><?= $breadcrumb[0]; ?></a></div>
                 <div class="breadcrumb-item active"><?= $breadcrumb[1]; ?></div>
@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4><i class='<?= $icon ?>'></i> <?= $title ?></h4>
+                            <h4><button class="btn btn-primary" id="tambahPenjadwalan"><i class="fas fa-plus"></i> Tambah</button></h4>
                             <div class="card-header-form">
                                 <form action="">
                                     <div class="input-group">
@@ -50,7 +50,7 @@
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
-                                                <td class="align-middle"><i class="fas fa-map-marker"></i> <?= $jadwal->penjadwalanLokasi ?></td>
+                                                <td class="align-middle"><i class="fas fa-map-marker text-primary"></i> <?= $jadwal->penjadwalanLokasi ?></td>
                                                 <td>
                                                     <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-2.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
                                                     <img alt="image" src='<?= base_url("template/assets/img/avatar/avatar-5.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
@@ -75,6 +75,85 @@
     </section>
 </div>
 
+<div class="tambah">
+    <form action="/penjadwalan/add" id="formTambah" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nama Acara</label>
+                    <input name="namaAcara" type="text" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Acara</label>
+                    <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Lokasi Acara</label>
+                    <input name="lokasi" type="text" class="form-control" value="">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Date Time Picker</label>
+                            <input type="text" class="form-control datetimepicker">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Date Time Picker</label>
+                            <input type="text" class="form-control datetimepicker">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Warna Acara</label>
+                    <div class="row gutters-xs">
+                        <div class="col-auto">
+                            <?php foreach ($color as $key => $col) : ?>
+                                <label class="colorinput">
+                                    <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" />
+                                    <span class="colorinput-color" style="background-color: <?= $col['background'] ?>;"></span>
+                                </label>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label>Sesi</label>
+                            <select class="form-control select2" name="sesi">
+                                <?php foreach ($sesi as $key => $sesi) : ?>
+                                    <option value="<?= $sesi->sesiId ?>"><?= $sesi->sesiNama ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Hari</label>
+                            <?php $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] ?>
+                            <select class="form-control select2" name="hari">
+                                <?php foreach ($hari as $key => $hari) : ?>
+                                    <option value="<?= $hari ?>"><?= $hari ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class=" form-group">
+                    <label>Catatan Ekstra</label>
+                    <textarea name="noteAcara" class="form-control" style="height:100px"></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <?= view('layout/templateFooter'); ?>
+
 
 <?= $this->endSection(); ?>

@@ -62,12 +62,39 @@
 
   <!-- Template JS File -->
   <script src="<?= base_url() ?>/template/assets/js/scripts.js"></script>
-  <script src="<?= base_url() ?>/template/assets/js/custom.js"></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <!-- Page Specific JS File -->
   <script src="<?= base_url() ?>/template/assets/js/page/forms-advanced-forms.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      $('.tambah').hide();
+    });
+
+    $("#tambahPenjadwalan").fireModal({
+      body: $('.tambah').html(),
+      title: 'Tambah ' + $('#judul').text(),
+      center: true,
+      size: 'modal-xl',
+      closeButton: true,
+      buttons: [{
+        text: 'Close',
+        class: 'btn btn-secondary btn-shadow',
+        handler: function(modal) {
+          modal.modal('hide');
+        }
+      }, {
+        text: 'Save',
+        submit: true,
+        class: 'btn btn-primary btn-shadow',
+        handler: function(modal) {
+          modal.click();
+        }
+      }]
+    });
+  </script>
 
 </body>
 

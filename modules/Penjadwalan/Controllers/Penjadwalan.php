@@ -8,7 +8,7 @@ namespace Modules\Penjadwalan\Controllers;
 
 use App\Controllers\BaseController;
 use \Modules\Penjadwalan\Models\PenjadwalanModel;
-
+use Modules\Sesi\Models\SesiModel;
 
 class Penjadwalan extends BaseController
 {
@@ -18,6 +18,7 @@ class Penjadwalan extends BaseController
     public function __construct()
     {
         $this->penjadwalan = new PenjadwalanModel();
+        $this->sesi = new SesiModel();
         $this->validation = \Config\Services::validation();
     }
 
@@ -36,7 +37,14 @@ class Penjadwalan extends BaseController
             'numberPage' => $this->numberPage,
             'pager' => $jadwal->pager,
             'validation' => $this->validation,
+            'color' => colorEvent(),
+            'sesi' => $this->sesi->findAll(),
         ];
         return view('Modules\Penjadwalan\Views\penjadwalan', $data);
+    }
+
+    public function penjadwalanAdd()
+    {
+        dd($_POST);
     }
 }
