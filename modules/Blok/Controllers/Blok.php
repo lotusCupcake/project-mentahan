@@ -45,7 +45,7 @@ class Blok extends BaseController
     {
         $url = $this->request->getServer('HTTP_REFERER');
         $rules = [
-            'dataBlok' => rv('required', ['required' => 'Data Blok Harus Dipilih!']),
+            'dataBlok' => rv('required', ['required' => 'Data Blok Harus Dipilih']),
         ];
         if (!$this->validate($rules)) {
             return redirect()->to($url)->withInput();
@@ -56,15 +56,6 @@ class Blok extends BaseController
             $jumlah = $this->blokModel->dataExist(
                 [
                     'matkulBlokKode' => explode(',', $blok)[0],
-                    'matkulBlokNama' => explode(',', $blok)[1],
-                    'matkulBlokEnglish' => explode(',', $blok)[2],
-                    'matkulBlokProdiId' => explode(',', $blok)[3],
-                    'matkulBlokProdiNama' => explode(',', $blok)[4],
-                    'matkulBlokProdiAkronim' => explode(',', $blok)[5],
-                    'matkulBlokSemester' => explode(',', $blok)[6],
-                    'matkulBlokKurikulumId' => explode(',', $blok)[7],
-                    'matkulBlokKurikulumNama' => explode(',', $blok)[8],
-                    'matkulBlokType' => $matkulBlokType
                 ]
             );
             if ($jumlah == 0) {
@@ -83,7 +74,16 @@ class Blok extends BaseController
                 $this->blokModel->insert($data);
             }
         };
-        session()->setFlashdata('success', 'Data Blok Berhasil Ditambahkan!');
+        session()->setFlashdata('success', 'Data Blok Berhasil Ditambahkan');
+        return redirect()->to($url);
+    }
+
+    public function delete($id)
+    {
+        $url = $this->request->getServer('HTTP_REFERER');
+        if ($this->blokModel->delete($id)) {
+            session()->setFlashdata('success', 'Data Blok Berhasil Dihapus');
+        };
         return redirect()->to($url);
     }
 }

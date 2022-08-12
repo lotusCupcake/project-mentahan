@@ -32,10 +32,10 @@
                 </div>
                 <div class="card-body">
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
-                        <?= view('layout/templateAlert', ['msg' => ['success', session()->getFlashdata('success')]]); ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
                     <?php endif; ?>
                     <?php if ($validation->hasError('dataBlok')) : ?>
-                        <?= view('layout/templateAlert', ['msg' => ['danger', "<strong>Failed ! </strong>" . $validation->getError('dataBlok')]]); ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataBlok')]]); ?>
                     <?php endif; ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -88,7 +88,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah<strong> <?= $title; ?></strong></h5>
+                <h5 class="modal-title">Tambah Data<strong> <?= $title; ?></strong></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -152,6 +152,35 @@
     </div>
 </div>
 <!-- end modal tambah -->
+
+<!-- start modal hapus  -->
+<?php foreach ($matkulBlok as $hapus) : ?>
+    <div class="modal fade" tabindex="-1" role="dialog" id="hapus<?= $hapus->matkulBlokId; ?>">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus Data <strong><?= $title; ?></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah kamu benar ingin menghapus data blok <strong><?= $hapus->matkulBlokKode; ?> - <?= $hapus->matkulBlokNama; ?> (<?= $hapus->matkulBlokKurikulumNama; ?>)</strong>?</p>
+                    <p class="text-warning"><small>This action cannot be undone</small></p>
+                </div>
+                <form action="/blok/hapus/<?= $hapus->matkulBlokId; ?>" method="post">
+                    <?= csrf_field(); ?>
+                    <input type="hidden" name="_method" value="DELETE">
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endforeach ?>
+<!-- end modal hapus -->
 
 <?= view('layout/templateFooter'); ?>
 
