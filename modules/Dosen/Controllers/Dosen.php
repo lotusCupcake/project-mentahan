@@ -26,7 +26,7 @@ class Dosen extends BaseController
     {
         $currentPage = $this->request->getVar('page_dosen') ? $this->request->getVar('page_dosen') : 1;
         $keyword = $this->request->getVar('keyword');
-        $dosen = $this->dosenModel->getMatkulDosen($keyword);
+        $dosen = $this->dosenModel->getDataDosen($keyword);
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Dosen",
@@ -44,31 +44,80 @@ class Dosen extends BaseController
     public function add()
     {
         $url = $this->request->getServer('HTTP_REFERER');
-        $rules = [
-            'dataDosen' => rv('required', ['required' => 'Data Dosen Harus Dipilih']),
-        ];
-        if (!$this->validate($rules)) {
-            return redirect()->to($url)->withInput();
-        };
-        $dataDosen = $this->request->getVar('dataDosen');
-        foreach ($dataDosen as $dosen) {
+        if ($this->request->getVar('dosen') == 'internal') {
+            $rules = [
+                'dataDosen' => rv('required', ['required' => 'Data Dosen Harus Dipilih']),
+            ];
+            if (!$this->validate($rules)) {
+                return redirect()->to($url)->withInput();
+            };
+            $dataDosen = $this->request->getVar('dataDosen');
+            foreach ($dataDosen as $dosen) {
+                $jumlah = $this->dosenModel->dataExist(
+                    [
+                        'dosenEmailCorporate' => explode('-', $dosen)[2],
+                    ]
+                );
+                if ($jumlah == 0) {
+                    $data = [
+                        'dosenFullname' => explode('-', $dosen)[0],
+                        'dosenShortname' => explode('-', $dosen)[1],
+                        'dosenEmailCorporate' => explode('-', $dosen)[2],
+                        'dosenEmailGeneral' => explode('-', $dosen)[3],
+                        'dosenPhone' => explode('-', $dosen)[4],
+                        'dosenStatus' => '1'
+                    ];
+                    $this->dosenModel->insert($data);
+                    session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
+                }
+            };
+        } else {
+            $rules = [
+                'dosenFullname' => rv('required', ['required' => 'Nama Lengkap Dosen Harus Diisi']),
+                'dosenShortname' => rv('required', ['required' => 'Nama Dosen Harus Diisi']),
+                'dosenEmailGeneral' => rv('required', ['required' => 'Email Dosen Harus Diisi']),
+                'dosenPhone' => rv('required', ['required' => 'No. Handphone Dosen Harus Diisi']),
+            ];
+            if (!$this->validate($rules)) {
+                return redirect()->to($url)->withInput();
+            };
             $jumlah = $this->dosenModel->dataExist(
                 [
-                    'dosenEmail' => explode(',', $dosen)[2],
+                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
                 ]
             );
             if ($jumlah == 0) {
                 $data = [
-                    'dosenFullname' => explode(',', $dosen)[0],
-                    'dosenShortname' => explode(',', $dosen)[1],
-                    'dosenEmail' => explode(',', $dosen)[2],
-                    'dosenPhone' => explode(',', $dosen)[3]
+                    'dosenFullname' => trim($this->request->getVar('dosenFullname')),
+                    'dosenShortname' => trim($this->request->getVar('dosenShortname')),
+                    'dosenEmailCorporate' => trim($this->request->getVar('dosenEmailCorporate')),
+                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                    'dosenPhone' => trim($this->request->getVar('dosenPhone')),
+                    'dosenStatus' => '0'
                 ];
                 $this->dosenModel->insert($data);
+                session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
             }
-        };
-        session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
+        }
         return redirect()->to($url);
+    }
+
+    public function edit($id)
+    {
+        $url = $this->request->getServer('HTTP_REFERER');
+        $rules = [
+            'dosenEmailGeneral' => rv('required', ['required' => 'Email General Harus Diisi']),
+        ];
+        if (!$this->validate($rules)) {
+            return redirect()->to($url)->withInput();
+        };
+
+        $data = ['dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),];
+
+        if ($this->dosenModel->update($id, $data)) {
+            session()->setFlashdata('success', 'Data Dosen Berhasil Diupdate');
+            return redirect()->to($url);
+        }
     }
 
     public function delete($id)

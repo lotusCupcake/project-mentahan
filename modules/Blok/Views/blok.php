@@ -48,6 +48,7 @@
                                     <th width="18%" scope="col">Prodi</th>
                                     <th scope="col">Semester</th>
                                     <th width="10%" scope="col">Kurikulum</th>
+                                    <th width="5%" scope="col">Jenis</th>
                                     <th width="10%" style="text-align:center" scope="col">Action</th>
                                 </tr>
                                 </tr>
@@ -65,13 +66,14 @@
                                             <td><?= $data->matkulBlokProdiNama; ?> (<?= $data->matkulBlokProdiAkronim; ?>)</td>
                                             <td><?= $data->matkulBlokSemester; ?></td>
                                             <td><?= $data->matkulBlokKurikulumNama; ?></td>
+                                            <td><?= $data->matkulBlokType; ?></td>
                                             <td style="text-align:center">
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->matkulBlokId; ?>"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 8]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 9]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
@@ -97,16 +99,16 @@
                 <?= csrf_field() ?>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="table-1">
+                        <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th width="2%" style="text-align:center" scope="col"></th>
                                     <th scope="col">Kode</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Nama Asing</th>
-                                    <th width="15%" scope="col">Prodi</th>
-                                    <th scope="col">Semester</th>
-                                    <th width="10%" scope="col">Kurikulum</th>
+                                    <th width="20%" scope="col">Prodi</th>
+                                    <th width="15%" scope="col">Semester</th>
+                                    <th width="15%" scope="col">Kurikulum</th>
                                 </tr>
                             </thead>
                             <tbody>

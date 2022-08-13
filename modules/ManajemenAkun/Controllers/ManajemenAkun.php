@@ -51,9 +51,9 @@ class ManajemenAkun extends BaseController
     {
         $url = $this->request->getServer('HTTP_REFERER');
         $rules = [
-            'userEmail' => rv('required', ['required' => 'Email Harus Diisi!']),
-            'userName' => rv('required', ['required' => 'Nama Harus Diisi!']),
-            'userRole' => rv('required', ['required' => 'Role Harus Dipilih!']),
+            'userEmail' => rv('required', ['required' => 'Email Harus Diisi']),
+            'userName' => rv('required', ['required' => 'Nama Harus Diisi']),
+            'userRole' => rv('required', ['required' => 'Role Harus Dipilih']),
         ];
         if (!$this->validate($rules)) {
             return redirect()->to($url)->withInput();
@@ -69,7 +69,7 @@ class ManajemenAkun extends BaseController
 
         if ($this->manajemenAkunModel->update($id, $data)) {
             if ($this->authGroupsUsersModel->update($id, $data_user_group)) {
-                session()->setFlashdata('success', 'Data Manajemen Akun Berhasil Diupdate !');
+                session()->setFlashdata('success', 'Data Manajemen Akun Berhasil Diupdate');
                 return redirect()->to($url);
             }
         }
