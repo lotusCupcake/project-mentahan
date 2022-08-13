@@ -68,7 +68,7 @@ class Penjadwalan extends BaseController
             'summary' => $this->request->getVar('namaAcara'),
             'description' => $this->request->getVar('deskripsiAcara'),
             'location' => $this->request->getVar('lokasi'),
-            'colorId' => 1,
+            'colorId' => $this->request->getVar('color'),
             'start' => array(
                 'dateTime' => timeAppToGoogle($eventStart)
             ),
@@ -80,6 +80,34 @@ class Penjadwalan extends BaseController
             'guestsCanModify' => false,
             'guestsCanSeeOtherGuests' => false,
         );
-        dd(addEvent($event));
+        $resultCalendar = addEvent($event);
+
+        if ($resultCalendar[0]['status'] == 'confirmed') {
+            $data = [
+                'penjadwalanJenisJadwalId' => $this->request->getVar('jenisJadwal'),
+                'penjadwalanMatkulBlokId' => $this->request->getVar('blok'),
+                'penjadwalanSesiId' => $this->request->getVar('sesi'),
+                'penjadwalanCalenderId' => $resultCalendar[0]['id'],
+                'penjadwalanJudul' => $this->request->getVar('namaAcara'),
+                'penjadwalanDeskripsi' => $this->request->getVar('deskripsiAcara'),
+                'penjadwalanLokasi' => $this->request->getVar('lokasi'),
+                'penjadwalanColorId' => $this->request->getVar('color'),
+                'penjadwalanStartDate' => $eventStart,
+                'penjadwalanEndDate' => $eventEnd,
+                'penjadwalanPeserta' => json_encode(['data' => $dosen]),
+                'penjadwalanNotes' => $this->request->getVar('noteAcara'),
+            ];
+            if ($this->penjadwalan->insert($data)) {
+                session()->setFlashdata('success', 'Data berhasil ditambahkan');
+                return redirect()->to('penjadwalan');
+            } else {
+                delEvent($resultCalendar[0]['id']);
+                session()->setFlashdata('error', 'Data gagal ditambahkan');
+                return redirect()->to('penjadwalan');
+            }
+        } else {
+            session()->setFlashdata('error', 'Data gagal ditambahkan');
+            return redirect()->to('penjadwalan');
+        }
     }
 }

@@ -132,7 +132,7 @@
           success: function(response) {
             let html = '';
             response.forEach(element => {
-              html += '<option value="' + element.dosenEmailGeneral + '" > ' + element.dosenFullname + '</option>';
+              html += '<option value="' + element.dosenEmailGeneral + '" > <strong>' + element.jumlahAmpu + '</strong> | ' + element.dosenFullname + '</option>';
             });
             $('[name="dosen[]"]').empty();
             $('[name="dosen[]"]').append(html);
