@@ -52,7 +52,7 @@ class GoogleCalendar
             ];
             return $data;
         } else {
-            return false;
+            return null;
         }
     }
 
