@@ -20,7 +20,7 @@
                     <div class="card-header-form col-md-4">
                         <form action="">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search Email/Username/Role" name="keyword" value="<?= isset($_GET['keyword']) ? $_GET['keyword'] : "" ?>">
+                                <input type="text" class="form-control" placeholder="Search" name="keyword" value="<?= isset($_GET['keyword']) ? $_GET['keyword'] : "" ?>">
                                 <div class="input-group-btn">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
                                 </div>
@@ -30,16 +30,16 @@
                 </div>
                 <div class="card-body">
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
-                        <?= view('layout/templateAlert', ['msg' => ['success', session()->getFlashdata('success')]]); ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
                     <?php endif; ?>
                     <?php if ($validation->hasError('userEmail')) : ?>
-                        <?= view('layout/templateAlert', ['msg' => ['danger', "<strong>Failed ! </strong>" . $validation->getError('userEmail')]]); ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('userEmail')]]); ?>
                     <?php endif; ?>
                     <?php if ($validation->hasError('userName')) : ?>
-                        <?= view('layout/templateAlert', ['msg' => ['danger', "<strong>Failed ! </strong>" . $validation->getError('userName')]]); ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('userName')]]); ?>
                     <?php endif; ?>
                     <?php if ($validation->hasError('userRole')) : ?>
-                        <?= view('layout/templateAlert', ['msg' => ['danger', "<strong>Failed ! </strong>" . $validation->getError('userRole')]]); ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('userRole')]]); ?>
                     <?php endif; ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -85,16 +85,16 @@
 <!-- start modal edit  -->
 <?php foreach ($manajemenAkun as $edit) : ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="editAkun<?= $edit->user_id; ?>">
-        <div class="modal-dialog" role="document">
-            <form action="/manajemenAkun/ubah/<?= $edit->user_id; ?>" method="POST">
-                <?= csrf_field() ?>
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit<strong> Data Akun</strong></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data<strong> <?= $title; ?></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/manajemenAkun/ubah/<?= $edit->user_id; ?>" method="POST">
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Email</label>
@@ -125,8 +125,8 @@
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 <?php endforeach ?>

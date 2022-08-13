@@ -44,7 +44,8 @@
                                     <th width="2%" style="text-align:center" scope="col">No.</th>
                                     <th width="25%" scope="col">Nama Lengkap</th>
                                     <th scope="col">Nama</th>
-                                    <th scope="col">Email</th>
+                                    <th scope="col">Email Corporate</th>
+                                    <th scope="col">Email General</th>
                                     <th scope="col">Handphone</th>
                                     <th width="10%" style="text-align:center" scope="col">Action</th>
                                 </tr>
@@ -59,15 +60,17 @@
                                             <td style="text-align:center" scope="row"><?= $no++; ?></td>
                                             <td><?= $data->dosenFullname; ?></td>
                                             <td><?= $data->dosenShortname; ?></td>
-                                            <td><?= ($data->dosenEmail == null) ? '-' : $data->dosenEmail; ?></td>
+                                            <td><?= ($data->dosenEmailCorporate == null) ? '-' : $data->dosenEmailCorporate; ?></td>
+                                            <td><?= ($data->dosenEmailGeneral == null) ? '-' : $data->dosenEmailGeneral; ?></td>
                                             <td><?= ($data->dosenPhone == null) ? '-' : $data->dosenPhone; ?></td>
                                             <td style="text-align:center">
+                                                <button class="btn btn-icon icon-left btn-info" data-toggle="modal" data-target="#edit<?= $data->dosenId; ?>"><i class="fas fa-edit"></i></button>
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->dosenId; ?>"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 6]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 7]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
@@ -99,7 +102,8 @@
                                     <th width="2%" style="text-align:center" scope="col"></th>
                                     <th width="25%" scope="col">Nama Lengkap</th>
                                     <th scope="col">Nama</th>
-                                    <th scope="col">Email</th>
+                                    <th scope="col">Email Corporate</th>
+                                    <th scope="col">Email General</th>
                                     <th scope="col">Handphone</th>
                                 </tr>
                             </thead>
@@ -109,13 +113,14 @@
                                     <tr>
                                         <td style="text-align:center" scope="row">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "-" . $data->Name . "-" . $data->Email_Corporate . "-" . $data->Phone_Mobile  ?>">
+                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "-" . $data->Name . "-" . $data->Email_Corporate . "-" . $data->Email_General . "-" . $data->Phone_Mobile  ?>">
                                                 <label class="custom-control-label" for="check<?= $data->Employee_Id ?>"></label>
                                             </div>
                                         </td>
                                         <td><?= $data->Full_Name; ?></td>
                                         <td><?= $data->Name; ?></td>
                                         <td><?= ($data->Email_Corporate == null) ? '-' : $data->Email_Corporate; ?></td>
+                                        <td><?= ($data->Email_General == null) ? '-' : $data->Email_General; ?></td>
                                         <td><?= ($data->Phone_Mobile == null) ? '-' : $data->Phone_Mobile; ?></td>
                                     </tr>
                                 <?php endforeach ?>
@@ -155,6 +160,37 @@
                     <div class="modal-footer bg-whitesmoke br">
                         <button type="submit" class="btn btn-danger">Delete</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endforeach ?>
+<!-- end modal hapus -->
+
+<!-- start modal hapus  -->
+<?php foreach ($dosen as $edit) : ?>
+    <div class="modal fade" tabindex="-1" role="dialog" id="edit<?= $edit->dosenId; ?>">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data <strong><?= $title; ?></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/dosen/ubah/<?= $edit->dosenId; ?>" method="post">
+                    <?= csrf_field(); ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Email General</label>
+                            <input name="dosenEmailGeneral" type="text" class="form-control" value="<?= $edit->dosenEmailGeneral; ?>">
+                        </div>
+                        <p class="text-warning"><small>Only change the general email that is in digisched</small></p>
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>

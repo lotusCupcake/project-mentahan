@@ -54,21 +54,40 @@ class Dosen extends BaseController
         foreach ($dataDosen as $dosen) {
             $jumlah = $this->dosenModel->dataExist(
                 [
-                    'dosenEmail' => explode('-', $dosen)[2],
+                    'dosenEmailCorporate' => explode('-', $dosen)[2],
                 ]
             );
             if ($jumlah == 0) {
                 $data = [
                     'dosenFullname' => explode('-', $dosen)[0],
                     'dosenShortname' => explode('-', $dosen)[1],
-                    'dosenEmail' => explode('-', $dosen)[2],
-                    'dosenPhone' => explode('-', $dosen)[3]
+                    'dosenEmailCorporate' => explode('-', $dosen)[2],
+                    'dosenEmailGeneral' => explode('-', $dosen)[3],
+                    'dosenPhone' => explode('-', $dosen)[4]
                 ];
                 $this->dosenModel->insert($data);
                 session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
             }
         };
         return redirect()->to($url);
+    }
+
+    public function edit($id)
+    {
+        $url = $this->request->getServer('HTTP_REFERER');
+        $rules = [
+            'dosenEmailGeneral' => rv('required', ['required' => 'Email General Harus Diisi']),
+        ];
+        if (!$this->validate($rules)) {
+            return redirect()->to($url)->withInput();
+        };
+
+        $data = ['dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),];
+
+        if ($this->dosenModel->update($id, $data)) {
+            session()->setFlashdata('success', 'Data Dosen Berhasil Diupdate');
+            return redirect()->to($url);
+        }
     }
 
     public function delete($id)

@@ -8,7 +8,7 @@ class DosenModel extends Model
 {
     protected $table = 'dosen';
     protected $primaryKey = 'dosenId';
-    protected $allowedFields = ['dosenFullname', 'dosenShortname', 'dosenEmail', 'dosenPhone'];
+    protected $allowedFields = ['dosenFullname', 'dosenShortname', 'dosenEmailCorporate', 'dosenEmailGeneral', 'dosenPhone'];
     protected $returnType = 'object';
 
     public function getDataDosen($keyword = null)
