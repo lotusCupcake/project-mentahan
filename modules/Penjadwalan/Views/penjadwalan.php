@@ -84,41 +84,16 @@
                     <div class="selectgroup selectgroup-pills">
                         <?php foreach ($jenisJadwal as $key => $jenis) : ?>
                             <label class="selectgroup-item">
-                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>" class="selectgroup-input" <?= ($key == 0) ? 'checked' : '' ?>>
+                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>" class="selectgroup-input">
                                 <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
                             </label>
                         <?php endforeach ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Nama Acara</label>
-                    <input name="namaAcara" type="text" class="form-control" value="">
-                </div>
-                <div class="form-group">
-                    <label>Deskripsi Acara</label>
-                    <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Dosen</label>
-                    <select class="form-control select2" multiple="" name="dosen">
-                        <?php foreach ($dosen as $key => $dosen) : ?>
-                            <option value="">Test</option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Nama Blok</label>
-                    <select class="form-control select2" name="blok">
-                        <?php foreach ($blok as $key => $blok) : ?>
-                            <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
                     <label>Sesi</label>
                     <select class="form-control select2" name="sesi">
+                        <option value="">Pilih Sesi</option>
                         <?php foreach ($sesi as $key => $sesi) : ?>
                             <option value="<?= $sesi->sesiId ?>"><?= $sesi->sesiNama ?></option>
                         <?php endforeach ?>
@@ -139,8 +114,36 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label>Nama Blok</label>
+                    <select class="form-control select2" name="blok">
+                        <option value="">Pilih Blok</option>
+                        <?php foreach ($blok as $key => $blok) : ?>
+                            <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Dosen</label>
+                    <select class="form-control select2" multiple="" name="dosen">
+                        <?php foreach ($dosen as $key => $dosen) : ?>
+                            <option value="">Test</option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nama Acara</label>
+                    <input name="namaAcara" type="text" class="form-control" value="">
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>Lokasi Acara</label>
                     <input name="lokasi" type="text" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Acara</label>
+                    <textarea name="deskripsiAcara" class="form-control" style="height:140px"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Warna Acara</label>
@@ -157,7 +160,7 @@
                 </div>
                 <div class=" form-group">
                     <label>Catatan Ekstra</label>
-                    <textarea name="noteAcara" class="form-control" style="height:100px"></textarea>
+                    <textarea name="noteAcara" class="form-control" style="height:145px"></textarea>
                 </div>
             </div>
         </div>

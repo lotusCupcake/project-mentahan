@@ -71,7 +71,14 @@
   <script>
     $(document).ready(function() {
       $('.tambah').hide();
+      cekAvailDosen();
     });
+
+    let jenisJadwal;
+    let sesi;
+    let startDate;
+    let hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+    let blok;
 
     $("#tambahPenjadwalan").fireModal({
       body: $('.tambah').html(),
@@ -94,6 +101,45 @@
         }
       }]
     });
+
+    $('[name=jenisJadwal]').change(function() {
+      jenisJadwal = $(this).val();
+      cekAvailDosen();
+    });
+
+    $('[name=sesi]').change(function() {
+      sesi = $(this).val();
+      cekAvailDosen();
+    });
+
+    $('[name=startDate]').change(function() {
+      startDate = hari[new Date($(this).val()).getDay() - 1];
+      cekAvailDosen();
+    });
+
+    $('[name=blok]').change(function() {
+      blok = $(this).val();
+      cekAvailDosen();
+    });
+
+    function cekAvailDosen() {
+      console.log([jenisJadwal, sesi, startDate, blok]);
+
+      $.ajax({
+        url: '/admin/cekAvailDosen',
+        type: 'POST',
+        data: {
+          jenisJadwal: jenisJadwal,
+          sesi: sesi,
+          startDate: startDate,
+          blok: blok
+        },
+        success: function(res) {
+          // $('#dosen').html(res);
+          console.log(res);
+        }
+      });
+    }
   </script>
 
 </body>
