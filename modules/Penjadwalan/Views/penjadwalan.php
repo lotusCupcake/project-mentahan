@@ -50,7 +50,7 @@
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
-                                                <td class="align-middle"><i class="fas fa-map-marker text-primary"></i> <?= $jadwal->penjadwalanLokasi ?></td>
+                                                <td class="align-middle"><i class="fas fa-map-marker <?= "text-" . randomColor() ?>"></i> <?= $jadwal->penjadwalanLokasi ?></td>
                                                 <td>
                                                     <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
                                                         <?php if ($key < 5) : ?>
@@ -59,7 +59,11 @@
                                                     <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
-                                                <td></td>
+                                                <td>
+                                                    <button class="btn btn-info"><i class="fas fa-eye"></i></button>
+                                                    <button class="btn btn-warning"><i class="fas fa-pen"></i></button>
+                                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                </td>
                                             </tr>
                                         <?php endforeach ?>
                                     <?php else : ?>
