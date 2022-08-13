@@ -37,6 +37,18 @@
                     <?php if ($validation->hasError('dataDosen')) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataDosen')]]); ?>
                     <?php endif; ?>
+                    <?php if ($validation->hasError('dosenFullname')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosenFullname')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('dosenShortname')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosenShortname')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('dosenEmailGeneral')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosenEmailGeneral')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('dosenPhone')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosenPhone')]]); ?>
+                    <?php endif; ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -47,6 +59,7 @@
                                     <th scope="col">Email Corporate</th>
                                     <th scope="col">Email General</th>
                                     <th scope="col">Handphone</th>
+                                    <th scope="col">Status</th>
                                     <th width="10%" style="text-align:center" scope="col">Action</th>
                                 </tr>
                                 </tr>
@@ -63,6 +76,7 @@
                                             <td><?= ($data->dosenEmailCorporate == null) ? '-' : $data->dosenEmailCorporate; ?></td>
                                             <td><?= ($data->dosenEmailGeneral == null) ? '-' : $data->dosenEmailGeneral; ?></td>
                                             <td><?= ($data->dosenPhone == null) ? '-' : $data->dosenPhone; ?></td>
+                                            <td><?= ($data->dosenStatus == '1') ? 'Internal' : 'Eksternal'; ?></td>
                                             <td style="text-align:center">
                                                 <button class="btn btn-icon icon-left btn-info" data-toggle="modal" data-target="#edit<?= $data->dosenId; ?>"><i class="fas fa-edit"></i></button>
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->dosenId; ?>"><i class="fas fa-trash"></i></button>
@@ -92,48 +106,85 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="dosen/tambah" method="POST">
-                <?= csrf_field() ?>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th width="2%" style="text-align:center" scope="col"></th>
-                                    <th width="25%" scope="col">Nama Lengkap</th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Email Corporate</th>
-                                    <th scope="col">Email General</th>
-                                    <th scope="col">Handphone</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach ($apiDosen as $data) : ?>
-                                    <tr>
-                                        <td style="text-align:center" scope="row">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "-" . $data->Name . "-" . $data->Email_Corporate . "-" . $data->Email_General . "-" . $data->Phone_Mobile  ?>">
-                                                <label class="custom-control-label" for="check<?= $data->Employee_Id ?>"></label>
-                                            </div>
-                                        </td>
-                                        <td><?= $data->Full_Name; ?></td>
-                                        <td><?= $data->Name; ?></td>
-                                        <td><?= ($data->Email_Corporate == null) ? '-' : $data->Email_Corporate; ?></td>
-                                        <td><?= ($data->Email_General == null) ? '-' : $data->Email_General; ?></td>
-                                        <td><?= ($data->Phone_Mobile == null) ? '-' : $data->Phone_Mobile; ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="dosen-umsu" data-toggle="tab" href="#dosenUmsu" role="tab" aria-controls="dosenUmsu" aria-selected="true">Dosen Internal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="dosen-luar" data-toggle="tab" href="#dosenLuar" role="tab" aria-controls="dosenLuar" aria-selected="false">Dosen Eksternal</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="dosenUmsu" role="tabpanel" aria-labelledby="dosen-umsu">
+                        <form action="dosen/tambah/internal" method="POST">
+                            <div class="table-responsive">
+                                <input type="hidden" name="dosen" value="internal">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="2%" style="text-align:center" scope="col"></th>
+                                            <th width="25%" scope="col">Nama Lengkap</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Email Corporate</th>
+                                            <th scope="col">Email General</th>
+                                            <th scope="col">Handphone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($apiDosen as $data) : ?>
+                                            <tr>
+                                                <td style="text-align:center" scope="row">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "-" . $data->Name . "-" . $data->Email_Corporate . "-" . $data->Email_General . "-" . $data->Phone_Mobile  ?>">
+                                                        <label class="custom-control-label" for="check<?= $data->Employee_Id ?>"></label>
+                                                    </div>
+                                                </td>
+                                                <td><?= $data->Full_Name; ?></td>
+                                                <td><?= $data->Name; ?></td>
+                                                <td><?= ($data->Email_Corporate == null) ? '-' : $data->Email_Corporate; ?></td>
+                                                <td><?= ($data->Email_General == null) ? '-' : $data->Email_General; ?></td>
+                                                <td><?= ($data->Phone_Mobile == null) ? '-' : $data->Phone_Mobile; ?></td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <div class="modal-footer bg-whitesmoke br">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
                     </div>
-                    <br>
-                    <div class="modal-footer bg-whitesmoke br">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                    <div class="tab-pane fade" id="dosenLuar" role="tabpanel" aria-labelledby="dosen-luar">
+                        <form action="dosen/tambah/eksternal" method="POST">
+                            <input type="hidden" name="dosen" value="eksternal">
+                            <div class="form-group">
+                                <label>Nama Lengkap</label>
+                                <input name="dosenFullname" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Nama</label>
+                                <input name="dosenShortname" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input name="dosenEmailGeneral" type="email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Handphone</label>
+                                <input name="dosenPhone" type="number" class="form-control">
+                            </div>
+                            <div class="modal-footer bg-whitesmoke br">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -168,7 +219,7 @@
 <?php endforeach ?>
 <!-- end modal hapus -->
 
-<!-- start modal hapus  -->
+<!-- start modal edit  -->
 <?php foreach ($dosen as $edit) : ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="edit<?= $edit->dosenId; ?>">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -183,10 +234,30 @@
                     <?= csrf_field(); ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Email General</label>
+                            <label>Nama Lengkap</label>
+                            <input name="dosenFullname" type="text" class="form-control" value="<?= $edit->dosenFullname; ?>" <?= ($edit->dosenStatus == '1') ? 'readonly' : ''; ?>>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input name="dosenShortname" type="text" class="form-control" value="<?= $edit->dosenShortname; ?>" <?= ($edit->dosenStatus == '1') ? 'readonly' : ''; ?>>
+                        </div>
+                        <?php if ($edit->dosenStatus == '1') : ?>
+                            <div class="form-group">
+                                <label>Email Corporate</label>
+                                <input name="dosenEmailCorporate" type="text" class="form-control" value="<?= $edit->dosenEmailCorporate; ?>" <?= ($edit->dosenStatus == '1') ? 'readonly' : ''; ?>>
+                            </div>
+                        <?php endif ?>
+                        <div class="form-group">
+                            <label><?= ($edit->dosenStatus == '1') ? 'Email General' : 'Email'; ?></label>
                             <input name="dosenEmailGeneral" type="text" class="form-control" value="<?= $edit->dosenEmailGeneral; ?>">
                         </div>
-                        <p class="text-warning"><small>Only change the general email that is in digisched</small></p>
+                        <div class="form-group">
+                            <label>Handphone</label>
+                            <input name="dosenPhone" type="text" class="form-control" value="<?= $edit->dosenPhone; ?>" <?= ($edit->dosenStatus == '1') ? 'readonly' : ''; ?>>
+                        </div>
+                        <?php if ($edit->dosenStatus == '1') : ?>
+                            <p class="text-warning"><small>Only change the general email that is in digisched</small></p>
+                        <?php endif ?>
                     </div>
                     <div class="modal-footer bg-whitesmoke br">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -197,7 +268,7 @@
         </div>
     </div>
 <?php endforeach ?>
-<!-- end modal hapus -->
+<!-- end modal edit -->
 
 <?= view('layout/templateFooter'); ?>
 
