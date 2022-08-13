@@ -79,4 +79,12 @@ class Dosen extends BaseController
         };
         return redirect()->to($url);
     }
+
+    public function loadDosenJadwal()
+    {
+        $sesi = $this->request->getVar('sesi');
+        $startDate = $this->request->getVar('startDate');
+
+        echo json_encode($this->dosenModel->getDosenJadwal($sesi, $startDate)->getresult());
+    }
 }

@@ -91,29 +91,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Sesi</label>
-                    <select class="form-control select2" name="sesi">
-                        <option value="">Pilih Sesi</option>
-                        <?php foreach ($sesi as $key => $sesi) : ?>
-                            <option value="<?= $sesi->sesiId ?>"><?= $sesi->sesiNama ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Waktu Mulai</label>
-                            <input type="text" class="form-control datetimepicker" name="startDate">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Waktu Selesai</label>
-                            <input type="text" class="form-control datetimepicker" name="endDate">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label>Nama Blok</label>
                     <select class="form-control select2" name="blok">
                         <option value="">Pilih Blok</option>
@@ -122,12 +99,28 @@
                         <?php endforeach ?>
                     </select>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Tanggal</label>
+                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sesi</label>
+                            <select class="form-control select2" name="sesi">
+                                <option value="">Pilih Sesi</option>
+                                <?php foreach ($sesi as $key => $sesi) : ?>
+                                    <option value="<?= $sesi->sesiId ?>,<?= $sesi->sesiStart ?>,<?= $sesi->sesiEnd ?>"><?= $sesi->sesiNama ?> (<?= $sesi->sesiStart ?>-<?= $sesi->sesiEnd ?>)</option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label>Dosen</label>
-                    <select class="form-control select2" multiple="" name="dosen">
-                        <?php foreach ($dosen as $key => $dosen) : ?>
-                            <option value="">Test</option>
-                        <?php endforeach ?>
+                    <select class="form-control select2" multiple="" name="dosen[]">
                     </select>
                 </div>
                 <div class="form-group">
@@ -143,7 +136,7 @@
                 </div>
                 <div class="form-group">
                     <label>Deskripsi Acara</label>
-                    <textarea name="deskripsiAcara" class="form-control" style="height:140px"></textarea>
+                    <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Warna Acara</label>
@@ -160,7 +153,7 @@
                 </div>
                 <div class=" form-group">
                     <label>Catatan Ekstra</label>
-                    <textarea name="noteAcara" class="form-control" style="height:145px"></textarea>
+                    <textarea name="noteAcara" class="form-control" style="height:90px"></textarea>
                 </div>
             </div>
         </div>

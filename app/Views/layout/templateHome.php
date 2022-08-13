@@ -74,11 +74,8 @@
       cekAvailDosen();
     });
 
-    let jenisJadwal;
     let sesi;
     let startDate;
-    let hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
-    let blok;
 
     $("#tambahPenjadwalan").fireModal({
       body: $('.tambah').html(),
@@ -102,43 +99,49 @@
       }]
     });
 
-    $('[name=jenisJadwal]').change(function() {
-      jenisJadwal = $(this).val();
-      cekAvailDosen();
-    });
-
     $('[name=sesi]').change(function() {
-      sesi = $(this).val();
+      sesi = $(this).val().split(',')[0];
       cekAvailDosen();
     });
 
     $('[name=startDate]').change(function() {
-      startDate = hari[new Date($(this).val()).getDay() - 1];
+      startDate = $(this).val();
       cekAvailDosen();
     });
 
-    $('[name=blok]').change(function() {
-      blok = $(this).val();
-      cekAvailDosen();
-    });
+    function dateIsValid(date) {
+      return date instanceof Date && !isNaN(date);
+    }
 
     function cekAvailDosen() {
-      console.log([jenisJadwal, sesi, startDate, blok]);
-
-      $.ajax({
-        url: '/admin/cekAvailDosen',
-        type: 'POST',
-        data: {
-          jenisJadwal: jenisJadwal,
-          sesi: sesi,
-          startDate: startDate,
-          blok: blok
-        },
-        success: function(res) {
-          // $('#dosen').html(res);
-          console.log(res);
-        }
-      });
+      console.log([sesi, startDate]);
+      if (typeof sesi !== 'undefined' && typeof startDate !== 'undefined') {
+        $.ajax({
+          type: 'POST',
+          url: '/dosen/load',
+          dataType: "json",
+          data: {
+            sesi: sesi,
+            startDate: startDate,
+          },
+          beforeSend: function(e) {
+            if (e && e.overrideMimeType) {
+              e.overrideMimeType("application/json;charset=UTF-8");
+            }
+          },
+          success: function(response) {
+            let html = '';
+            response.forEach(element => {
+              html += '<option value="' + element.dosenEmailGeneral + '" > ' + element.dosenFullname + '</option>';
+            });
+            $('[name="dosen[]"]').empty();
+            $('[name="dosen[]"]').append(html);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+          }
+        });
+      }
     }
   </script>
 

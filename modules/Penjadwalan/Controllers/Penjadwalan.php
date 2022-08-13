@@ -56,6 +56,30 @@ class Penjadwalan extends BaseController
 
     public function penjadwalanAdd()
     {
-        dd($_POST);
+        // dd($_POST);
+        $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
+        $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
+        $dosen = [];
+        foreach ($this->request->getVar('dosen') as $key => $value) {
+            $dosen[] = ['email' => $value];
+        }
+
+        $event = array(
+            'summary' => $this->request->getVar('namaAcara'),
+            'description' => $this->request->getVar('deskripsiAcara'),
+            'location' => $this->request->getVar('lokasi'),
+            'colorId' => 1,
+            'start' => array(
+                'dateTime' => timeAppToGoogle($eventStart)
+            ),
+            'end' => array(
+                'dateTime' => timeAppToGoogle($eventEnd)
+            ),
+            // 'attendees' => array($dosen),
+            'guestsCanInviteOthers' => false,
+            'guestsCanModify' => false,
+            'guestsCanSeeOtherGuests' => false,
+        );
+        dd(addEvent($event));
     }
 }
