@@ -38,32 +38,32 @@
                                         <th>No</th>
                                         <th>Nama Acara</th>
                                         <th>Lokasi</th>
-                                        <th>Members</th>
-                                        <th>Due Date</th>
-                                        <th>Status</th>
+                                        <th>Dosen</th>
+                                        <th>Jadwal</th>
                                         <th>Action</th>
                                     </tr>
                                     <?php if (!empty($penjadwalan)) : ?>
                                         <?php
                                         $no = 1 + ($numberPage * ($currentPage - 1));
                                         foreach ($penjadwalan as $jadwal) : ?>
+                                            <?php $peserta = getPeserta($jadwal->penjadwalanId); ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
                                                 <td class="align-middle"><i class="fas fa-map-marker text-primary"></i> <?= $jadwal->penjadwalanLokasi ?></td>
                                                 <td>
-                                                    <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-2.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                    <img alt="image" src='<?= base_url("template/assets/img/avatar/avatar-5.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
-                                                    <img alt="image" src='<?= base_url("template/assets/img/avatar/avatar-4.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
-                                                    <img alt="image" src='<?= base_url("template/assets/img/avatar/avatar-1.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
+                                                    <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
+                                                        <?php if ($key < 5) : ?>
+                                                            <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-" . random_int(1, 5) . ".png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
-                                                <td></td>
                                                 <td></td>
                                             </tr>
                                         <?php endforeach ?>
                                     <?php else : ?>
-                                        <?= view('layout/templateEmpty', ['jumlahSpan' => 7]); ?>
+                                        <?= view('layout/templateEmpty', ['jumlahSpan' => 6]); ?>
                                     <?php endif ?>
                                 </table>
                             </div>
