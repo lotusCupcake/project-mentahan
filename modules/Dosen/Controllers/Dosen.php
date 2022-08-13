@@ -26,7 +26,7 @@ class Dosen extends BaseController
     {
         $currentPage = $this->request->getVar('page_dosen') ? $this->request->getVar('page_dosen') : 1;
         $keyword = $this->request->getVar('keyword');
-        $dosen = $this->dosenModel->getMatkulDosen($keyword);
+        $dosen = $this->dosenModel->getDataDosen($keyword);
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Dosen",
@@ -54,20 +54,20 @@ class Dosen extends BaseController
         foreach ($dataDosen as $dosen) {
             $jumlah = $this->dosenModel->dataExist(
                 [
-                    'dosenEmail' => explode(',', $dosen)[2],
+                    'dosenEmail' => explode('-', $dosen)[2],
                 ]
             );
             if ($jumlah == 0) {
                 $data = [
-                    'dosenFullname' => explode(',', $dosen)[0],
-                    'dosenShortname' => explode(',', $dosen)[1],
-                    'dosenEmail' => explode(',', $dosen)[2],
-                    'dosenPhone' => explode(',', $dosen)[3]
+                    'dosenFullname' => explode('-', $dosen)[0],
+                    'dosenShortname' => explode('-', $dosen)[1],
+                    'dosenEmail' => explode('-', $dosen)[2],
+                    'dosenPhone' => explode('-', $dosen)[3]
                 ];
                 $this->dosenModel->insert($data);
+                session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
             }
         };
-        session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
         return redirect()->to($url);
     }
 

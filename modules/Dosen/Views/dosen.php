@@ -42,10 +42,10 @@
                             <thead>
                                 <tr>
                                     <th width="2%" style="text-align:center" scope="col">No.</th>
-                                    <th scope="col">Nama Lengkap</th>
+                                    <th width="25%" scope="col">Nama Lengkap</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Email</th>
-                                    <th width="18%" scope="col">Handphone</th>
+                                    <th scope="col">Handphone</th>
                                     <th width="10%" style="text-align:center" scope="col">Action</th>
                                 </tr>
                                 </tr>
@@ -60,9 +60,9 @@
                                             <td><?= $data->dosenFullname; ?></td>
                                             <td><?= $data->dosenShortname; ?></td>
                                             <td><?= ($data->dosenEmail == null) ? '-' : $data->dosenEmail; ?></td>
-                                            <td><?= $data->dosenPhone; ?> (<?= $data->dosenPhone; ?>)</td>
+                                            <td><?= ($data->dosenPhone == null) ? '-' : $data->dosenPhone; ?></td>
                                             <td style="text-align:center">
-                                                <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->matkulDosenId; ?>"><i class="fas fa-trash"></i></button>
+                                                <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->dosenId; ?>"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
@@ -96,12 +96,11 @@
                         <table class="table table-striped table-bordered" id="table-1">
                             <thead>
                                 <tr>
-                                    <th width="2%" style="text-align:center" scope="col">No.</th>
-                                    <th scope="col">Nama Lengkap</th>
+                                    <th width="2%" style="text-align:center" scope="col"></th>
+                                    <th width="25%" scope="col">Nama Lengkap</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Email</th>
-                                    <th width="18%" scope="col">Handphone</th>
-                                    <th width="10%" style="text-align:center" scope="col">Action</th>
+                                    <th scope="col">Handphone</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,33 +109,20 @@
                                     <tr>
                                         <td style="text-align:center" scope="row">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Course_Id ?>" name="dataDosen[]" value="<?= $data->Course_Code . "," . $data->Course_Name . "," . $data->Course_Name_Eng . "," . $data->Department_Id . "," . $data->Department_Name . "," . $data->Department_Acronym . "," . $data->Study_Level_Id . "," . $data->Curriculum_Id . "," . $data->Curriculum_Name ?>">
-                                                <label class="custom-control-label" for="check<?= $data->Course_Id ?>"></label>
+                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "-" . $data->Name . "-" . $data->Email_Corporate . "-" . $data->Phone_Mobile  ?>">
+                                                <label class="custom-control-label" for="check<?= $data->Employee_Id ?>"></label>
                                             </div>
                                         </td>
-                                        <td><?= ($data->Course_Code == null) ? '-' : $data->Course_Code; ?></td>
-                                        <td><?= ($data->Course_Name == null) ? '-' : $data->Course_Name; ?></td>
-                                        <td><?= ($data->Course_Name_Eng == null) ? '-' : $data->Course_Name_Eng; ?></td>
-                                        <td><?= $data->Department_Name; ?> (<?= $data->Department_Acronym; ?>)</td>
-                                        <td>Semester <?= $data->Study_Level_Id; ?></td>
-                                        <td><?= $data->Curriculum_Name; ?></td>
+                                        <td><?= $data->Full_Name; ?></td>
+                                        <td><?= $data->Name; ?></td>
+                                        <td><?= ($data->Email_Corporate == null) ? '-' : $data->Email_Corporate; ?></td>
+                                        <td><?= ($data->Phone_Mobile == null) ? '-' : $data->Phone_Mobile; ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
                         </table>
                     </div>
                     <br>
-                    <label>Tipe Mata Kuliah</label>
-                    <div class="form-group">
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="dosen" name="matkulDosenType" class="custom-control-input" value="BLOK" checked>
-                            <label class="custom-control-label" for="dosen">Dosen</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="nonDosen" name="matkulDosenType" class="custom-control-input" value="NON BLOK">
-                            <label class="custom-control-label" for="nonDosen">Non Dosen</label>
-                        </div>
-                    </div>
                     <div class="modal-footer bg-whitesmoke br">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -149,8 +135,8 @@
 <!-- end modal tambah -->
 
 <!-- start modal hapus  -->
-<?php foreach ($matkulDosen as $hapus) : ?>
-    <div class="modal fade" tabindex="-1" role="dialog" id="hapus<?= $hapus->matkulDosenId; ?>">
+<?php foreach ($dosen as $hapus) : ?>
+    <div class="modal fade" tabindex="-1" role="dialog" id="hapus<?= $hapus->dosenId; ?>">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -160,10 +146,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Apakah kamu benar ingin menghapus data dosen <strong><?= $hapus->matkulDosenKode; ?> - <?= $hapus->matkulDosenNama; ?> (<?= $hapus->matkulDosenKurikulumNama; ?>)</strong>?</p>
+                    <p>Apakah kamu benar ingin menghapus data dosen <strong><?= $hapus->dosenFullname; ?></strong>?</p>
                     <p class="text-warning"><small>This action cannot be undone</small></p>
                 </div>
-                <form action="/dosen/hapus/<?= $hapus->matkulDosenId; ?>" method="post">
+                <form action="/dosen/hapus/<?= $hapus->dosenId; ?>" method="post">
                     <?= csrf_field(); ?>
                     <input type="hidden" name="_method" value="DELETE">
                     <div class="modal-footer bg-whitesmoke br">

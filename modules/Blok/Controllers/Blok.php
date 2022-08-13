@@ -72,9 +72,9 @@ class Blok extends BaseController
                     'matkulBlokType' => $matkulBlokType
                 ];
                 $this->blokModel->insert($data);
+                session()->setFlashdata('success', 'Data Blok Berhasil Ditambahkan');
             }
         };
-        session()->setFlashdata('success', 'Data Blok Berhasil Ditambahkan');
         return redirect()->to($url);
     }
 

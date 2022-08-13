@@ -11,7 +11,7 @@ class DosenModel extends Model
     protected $allowedFields = ['dosenFullname', 'dosenShortname', 'dosenEmail', 'dosenPhone'];
     protected $returnType = 'object';
 
-    public function getDosen($keyword = null)
+    public function getDataDosen($keyword = null)
     {
         $builder = $this->table('dosen');
         if ($keyword) {
