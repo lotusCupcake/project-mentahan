@@ -56,6 +56,58 @@ class Penjadwalan extends BaseController
 
     public function penjadwalanAdd()
     {
-        dd($_POST);
+        // dd($_POST);
+        $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
+        $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
+        $dosen = [];
+        foreach ($this->request->getVar('dosen') as $key => $value) {
+            $dosen[] = ['email' => $value];
+        }
+
+        $event = array(
+            'summary' => $this->request->getVar('namaAcara'),
+            'description' => $this->request->getVar('deskripsiAcara'),
+            'location' => $this->request->getVar('lokasi'),
+            'colorId' => $this->request->getVar('color'),
+            'start' => array(
+                'dateTime' => timeAppToGoogle($eventStart)
+            ),
+            'end' => array(
+                'dateTime' => timeAppToGoogle($eventEnd)
+            ),
+            // 'attendees' => array($dosen),
+            'guestsCanInviteOthers' => false,
+            'guestsCanModify' => false,
+            'guestsCanSeeOtherGuests' => false,
+        );
+        $resultCalendar = addEvent($event);
+
+        if ($resultCalendar[0]['status'] == 'confirmed') {
+            $data = [
+                'penjadwalanJenisJadwalId' => $this->request->getVar('jenisJadwal'),
+                'penjadwalanMatkulBlokId' => $this->request->getVar('blok'),
+                'penjadwalanSesiId' => $this->request->getVar('sesi'),
+                'penjadwalanCalenderId' => $resultCalendar[0]['id'],
+                'penjadwalanJudul' => $this->request->getVar('namaAcara'),
+                'penjadwalanDeskripsi' => $this->request->getVar('deskripsiAcara'),
+                'penjadwalanLokasi' => $this->request->getVar('lokasi'),
+                'penjadwalanColorId' => $this->request->getVar('color'),
+                'penjadwalanStartDate' => $eventStart,
+                'penjadwalanEndDate' => $eventEnd,
+                'penjadwalanPeserta' => json_encode(['data' => $dosen]),
+                'penjadwalanNotes' => $this->request->getVar('noteAcara'),
+            ];
+            if ($this->penjadwalan->insert($data)) {
+                session()->setFlashdata('success', 'Data berhasil ditambahkan');
+                return redirect()->to('penjadwalan');
+            } else {
+                delEvent($resultCalendar[0]['id']);
+                session()->setFlashdata('error', 'Data gagal ditambahkan');
+                return redirect()->to('penjadwalan');
+            }
+        } else {
+            session()->setFlashdata('error', 'Data gagal ditambahkan');
+            return redirect()->to('penjadwalan');
+        }
     }
 }

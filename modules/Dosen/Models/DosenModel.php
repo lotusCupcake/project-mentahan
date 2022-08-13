@@ -31,4 +31,10 @@ class DosenModel extends Model
         $query = $builder->countAllResults();
         return $query;
     }
+
+    public function getDosenJadwal($sesi, $tgl)
+    {
+        $builder = $this->db->query("CALL loadDosenJadwal(" . $sesi . ",'" . $tgl . "')");
+        return $builder;
+    }
 }

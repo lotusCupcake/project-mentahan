@@ -71,7 +71,11 @@
   <script>
     $(document).ready(function() {
       $('.tambah').hide();
+      cekAvailDosen();
     });
+
+    let sesi;
+    let startDate;
 
     $("#tambahPenjadwalan").fireModal({
       body: $('.tambah').html(),
@@ -94,6 +98,51 @@
         }
       }]
     });
+
+    $('[name=sesi]').change(function() {
+      sesi = $(this).val().split(',')[0];
+      cekAvailDosen();
+    });
+
+    $('[name=startDate]').change(function() {
+      startDate = $(this).val();
+      cekAvailDosen();
+    });
+
+    function dateIsValid(date) {
+      return date instanceof Date && !isNaN(date);
+    }
+
+    function cekAvailDosen() {
+      console.log([sesi, startDate]);
+      if (typeof sesi !== 'undefined' && typeof startDate !== 'undefined') {
+        $.ajax({
+          type: 'POST',
+          url: '/dosen/load',
+          dataType: "json",
+          data: {
+            sesi: sesi,
+            startDate: startDate,
+          },
+          beforeSend: function(e) {
+            if (e && e.overrideMimeType) {
+              e.overrideMimeType("application/json;charset=UTF-8");
+            }
+          },
+          success: function(response) {
+            let html = '';
+            response.forEach(element => {
+              html += '<option value="' + element.dosenEmailGeneral + '" > <strong>' + element.jumlahAmpu + '</strong> | ' + element.dosenFullname + '</option>';
+            });
+            $('[name="dosen[]"]').empty();
+            $('[name="dosen[]"]').append(html);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+          }
+        });
+      }
+    }
   </script>
 
 </body>

@@ -69,7 +69,7 @@ class Home extends BaseController
 
     public function delCalendar()
     {
-        $id = 'atbgot6b55cf8fjl4gn6cruur8';
+        $id = 'gj2kc17hv5rp9du2jl38b2nbjc';
         dd(delEvent($id));
     }
 

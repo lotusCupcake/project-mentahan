@@ -38,32 +38,32 @@
                                         <th>No</th>
                                         <th>Nama Acara</th>
                                         <th>Lokasi</th>
-                                        <th>Members</th>
-                                        <th>Due Date</th>
-                                        <th>Status</th>
+                                        <th>Dosen</th>
+                                        <th>Jadwal</th>
                                         <th>Action</th>
                                     </tr>
                                     <?php if (!empty($penjadwalan)) : ?>
                                         <?php
                                         $no = 1 + ($numberPage * ($currentPage - 1));
                                         foreach ($penjadwalan as $jadwal) : ?>
+                                            <?php $peserta = getPeserta($jadwal->penjadwalanId); ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
                                                 <td class="align-middle"><i class="fas fa-map-marker text-primary"></i> <?= $jadwal->penjadwalanLokasi ?></td>
                                                 <td>
-                                                    <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-2.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                    <img alt="image" src='<?= base_url("template/assets/img/avatar/avatar-5.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
-                                                    <img alt="image" src='<?= base_url("template/assets/img/avatar/avatar-4.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
-                                                    <img alt="image" src='<?= base_url("template/assets/img/avatar/avatar-1.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
+                                                    <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
+                                                        <?php if ($key < 5) : ?>
+                                                            <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-" . random_int(1, 5) . ".png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
-                                                <td></td>
                                                 <td></td>
                                             </tr>
                                         <?php endforeach ?>
                                     <?php else : ?>
-                                        <?= view('layout/templateEmpty', ['jumlahSpan' => 7]); ?>
+                                        <?= view('layout/templateEmpty', ['jumlahSpan' => 6]); ?>
                                     <?php endif ?>
                                 </table>
                             </div>
@@ -84,63 +84,59 @@
                     <div class="selectgroup selectgroup-pills">
                         <?php foreach ($jenisJadwal as $key => $jenis) : ?>
                             <label class="selectgroup-item">
-                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>" class="selectgroup-input" <?= ($key == 0) ? 'checked' : '' ?>>
+                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>" class="selectgroup-input">
                                 <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
                             </label>
                         <?php endforeach ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Nama Acara</label>
-                    <input name="namaAcara" type="text" class="form-control" value="">
-                </div>
-                <div class="form-group">
-                    <label>Deskripsi Acara</label>
-                    <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Dosen</label>
-                    <select class="form-control select2" multiple="" name="dosen">
-                        <?php foreach ($dosen as $key => $dosen) : ?>
-                            <option value="">Test</option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label>Nama Blok</label>
                     <select class="form-control select2" name="blok">
+                        <option value="">Pilih Blok</option>
                         <?php foreach ($blok as $key => $blok) : ?>
                             <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Sesi</label>
-                    <select class="form-control select2" name="sesi">
-                        <?php foreach ($sesi as $key => $sesi) : ?>
-                            <option value="<?= $sesi->sesiId ?>"><?= $sesi->sesiNama ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Waktu Mulai</label>
-                            <input type="text" class="form-control datetimepicker" name="startDate">
+                            <label>Tanggal</label>
+                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Waktu Selesai</label>
-                            <input type="text" class="form-control datetimepicker" name="endDate">
+                            <label>Sesi</label>
+                            <select class="form-control select2" name="sesi">
+                                <option value="">Pilih Sesi</option>
+                                <?php foreach ($sesi as $key => $sesi) : ?>
+                                    <option value="<?= $sesi->sesiId ?>,<?= $sesi->sesiStart ?>,<?= $sesi->sesiEnd ?>"><?= $sesi->sesiNama ?> (<?= $sesi->sesiStart ?>-<?= $sesi->sesiEnd ?>)</option>
+                                <?php endforeach ?>
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
+                    <label>Dosen</label>
+                    <select class="form-control select2" multiple="" name="dosen[]">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nama Acara</label>
+                    <input name="namaAcara" type="text" class="form-control" value="">
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>Lokasi Acara</label>
                     <input name="lokasi" type="text" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Acara</label>
+                    <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Warna Acara</label>
@@ -157,7 +153,7 @@
                 </div>
                 <div class=" form-group">
                     <label>Catatan Ekstra</label>
-                    <textarea name="noteAcara" class="form-control" style="height:100px"></textarea>
+                    <textarea name="noteAcara" class="form-control" style="height:90px"></textarea>
                 </div>
             </div>
         </div>

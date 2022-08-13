@@ -38,20 +38,45 @@ class GoogleCalendar
     {
         $event = new Google_Service_Calendar_Event($event);
         $event = $this->service->events->insert($this->calId, $event);
-        return $event;
+
+        $data = [];
+        $data[] = [
+            'status' => $event->status,
+            'id' => $event->id,
+            'summary' => $event->summary,
+            'description' => $event->description,
+            'location' => $event->location,
+            'colorId' => $event->colorId,
+            'start' => $event->start->dateTime,
+            'end' => $event->end->dateTime,
+            'attendees' => $event->attendees
+        ];
+        return $data;
     }
 
     public function editCalendar($id, $event)
     {
         $event = new Google_Service_Calendar_Event($event);
         $event = $this->service->events->update($this->calId, $id, $event);
-        return $event;
+        $data = [];
+        $data[] = [
+            'status' => $event->status,
+            'id' => $event->id,
+            'summary' => $event->summary,
+            'description' => $event->description,
+            'location' => $event->location,
+            'colorId' => $event->colorId,
+            'start' => $event->start->dateTime,
+            'end' => $event->end->dateTime,
+            'attendees' => $event->attendees
+        ];
+        return $data;
     }
 
     public function delCalendar($id)
     {
         $event = $this->service->events->delete($this->calId, $id);
-        return $event;
+        return $event->statusCode;
     }
 
     public function listCalendar()
@@ -65,7 +90,7 @@ class GoogleCalendar
                 'description' => $key->description,
                 'location' => $key->location,
                 'colorId' => $key->colorId,
-                'start' => $key->start->dateTime->getDateTime(),
+                'start' => $key->start->dateTime,
                 'end' => $key->end->dateTime,
                 'attendees' => $key->attendees
             ];
