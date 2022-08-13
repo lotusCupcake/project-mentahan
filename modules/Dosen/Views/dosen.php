@@ -93,7 +93,7 @@
                 <?= csrf_field() ?>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="table-1">
+                        <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th width="2%" style="text-align:center" scope="col"></th>

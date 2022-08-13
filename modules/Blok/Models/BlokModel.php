@@ -21,6 +21,7 @@ class BlokModel extends Model
             $builder->orlike('matkul_blok.matkulBlokProdiNama', $keyword);
             $builder->orlike('matkul_blok.matkulBlokProdiAkronim', $keyword);
             $builder->orlike('matkul_blok.matkulBlokKurikulumNama', $keyword);
+            $builder->orlike('matkul_blok.matkulBlokType', $keyword);
         }
         $builder->orderBy('matkul_blok.matkulBlokId', 'DESC');
         return $builder;
