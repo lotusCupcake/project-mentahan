@@ -69,6 +69,11 @@
   <script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
 
   <script>
+    var site_url = "<?= site_url() ?>";
+  </script>
+  <?= script_tag('js/calendar.js') ?>
+
+  <script>
     $(document).ready(function() {
       $('.tambah').hide();
       cekAvailDosen();

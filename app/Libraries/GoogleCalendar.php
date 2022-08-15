@@ -76,7 +76,7 @@ class GoogleCalendar
     public function delCalendar($id)
     {
         $event = $this->service->events->delete($this->calId, $id);
-        return $event->statusCode;
+        return $event;
     }
 
     public function listCalendar()

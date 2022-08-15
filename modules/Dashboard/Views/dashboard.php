@@ -15,11 +15,7 @@
             </div>
         </div>
         <div class="section-body">
-            <div class="card text-center" style="height: 700px;">
-                <div class="pt-5" style="width: 100%; height: 600px ;margin-top: 100px">
-                    <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_3xtpb0bw.json" background="transparent" speed="1" loop autoplay></lottie-player>
-                </div>
-            </div>
+            <div id="calendar"></div>
         </div>
     </section>
 </div>
