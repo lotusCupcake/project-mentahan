@@ -26,6 +26,15 @@
         "pages": ""
     },
     {
+        "id": "10",
+        "nama": "Absensi Workshop",
+        "parent": "3",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-calendar",
+        "pages": "/absensi"
+    },
+    {
         "id": "4",
         "nama": "Blok",
         "parent": "3",
