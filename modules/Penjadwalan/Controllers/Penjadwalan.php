@@ -146,8 +146,6 @@ class Penjadwalan extends BaseController
     public function ajax()
     {
         switch ($this->request->getVar('type')) {
-
-                // For add EventModel
             case 'add':
                 $data = [
                     'penjadwalanJudul' => $this->request->getVar('title'),
@@ -157,32 +155,21 @@ class Penjadwalan extends BaseController
                 $this->penjadwalan->insert($data);
                 return json_encode($this->penjadwalan);
                 break;
-
-                // For update EventModel        
             case 'update':
                 $data = [
                     'penjadwalanJudul' => $this->request->getVar('title'),
                     'penjadwalanStartDate' => $this->request->getVar('start'),
                     'penjadwalanEndDate' => $this->request->getVar('end'),
                 ];
-
                 $penjadwalanId = $this->request->getVar('id');
-
                 $this->penjadwalan->update($penjadwalanId, $data);
-
                 return json_encode($this->penjadwalan);
                 break;
-
-                // For delete EventModel    
             case 'delete':
-
                 $penjadwalanId = $this->request->getVar('id');
-
                 $this->penjadwalan->delete($penjadwalanId);
-
                 return json_encode($this->penjadwalan);
                 break;
-
             default:
                 break;
         }
