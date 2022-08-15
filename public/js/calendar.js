@@ -52,6 +52,11 @@ $(document).ready(function () {
       //     },
       //   });
       // }
+      const [date, time] = formatDate(new Date(start)).split(" ");
+      $('[name="startDate"]').val(date);
+      startDate = date;
+      cekAvailDosen();
+      $("#myModal").modal("show");
     },
     eventDrop: function (event, delta) {
       var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
@@ -91,6 +96,26 @@ $(document).ready(function () {
     },
   });
 });
+
+function formatDate(date) {
+  return (
+    [
+      date.getFullYear(),
+      padTo2Digits(date.getMonth() + 1),
+      padTo2Digits(date.getDate()),
+    ].join("-") +
+    " " +
+    [
+      padTo2Digits(date.getHours()),
+      padTo2Digits(date.getMinutes()),
+      // padTo2Digits(date.getSeconds()),  // 👈️ can also add seconds
+    ].join(":")
+  );
+}
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, "0");
+}
 
 let sesi;
 let startDate;

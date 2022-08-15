@@ -58,6 +58,7 @@ class Penjadwalan extends BaseController
     public function penjadwalanAdd()
     {
         // dd($_POST);
+        ($this->request->getVar('from') != null) ? $from = $this->request->getVar('from') : $from = null;
         $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
         $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
         $dosen = [];
@@ -101,15 +102,27 @@ class Penjadwalan extends BaseController
             ];
             if ($this->penjadwalan->insert($data)) {
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
-                return redirect()->to('penjadwalan');
+                if ($from == null) {
+                    return redirect()->to('penjadwalan');
+                } else {
+                    return redirect()->to('dashboard');
+                }
             } else {
                 delEvent($resultCalendar[0]['penjadwalanId']);
                 session()->setFlashdata('error', 'Data gagal ditambahkan');
-                return redirect()->to('penjadwalan');
+                if ($from == null) {
+                    return redirect()->to('penjadwalan');
+                } else {
+                    return redirect()->to('dashboard');
+                }
             }
         } else {
             session()->setFlashdata('error', 'Data gagal ditambahkan');
-            return redirect()->to('penjadwalan');
+            if ($from == null) {
+                return redirect()->to('penjadwalan');
+            } else {
+                return redirect()->to('dashboard');
+            }
         }
     }
 

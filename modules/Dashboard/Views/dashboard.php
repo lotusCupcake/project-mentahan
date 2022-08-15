@@ -33,6 +33,109 @@
     </section>
 </div>
 
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form action="/penjadwalan/add" id="formTambah" method="post">
+                <input type="hidden" name="from" value="dashboard">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Jadwal</label>
+                                <div class="selectgroup selectgroup-pills">
+                                    <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>" class="selectgroup-input">
+                                            <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                        </label>
+                                    <?php endforeach ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Blok</label>
+                                <select class="form-control select2" name="blok">
+                                    <option value="">Pilih Blok</option>
+                                    <?php foreach ($blok as $key => $blok) : ?>
+                                        <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tanggal</label>
+                                        <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sesi</label>
+                                        <select class="form-control select2" name="sesi">
+                                            <option value="">Pilih Sesi</option>
+                                            <?php foreach ($sesi as $key => $sesi) : ?>
+                                                <option value="<?= $sesi->sesiId ?>,<?= $sesi->sesiStart ?>,<?= $sesi->sesiEnd ?>"><?= $sesi->sesiNama ?> (<?= $sesi->sesiStart ?>-<?= $sesi->sesiEnd ?>)</option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Dosen</label>
+                                <select class="form-control select2" multiple="" name="dosen[]">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Acara</label>
+                                <input name="namaAcara" type="text" class="form-control" value="">
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Lokasi Acara</label>
+                                <input name="lokasi" type="text" class="form-control" value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Deskripsi Acara</label>
+                                <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Warna Acara</label>
+                                <div class="row gutters-xs">
+                                    <div class="col-auto">
+                                        <?php foreach ($color as $key => $col) : ?>
+                                            <label class="colorinput">
+                                                <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" />
+                                                <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
+                                            </label>
+                                        <?php endforeach ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" form-group">
+                                <label>Catatan Ekstra</label>
+                                <textarea name="noteAcara" class="form-control" style="height:90px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <?= view('layout/templateFooter'); ?>
 
 <?= $this->endSection(); ?>
