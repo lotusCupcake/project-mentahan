@@ -81,7 +81,7 @@
                                             <td><?= ($data->dosenPhone == null) ? '-' : $data->dosenPhone; ?></td>
                                             <td><?= ($data->dosenStatus == '1') ? 'Internal' : 'Eksternal'; ?></td>
                                             <td style="text-align:center">
-                                                <button class="btn btn-icon icon-left btn-info" data-toggle="modal" data-target="#edit<?= $data->dosenId; ?>"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-icon icon-left btn-warning" data-toggle="modal" data-target="#edit<?= $data->dosenId; ?>"><i class="fas fa-pen"></i></button>
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->dosenId; ?>"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
