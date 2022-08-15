@@ -58,6 +58,7 @@ class Penjadwalan extends BaseController
     public function penjadwalanAdd()
     {
         // dd($_POST);
+        ($this->request->getVar('from') != null) ? $from = $this->request->getVar('from') : $from = null;
         $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
         $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
         $dosen = [];
@@ -101,15 +102,27 @@ class Penjadwalan extends BaseController
             ];
             if ($this->penjadwalan->insert($data)) {
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
-                return redirect()->to('penjadwalan');
+                if ($from == null) {
+                    return redirect()->to('penjadwalan');
+                } else {
+                    return redirect()->to('dashboard');
+                }
             } else {
                 delEvent($resultCalendar[0]['penjadwalanId']);
                 session()->setFlashdata('error', 'Data gagal ditambahkan');
-                return redirect()->to('penjadwalan');
+                if ($from == null) {
+                    return redirect()->to('penjadwalan');
+                } else {
+                    return redirect()->to('dashboard');
+                }
             }
         } else {
             session()->setFlashdata('error', 'Data gagal ditambahkan');
-            return redirect()->to('penjadwalan');
+            if ($from == null) {
+                return redirect()->to('penjadwalan');
+            } else {
+                return redirect()->to('dashboard');
+            }
         }
     }
 
@@ -133,8 +146,6 @@ class Penjadwalan extends BaseController
     public function ajax()
     {
         switch ($this->request->getVar('type')) {
-
-                // For add EventModel
             case 'add':
                 $data = [
                     'penjadwalanJudul' => $this->request->getVar('title'),
@@ -144,32 +155,21 @@ class Penjadwalan extends BaseController
                 $this->penjadwalan->insert($data);
                 return json_encode($this->penjadwalan);
                 break;
-
-                // For update EventModel        
             case 'update':
                 $data = [
                     'penjadwalanJudul' => $this->request->getVar('title'),
                     'penjadwalanStartDate' => $this->request->getVar('start'),
                     'penjadwalanEndDate' => $this->request->getVar('end'),
                 ];
-
                 $penjadwalanId = $this->request->getVar('id');
-
                 $this->penjadwalan->update($penjadwalanId, $data);
-
                 return json_encode($this->penjadwalan);
                 break;
-
-                // For delete EventModel    
             case 'delete':
-
                 $penjadwalanId = $this->request->getVar('id');
-
                 $this->penjadwalan->delete($penjadwalanId);
-
                 return json_encode($this->penjadwalan);
                 break;
-
             default:
                 break;
         }
