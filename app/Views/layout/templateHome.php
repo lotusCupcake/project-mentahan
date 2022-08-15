@@ -24,6 +24,12 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="<?= base_url() ?>/template/assets/css/style.css">
   <link rel="stylesheet" href="<?= base_url() ?>/template/assets/css/components.css">
+
+  <!--fullcalendar plugin files -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+
+  <!-- for plugin notification -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 
 
@@ -39,9 +45,11 @@
   <!-- General JS Scripts -->
   <script src="<?= base_url() ?>/template/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="<?= base_url() ?>/template/node_modules/moment/min/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="<?= base_url() ?>/template/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="<?= base_url() ?>/template/node_modules/moment/min/moment.min.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/stisla.js"></script>
 
@@ -68,86 +76,10 @@
   <script src="<?= base_url() ?>/template/assets/js/page/forms-advanced-forms.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
 
-  <script>
-    var site_url = "<?= site_url() ?>";
-  </script>
   <?= script_tag('js/calendar.js') ?>
 
   <script>
-    $(document).ready(function() {
-      $('.tambah').hide();
-      cekAvailDosen();
-    });
 
-    let sesi;
-    let startDate;
-
-    $("#tambahPenjadwalan").fireModal({
-      body: $('.tambah').html(),
-      title: 'Tambah ' + $('#judul').text(),
-      center: true,
-      size: 'modal-xl',
-      closeButton: true,
-      buttons: [{
-        text: 'Close',
-        class: 'btn btn-secondary btn-shadow',
-        handler: function(modal) {
-          modal.modal('hide');
-        }
-      }, {
-        text: 'Save',
-        submit: true,
-        class: 'btn btn-primary btn-shadow',
-        handler: function(modal) {
-          modal.click();
-        }
-      }]
-    });
-
-    $('[name=sesi]').change(function() {
-      sesi = $(this).val().split(',')[0];
-      cekAvailDosen();
-    });
-
-    $('[name=startDate]').change(function() {
-      startDate = $(this).val();
-      cekAvailDosen();
-    });
-
-    function dateIsValid(date) {
-      return date instanceof Date && !isNaN(date);
-    }
-
-    function cekAvailDosen() {
-      console.log([sesi, startDate]);
-      if (typeof sesi !== 'undefined' && typeof startDate !== 'undefined') {
-        $.ajax({
-          type: 'POST',
-          url: '/dosen/load',
-          dataType: "json",
-          data: {
-            sesi: sesi,
-            startDate: startDate,
-          },
-          beforeSend: function(e) {
-            if (e && e.overrideMimeType) {
-              e.overrideMimeType("application/json;charset=UTF-8");
-            }
-          },
-          success: function(response) {
-            let html = '';
-            response.forEach(element => {
-              html += '<option value="' + element.dosenEmailGeneral + '" > <strong>' + element.jumlahAmpu + '</strong> | ' + element.dosenFullname + '</option>';
-            });
-            $('[name="dosen[]"]').empty();
-            $('[name="dosen[]"]').append(html);
-          },
-          error: function(xhr, ajaxOptions, thrownError) {
-            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
-          }
-        });
-      }
-    }
   </script>
 
 </body>

@@ -15,7 +15,11 @@
             </div>
         </div>
         <div class="section-body">
-            <div id="calendar"></div>
+            <div class="card">
+                <div class="card-header">
+                    <div id="calendar"></div>
+                </div>
+            </div>
         </div>
     </section>
 </div>

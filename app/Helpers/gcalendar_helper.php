@@ -41,3 +41,15 @@ function colorEvent()
     $exe = $google->colorCalendar();
     return $exe;
 }
+
+function konversiColor($id)
+{
+    $google = new App\Libraries\GoogleCalendar;
+    $exe = $google->colorCalendar();
+    foreach ($exe as $key => $value) {
+        if ($value['id'] == $id) {
+            return $value['background'];
+        }
+    }
+    // return $exe;
+}

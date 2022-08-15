@@ -1,10 +1,11 @@
 $(document).ready(function () {
-  console.log(site_url);
+  $(".tambah").hide();
+  cekAvailDosen();
+
   var calendar = $("#calendar").fullCalendar({
     editable: true,
-    events: site_url + "/event",
+    events: "/penjadwalan/event",
     displayEventTime: false,
-    editable: true,
     eventRender: function (event, element, view) {
       if (event.allDay === "true") {
         event.allDay = true;
@@ -21,7 +22,7 @@ $(document).ready(function () {
         var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
         var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
         $.ajax({
-          url: site_url + "/eventAjax",
+          url: "/penjadwalan/eventAjax",
           data: {
             title: title,
             start: start,
@@ -31,7 +32,6 @@ $(document).ready(function () {
           type: "POST",
           success: function (data) {
             displayMessage("Event Created Successfully");
-
             calendar.fullCalendar(
               "renderEvent",
               {
@@ -43,19 +43,17 @@ $(document).ready(function () {
               },
               true
             );
-
             calendar.fullCalendar("unselect");
           },
         });
       }
     },
-
     eventDrop: function (event, delta) {
       var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
       var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
 
       $.ajax({
-        url: site_url + "/eventAjax",
+        url: "/penjadwalan/eventAjax",
         data: {
           title: event.title,
           start: start,
@@ -74,7 +72,7 @@ $(document).ready(function () {
       if (deleteMsg) {
         $.ajax({
           type: "POST",
-          url: site_url + "/eventAjax",
+          url: "/penjadwalan/eventAjax",
           data: {
             id: event.id,
             type: "delete",
@@ -88,6 +86,86 @@ $(document).ready(function () {
     },
   });
 });
+
+let sesi;
+let startDate;
+
+$("#tambahPenjadwalan").fireModal({
+  body: $(".tambah").html(),
+  title: "Tambah " + $("#judul").text(),
+  center: true,
+  size: "modal-xl",
+  closeButton: true,
+  buttons: [
+    {
+      text: "Close",
+      class: "btn btn-secondary btn-shadow",
+      handler: function (modal) {
+        modal.modal("hide");
+      },
+    },
+    {
+      text: "Save",
+      submit: true,
+      class: "btn btn-primary btn-shadow",
+      handler: function (modal) {
+        modal.click();
+      },
+    },
+  ],
+});
+
+$("[name=sesi]").change(function () {
+  sesi = $(this).val().split(",")[0];
+  cekAvailDosen();
+});
+
+$("[name=startDate]").change(function () {
+  startDate = $(this).val();
+  cekAvailDosen();
+});
+
+function dateIsValid(date) {
+  return date instanceof Date && !isNaN(date);
+}
+
+function cekAvailDosen() {
+  console.log([sesi, startDate]);
+  if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
+    $.ajax({
+      type: "POST",
+      url: "/dosen/load",
+      dataType: "json",
+      data: {
+        sesi: sesi,
+        startDate: startDate,
+      },
+      beforeSend: function (e) {
+        if (e && e.overrideMimeType) {
+          e.overrideMimeType("application/json;charset=UTF-8");
+        }
+      },
+      success: function (response) {
+        let html = "";
+        response.forEach((element) => {
+          html +=
+            '<option value="' +
+            element.dosenEmailGeneral +
+            '" > <strong>' +
+            element.jumlahAmpu +
+            "</strong> | " +
+            element.dosenFullname +
+            "</option>";
+        });
+        $('[name="dosen[]"]').empty();
+        $('[name="dosen[]"]').append(html);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+      },
+    });
+  }
+}
 
 function displayMessage(message) {
   toastr.success(message, "Event");

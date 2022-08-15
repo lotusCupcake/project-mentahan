@@ -36,7 +36,8 @@ class Penjadwalan extends BaseController
         $jadwal = $this->penjadwalan->getPenjadwalan($keyword);
         $data = [
             'menu' => $this->fetchMenu(),
-            'title' => "Penjadwalan",
+            'penjadwalanJudul' => "Penjadwalan",
+            'title' => 'Penjadwalan',
             'icon' => 'fas fa-calendar',
             'breadcrumb' => ['Home', 'Penjadwalan'],
             'penjadwalan' =>  $jadwal->paginate($this->numberPage, 'penjadwalan'),
@@ -80,6 +81,7 @@ class Penjadwalan extends BaseController
             'guestsCanModify' => false,
             'guestsCanSeeOtherGuests' => false,
         );
+        // dd($event);
         $resultCalendar = addEvent($event);
 
         if ($resultCalendar[0]['status'] == 'confirmed') {
@@ -101,13 +103,75 @@ class Penjadwalan extends BaseController
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
                 return redirect()->to('penjadwalan');
             } else {
-                delEvent($resultCalendar[0]['id']);
+                delEvent($resultCalendar[0]['penjadwalanId']);
                 session()->setFlashdata('error', 'Data gagal ditambahkan');
                 return redirect()->to('penjadwalan');
             }
         } else {
             session()->setFlashdata('error', 'Data gagal ditambahkan');
             return redirect()->to('penjadwalan');
+        }
+    }
+
+    public function loadData()
+    {
+        $data = $this->penjadwalan->findAll();
+        $events = [];
+        foreach ($data as $key => $cal) {
+            $events[] = [
+                'id' => $cal->penjadwalanId,
+                'start' => $cal->penjadwalanStartDate,
+                'end' => $cal->penjadwalanEndDate,
+                'title' => $cal->penjadwalanJudul,
+                'color'  => konversiColor($cal->penjadwalanColorId),
+            ];
+        }
+
+        return json_encode($events);
+    }
+
+    public function ajax()
+    {
+        switch ($this->request->getVar('type')) {
+
+                // For add EventModel
+            case 'add':
+                $data = [
+                    'penjadwalanJudul' => $this->request->getVar('title'),
+                    'penjadwalanStartDate' => $this->request->getVar('start'),
+                    'penjadwalanEndDate' => $this->request->getVar('end'),
+                ];
+                $this->penjadwalan->insert($data);
+                return json_encode($this->penjadwalan);
+                break;
+
+                // For update EventModel        
+            case 'update':
+                $data = [
+                    'penjadwalanJudul' => $this->request->getVar('title'),
+                    'penjadwalanStartDate' => $this->request->getVar('start'),
+                    'penjadwalanEndDate' => $this->request->getVar('end'),
+                ];
+
+                $penjadwalanId = $this->request->getVar('id');
+
+                $this->penjadwalan->update($penjadwalanId, $data);
+
+                return json_encode($this->penjadwalan);
+                break;
+
+                // For delete EventModel    
+            case 'delete':
+
+                $penjadwalanId = $this->request->getVar('id');
+
+                $this->penjadwalan->delete($penjadwalanId);
+
+                return json_encode($this->penjadwalan);
+                break;
+
+            default:
+                break;
         }
     }
 }
