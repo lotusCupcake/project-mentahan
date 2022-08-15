@@ -45,7 +45,7 @@ class Blok extends BaseController
     {
         $url = $this->request->getServer('HTTP_REFERER');
         $rules = [
-            'dataBlok' => rv('required', ['required' => 'Data Blok Harus Dipilih']),
+            'dataBlok' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
         ];
         if (!$this->validate($rules)) {
             return redirect()->to($url)->withInput();
@@ -55,24 +55,24 @@ class Blok extends BaseController
         foreach ($dataBlok as $blok) {
             $jumlah = $this->blokModel->dataExist(
                 [
-                    'matkulBlokKode' => explode(',', $blok)[0],
+                    'matkulBlokKode' => explode('#', $blok)[0],
                 ]
             );
             if ($jumlah == 0) {
                 $data = [
-                    'matkulBlokKode' => explode(',', $blok)[0],
-                    'matkulBlokNama' => explode(',', $blok)[1],
-                    'matkulBlokEnglish' => explode(',', $blok)[2],
-                    'matkulBlokProdiId' => explode(',', $blok)[3],
-                    'matkulBlokProdiNama' => explode(',', $blok)[4],
-                    'matkulBlokProdiAkronim' => explode(',', $blok)[5],
-                    'matkulBlokSemester' => explode(',', $blok)[6],
-                    'matkulBlokKurikulumId' => explode(',', $blok)[7],
-                    'matkulBlokKurikulumNama' => explode(',', $blok)[8],
-                    'matkulBlokType' => $matkulBlokType
+                    'matkulBlokKode' => trim(explode('#', $blok)[0]),
+                    'matkulBlokNama' => trim(explode('#', $blok)[1]),
+                    'matkulBlokEnglish' => (explode('#', $blok)[2] == null) ? null : trim(explode('#', $blok)[2]),
+                    'matkulBlokProdiId' => trim(explode('#', $blok)[3]),
+                    'matkulBlokProdiNama' => trim(explode('#', $blok)[4]),
+                    'matkulBlokProdiAkronim' => trim(explode('#', $blok)[5]),
+                    'matkulBlokSemester' => trim(explode('#', $blok)[6]),
+                    'matkulBlokKurikulumId' => trim(explode('#', $blok)[7]),
+                    'matkulBlokKurikulumNama' => trim(explode('#', $blok)[8]),
+                    'matkulBlokType' => trim($matkulBlokType)
                 ];
                 $this->blokModel->insert($data);
-                session()->setFlashdata('success', 'Data Blok Berhasil Ditambahkan');
+                session()->setFlashdata('success', 'Data Mata Kuliah Berhasil Ditambahkan');
             }
         };
         return redirect()->to($url);
