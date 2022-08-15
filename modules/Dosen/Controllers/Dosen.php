@@ -55,17 +55,17 @@ class Dosen extends BaseController
             foreach ($dataDosen as $dosen) {
                 $jumlah = $this->dosenModel->dataExist(
                     [
-                        'dosenEmailCorporate' => explode('-', $dosen)[2],
+                        'dosenEmailCorporate' => explode('#', $dosen)[2],
                     ]
                 );
                 if ($jumlah == 0) {
                     $data = [
-                        'dosenFullname' => explode('-', $dosen)[0],
-                        'dosenShortname' => explode('-', $dosen)[1],
-                        'dosenEmailCorporate' => explode('-', $dosen)[2],
-                        'dosenEmailGeneral' => explode('-', $dosen)[3],
-                        'dosenPhone' => explode('-', $dosen)[4],
-                        'dosenStatus' => '1'
+                        'dosenFullname' => explode('#', $dosen)[0],
+                        'dosenShortname' => explode('#', $dosen)[1],
+                        'dosenEmailCorporate' => (explode('#', $dosen)[2] == null) ? null : explode('#', $dosen)[2],
+                        'dosenEmailGeneral' => (explode('#', $dosen)[3] == null) ? null : explode('#', $dosen)[3],
+                        'dosenPhone' => (explode('#', $dosen)[4] == null) ? null : explode('#', $dosen)[4],
+                        'dosenStatus' => 1
                     ];
                     $this->dosenModel->insert($data);
                     session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
@@ -90,10 +90,10 @@ class Dosen extends BaseController
                 $data = [
                     'dosenFullname' => trim($this->request->getVar('dosenFullname')),
                     'dosenShortname' => trim($this->request->getVar('dosenShortname')),
-                    'dosenEmailCorporate' => trim($this->request->getVar('dosenEmailCorporate')),
-                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
-                    'dosenPhone' => trim($this->request->getVar('dosenPhone')),
-                    'dosenStatus' => '0'
+                    'dosenEmailCorporate' => null,
+                    'dosenEmailGeneral' => ($this->request->getVar('dosenEmailGeneral') == null) ? null : trim($this->request->getVar('dosenEmailGeneral')),
+                    'dosenPhone' => ($this->request->getVar('dosenPhone') == null) ? null : trim($this->request->getVar('dosenPhone')),
+                    'dosenStatus' => 0
                 ];
                 $this->dosenModel->insert($data);
                 session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
@@ -105,19 +105,58 @@ class Dosen extends BaseController
     public function edit($id)
     {
         $url = $this->request->getServer('HTTP_REFERER');
-        $rules = [
-            'dosenEmailGeneral' => rv('required', ['required' => 'Email General Harus Diisi']),
-        ];
-        if (!$this->validate($rules)) {
-            return redirect()->to($url)->withInput();
-        };
+        if ($this->request->getVar('dosenStatus') == 1) {
+            $rules = [
+                'dosenEmailGeneral' => rv('required', ['required' => 'Email General Harus Diisi']),
+            ];
+            if (!$this->validate($rules)) {
+                return redirect()->to($url)->withInput();
+            };
 
-        $data = ['dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),];
+            $jumlah = $this->dosenModel->dataExist(
+                [
+                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                ]
+            );
+            if ($jumlah == 0) {
+                $data = ['dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral'))];
+                if ($this->dosenModel->update($id, $data)) {
+                    session()->setFlashdata('success', 'Data Dosen Berhasil Diupdate');
+                }
+            } else {
+                session()->setFlashdata('danger', 'Email General Dosen Sudah Terdaftar');
+            }
+        } else {
+            $rules = [
+                'dosenFullname' => rv('required', ['required' => 'Nama Lengkap Dosen Harus Diisi']),
+                'dosenShortname' => rv('required', ['required' => 'Nama Dosen Harus Diisi']),
+                'dosenEmailGeneral' => rv('required', ['required' => 'Email Dosen Harus Diisi']),
+                'dosenPhone' => rv('required', ['required' => 'No. Handphone Dosen Harus Diisi']),
+            ];
+            if (!$this->validate($rules)) {
+                return redirect()->to($url)->withInput();
+            };
 
-        if ($this->dosenModel->update($id, $data)) {
-            session()->setFlashdata('success', 'Data Dosen Berhasil Diupdate');
-            return redirect()->to($url);
+            $jumlah = $this->dosenModel->dataExist(
+                [
+                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                ]
+            );
+            if ($jumlah == 0) {
+                $data = [
+                    'dosenFullname' => trim($this->request->getVar('dosenFullname')),
+                    'dosenShortname' => trim($this->request->getVar('dosenShortname')),
+                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                    'dosenPhone' => trim($this->request->getVar('dosenPhone')),
+                ];
+                if ($this->dosenModel->update($id, $data)) {
+                    session()->setFlashdata('success', 'Data Dosen Berhasil Diupdate');
+                }
+            } else {
+                session()->setFlashdata('danger', 'Email Dosen Sudah Terdaftar');
+            }
         }
+        return redirect()->to($url);
     }
 
     public function delete($id)

@@ -34,6 +34,9 @@
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
                     <?php endif; ?>
+                    <?php if (!empty(session()->getFlashdata('danger'))) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', session()->getFlashdata('danger')]]); ?>
+                    <?php endif; ?>
                     <?php if ($validation->hasError('dataDosen')) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataDosen')]]); ?>
                     <?php endif; ?>
@@ -84,7 +87,7 @@
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 7]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 8]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
@@ -137,7 +140,7 @@
                                             <tr>
                                                 <td style="text-align:center" scope="row">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "-" . $data->Name . "-" . $data->Email_Corporate . "-" . $data->Email_General . "-" . $data->Phone_Mobile  ?>">
+                                                        <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "#" . $data->Name . "#" . $data->Email_Corporate . "#" . $data->Email_General . "#" . $data->Phone_Mobile  ?>">
                                                         <label class="custom-control-label" for="check<?= $data->Employee_Id ?>"></label>
                                                     </div>
                                                 </td>
@@ -233,6 +236,7 @@
                 <form action="/dosen/ubah/<?= $edit->dosenId; ?>" method="post">
                     <?= csrf_field(); ?>
                     <div class="modal-body">
+                        <input type="hidden" name="dosenStatus" value="<?= $edit->dosenStatus ?>">
                         <div class="form-group">
                             <label>Nama Lengkap</label>
                             <input name="dosenFullname" type="text" class="form-control" value="<?= $edit->dosenFullname; ?>" <?= ($edit->dosenStatus == '1') ? 'readonly' : ''; ?>>
@@ -253,7 +257,7 @@
                         </div>
                         <div class="form-group">
                             <label>Handphone</label>
-                            <input name="dosenPhone" type="text" class="form-control" value="<?= $edit->dosenPhone; ?>" <?= ($edit->dosenStatus == '1') ? 'readonly' : ''; ?>>
+                            <input name="dosenPhone" type="number" class="form-control" value="<?= $edit->dosenPhone; ?>" <?= ($edit->dosenStatus == '1') ? 'readonly' : ''; ?>>
                         </div>
                         <?php if ($edit->dosenStatus == '1') : ?>
                             <p class="text-warning"><small>Only change the general email that is in digisched</small></p>
