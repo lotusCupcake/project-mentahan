@@ -76,7 +76,7 @@
 
   <!-- Page Specific JS File -->
   <?= script_tag('template/assets/js/page/forms-advanced-forms.js') ?>
-  <?= script_tag('template/assets/js/page/module-datatables.js') ?>
+  <?= script_tag('template/assets/js/page/modules-datatables.js') ?>
 
   <?= script_tag('js/calendar.js') ?>
 
