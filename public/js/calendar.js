@@ -59,15 +59,15 @@ $(document).ready(function () {
       $("#myModal").modal("show");
     },
     eventDrop: function (event, delta) {
-      var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-      var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-
+      // let startDate = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
+      // console.log(event.id);
+      // console.log($.fullCalendar.formatDate(event.start, "Y-MM-DD"));
+      // var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
+      // var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
       $.ajax({
         url: "/penjadwalan/eventAjax",
         data: {
-          title: event.title,
-          start: start,
-          end: end,
+          interval: delta._days,
           id: event.id,
           type: "update",
         },
@@ -198,5 +198,5 @@ function cekAvailDosen() {
 }
 
 function displayMessage(message) {
-  toastr.danger(message, "Event");
+  toastr.success(message, "Event");
 }

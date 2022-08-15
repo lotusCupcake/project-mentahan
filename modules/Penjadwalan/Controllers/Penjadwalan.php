@@ -156,10 +156,10 @@ class Penjadwalan extends BaseController
                 return json_encode($this->penjadwalan);
                 break;
             case 'update':
+                $jadwal = $this->penjadwalan->where(['penjadwalanId' => $this->request->getVar('id')])->findAll();
                 $data = [
-                    'penjadwalanJudul' => $this->request->getVar('title'),
-                    'penjadwalanStartDate' => $this->request->getVar('start'),
-                    'penjadwalanEndDate' => $this->request->getVar('end'),
+                    'penjadwalanStartDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanStartDate))),
+                    'penjadwalanEndDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanEndDate))),
                 ];
                 $penjadwalanId = $this->request->getVar('id');
                 $this->penjadwalan->update($penjadwalanId, $data);
