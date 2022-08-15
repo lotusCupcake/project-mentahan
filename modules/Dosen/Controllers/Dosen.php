@@ -60,11 +60,11 @@ class Dosen extends BaseController
                 );
                 if ($jumlah == 0) {
                     $data = [
-                        'dosenFullname' => explode('#', $dosen)[0],
-                        'dosenShortname' => explode('#', $dosen)[1],
-                        'dosenEmailCorporate' => (explode('#', $dosen)[2] == null) ? null : explode('#', $dosen)[2],
-                        'dosenEmailGeneral' => (explode('#', $dosen)[3] == null) ? null : explode('#', $dosen)[3],
-                        'dosenPhone' => (explode('#', $dosen)[4] == null) ? null : explode('#', $dosen)[4],
+                        'dosenFullname' => trim(explode('#', $dosen)[0]),
+                        'dosenShortname' => trim(explode('#', $dosen)[1]),
+                        'dosenEmailCorporate' => (explode('#', $dosen)[2] == null) ? null : trim(explode('#', $dosen)[2]),
+                        'dosenEmailGeneral' => (explode('#', $dosen)[3] == null) ? null : trim(explode('#', $dosen)[3]),
+                        'dosenPhone' => (explode('#', $dosen)[4] == null) ? null : trim(explode('#', $dosen)[4]),
                         'dosenStatus' => 1
                     ];
                     $this->dosenModel->insert($data);
@@ -83,7 +83,7 @@ class Dosen extends BaseController
             };
             $jumlah = $this->dosenModel->dataExist(
                 [
-                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                    'dosenEmailGeneral' => $this->request->getVar('dosenEmailGeneral'),
                 ]
             );
             if ($jumlah == 0) {
@@ -115,7 +115,7 @@ class Dosen extends BaseController
 
             $jumlah = $this->dosenModel->dataExist(
                 [
-                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                    'dosenEmailGeneral' => $this->request->getVar('dosenEmailGeneral'),
                 ]
             );
             if ($jumlah == 0) {
@@ -139,7 +139,7 @@ class Dosen extends BaseController
 
             $jumlah = $this->dosenModel->dataExist(
                 [
-                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                    'dosenEmailGeneral' => $this->request->getVar('dosenEmailGeneral'),
                 ]
             );
             if ($jumlah == 0) {

@@ -48,7 +48,6 @@
                                     <th width="18%" scope="col">Prodi</th>
                                     <th scope="col">Semester</th>
                                     <th width="10%" scope="col">Kurikulum</th>
-                                    <th width="5%" scope="col">Jenis</th>
                                     <th width="10%" style="text-align:center" scope="col">Action</th>
                                 </tr>
                                 </tr>
@@ -66,14 +65,13 @@
                                             <td><?= $data->matkulBlokProdiNama; ?> (<?= $data->matkulBlokProdiAkronim; ?>)</td>
                                             <td><?= $data->matkulBlokSemester; ?></td>
                                             <td><?= $data->matkulBlokKurikulumNama; ?></td>
-                                            <td><?= $data->matkulBlokType; ?></td>
                                             <td style="text-align:center">
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->matkulBlokId; ?>"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 9]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 8]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
@@ -90,7 +88,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Data<strong> <?= $title; ?></strong></h5>
+                <h5 class="modal-title">Tambah Data<strong> Mata Kuliah</strong></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -117,7 +115,7 @@
                                     <tr>
                                         <td style="text-align:center" scope="row">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Course_Id ?>" name="dataBlok[]" value="<?= $data->Course_Code . "," . $data->Course_Name . "," . $data->Course_Name_Eng . "," . $data->Department_Id . "," . $data->Department_Name . "," . $data->Department_Acronym . "," . $data->Study_Level_Id . "," . $data->Curriculum_Id . "," . $data->Curriculum_Name ?>">
+                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Course_Id ?>" name="dataBlok[]" value="<?= $data->Course_Code . "#" . $data->Course_Name . "#" . $data->Course_Name_Eng . "#" . $data->Department_Id . "#" . $data->Department_Name . "#" . $data->Department_Acronym . "#" . $data->Study_Level_Id . "#" . $data->Curriculum_Id . "#" . $data->Curriculum_Name ?>">
                                                 <label class="custom-control-label" for="check<?= $data->Course_Id ?>"></label>
                                             </div>
                                         </td>
