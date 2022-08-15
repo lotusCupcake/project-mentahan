@@ -50,12 +50,10 @@
   <?= script_tag('template/node_modules/moment/min/moment.min.js') ?>
   <?= script_tag("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js") ?>
   <?= script_tag("https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js") ?>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <?= script_tag('template/node_modules/bootstrap/dist/js/bootstrap.min.js') ?>
   <?= script_tag('template/node_modules/jquery.nicescroll/dist/jquery.nicescroll.min.js') ?>
   <?= script_tag('template/assets/js/stisla.js') ?>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
 
   <!-- JS Libraies -->
   <?= script_tag('template/node_modules/datatables/media/js/jquery.dataTables.min.js') ?>

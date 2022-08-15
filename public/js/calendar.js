@@ -18,40 +18,40 @@ $(document).ready(function () {
         event.allDay = false;
       }
     },
+    timeFormat: "h:mm",
     selectable: true,
     selectHelper: true,
     select: function (start, end, allDay) {
-      var title = prompt("Event Title:");
-
-      if (title) {
-        var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-        var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-        $.ajax({
-          url: "/penjadwalan/eventAjax",
-          data: {
-            title: title,
-            start: start,
-            end: end,
-            type: "add",
-          },
-          type: "POST",
-          success: function (data) {
-            displayMessage("Event Created Successfully");
-            calendar.fullCalendar(
-              "renderEvent",
-              {
-                id: data.id,
-                title: title,
-                start: start,
-                end: end,
-                allDay: allDay,
-              },
-              true
-            );
-            calendar.fullCalendar("unselect");
-          },
-        });
-      }
+      // var title = prompt("Event Title:");
+      // if (title) {
+      //   var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
+      //   var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+      //   $.ajax({
+      //     url: "/penjadwalan/eventAjax",
+      //     data: {
+      //       title: title,
+      //       start: start,
+      //       end: end,
+      //       type: "add",
+      //     },
+      //     type: "POST",
+      //     success: function (data) {
+      //       displayMessage("Event Created Successfully");
+      //       calendar.fullCalendar(
+      //         "renderEvent",
+      //         {
+      //           id: data.id,
+      //           title: title,
+      //           start: start,
+      //           end: end,
+      //           allDay: allDay,
+      //         },
+      //         true
+      //       );
+      //       calendar.fullCalendar("unselect");
+      //     },
+      //   });
+      // }
     },
     eventDrop: function (event, delta) {
       var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
@@ -156,7 +156,7 @@ function cekAvailDosen() {
           html +=
             '<option value="' +
             element.dosenEmailGeneral +
-            '" > <strong>' +
+            '"> <strong>' +
             element.jumlahAmpu +
             "</strong> | " +
             element.dosenFullname +
@@ -173,5 +173,5 @@ function cekAvailDosen() {
 }
 
 function displayMessage(message) {
-  toastr.success(message, "Event");
+  toastr.danger(message, "Event");
 }
