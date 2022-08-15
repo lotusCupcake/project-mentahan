@@ -3,9 +3,14 @@ $(document).ready(function () {
   cekAvailDosen();
 
   var calendar = $("#calendar").fullCalendar({
+    height: "auto",
+    header: {
+      left: "prev,next today",
+      center: "title",
+      right: "month,agendaWeek,agendaDay,listWeek",
+    },
     editable: true,
     events: "/penjadwalan/event",
-    displayEventTime: false,
     eventRender: function (event, element, view) {
       if (event.allDay === "true") {
         event.allDay = true;

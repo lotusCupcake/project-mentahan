@@ -15,9 +15,18 @@
             </div>
         </div>
         <div class="section-body">
-            <div class="card">
-                <div class="card-header">
-                    <div id="calendar"></div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4><?= $title ?></h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="fc-overflow">
+                                <div id="calendar"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
