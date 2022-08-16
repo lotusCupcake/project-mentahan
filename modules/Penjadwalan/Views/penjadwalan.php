@@ -99,7 +99,7 @@
                     <select class="form-control select2" name="blok">
                         <option value="">Pilih Blok</option>
                         <?php foreach ($blok as $key => $blok) : ?>
-                            <option value="<?= $blok->matkulBlokId ?>,<?= $blok->matkulBlokNama ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
+                            <option value="<?= $blok->matkulBlokId ?>,<?= $blok->matkulBlokNama ?>"><?= $blok->matkulBlokNama ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
