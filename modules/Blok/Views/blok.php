@@ -42,12 +42,8 @@
                             <thead>
                                 <tr>
                                     <th width="2%" style="text-align:center" scope="col">No.</th>
-                                    <th scope="col">Kode</th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Nama Asing</th>
+                                    <th scope="col">Nama Blok</th>
                                     <th width="18%" scope="col">Prodi</th>
-                                    <th scope="col">Semester</th>
-                                    <th width="10%" scope="col">Kurikulum</th>
                                     <th width="10%" style="text-align:center" scope="col">Action</th>
                                 </tr>
                                 </tr>
@@ -59,19 +55,15 @@
                                     foreach ($matkulBlok as $data) : ?>
                                         <tr>
                                             <td style="text-align:center" scope="row"><?= $no++; ?></td>
-                                            <td><?= $data->matkulBlokKode; ?></td>
                                             <td><?= $data->matkulBlokNama; ?></td>
-                                            <td><?= ($data->matkulBlokEnglish == null) ? '-' : $data->matkulBlokEnglish; ?></td>
-                                            <td><?= $data->matkulBlokProdiNama; ?> (<?= $data->matkulBlokProdiAkronim; ?>)</td>
-                                            <td><?= $data->matkulBlokSemester; ?></td>
-                                            <td><?= $data->matkulBlokKurikulumNama; ?></td>
+                                            <td><?= $data->matkulBlokProdiNama; ?></td>
                                             <td style="text-align:center">
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->matkulBlokId; ?>"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 8]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 4]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
@@ -101,30 +93,22 @@
                             <thead>
                                 <tr>
                                     <th width="2%" style="text-align:center" scope="col"></th>
-                                    <th scope="col">Kode</th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Nama Asing</th>
-                                    <th width="20%" scope="col">Prodi</th>
-                                    <th width="15%" scope="col">Semester</th>
-                                    <th width="15%" scope="col">Kurikulum</th>
+                                    <th scope="col">Nama Mata Kuliah</th>
+                                    <th scope="col">Prodi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                foreach ($apiBlok as $data) : ?>
+                                foreach ($apiBlok as $key => $data) : ?>
                                     <tr>
                                         <td style="text-align:center" scope="row">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="check<?= $data->Course_Id ?>" name="dataBlok[]" value="<?= $data->Course_Code . "#" . $data->Course_Name . "#" . $data->Course_Name_Eng . "#" . $data->Department_Id . "#" . $data->Department_Name . "#" . $data->Department_Acronym . "#" . $data->Study_Level_Id . "#" . $data->Curriculum_Id . "#" . $data->Curriculum_Name ?>">
-                                                <label class="custom-control-label" for="check<?= $data->Course_Id ?>"></label>
+                                                <input type="checkbox" class="custom-control-input" id="check<?= $key ?>" name="dataBlok[]" value="<?= $data->Course_Name . "#" . $data->Department_Name  ?>">
+                                                <label class="custom-control-label" for="check<?= $key ?>"></label>
                                             </div>
                                         </td>
-                                        <td><?= ($data->Course_Code == null) ? '-' : $data->Course_Code; ?></td>
-                                        <td><?= ($data->Course_Name == null) ? '-' : $data->Course_Name; ?></td>
-                                        <td><?= ($data->Course_Name_Eng == null) ? '-' : $data->Course_Name_Eng; ?></td>
-                                        <td><?= $data->Department_Name; ?> (<?= $data->Department_Acronym; ?>)</td>
-                                        <td>Semester <?= $data->Study_Level_Id; ?></td>
-                                        <td><?= $data->Curriculum_Name; ?></td>
+                                        <td><?= $data->Course_Name; ?></td>
+                                        <td><?= $data->Department_Name; ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>

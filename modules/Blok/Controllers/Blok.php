@@ -55,20 +55,13 @@ class Blok extends BaseController
         foreach ($dataBlok as $blok) {
             $jumlah = $this->blokModel->dataExist(
                 [
-                    'matkulBlokKode' => explode('#', $blok)[0],
+                    'matkulBlokNama' => explode('#', $blok)[0],
                 ]
             );
             if ($jumlah == 0) {
                 $data = [
-                    'matkulBlokKode' => trim(explode('#', $blok)[0]),
-                    'matkulBlokNama' => trim(explode('#', $blok)[1]),
-                    'matkulBlokEnglish' => (explode('#', $blok)[2] == null) ? null : trim(explode('#', $blok)[2]),
-                    'matkulBlokProdiId' => trim(explode('#', $blok)[3]),
-                    'matkulBlokProdiNama' => trim(explode('#', $blok)[4]),
-                    'matkulBlokProdiAkronim' => trim(explode('#', $blok)[5]),
-                    'matkulBlokSemester' => trim(explode('#', $blok)[6]),
-                    'matkulBlokKurikulumId' => trim(explode('#', $blok)[7]),
-                    'matkulBlokKurikulumNama' => trim(explode('#', $blok)[8]),
+                    'matkulBlokNama' => trim(explode('#', $blok)[0]),
+                    'matkulBlokProdiNama' => trim(explode('#', $blok)[1]),
                     'matkulBlokType' => trim($matkulBlokType)
                 ];
                 $this->blokModel->insert($data);
