@@ -78,7 +78,7 @@
                         <select class="form-control select2" name="absensiMatkulBlokId">
                             <option value="">Pilih Blok</option>
                             <?php foreach ($blok as $key => $blok) : ?>
-                                <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
+                                <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokNama ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
