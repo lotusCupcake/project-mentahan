@@ -65,9 +65,13 @@ class Penjadwalan extends BaseController
         foreach ($this->request->getVar('dosen') as $key => $value) {
             $dosen[] = ['email' => $value];
         }
+        $angkatan  = '2020';
+        $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
+        $noteEktra = ($this->request->getVar('noteAcara') != null) ? "(" . $this->request->getVar('noteAcara') . ")" : "";
+        $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1] . " " . $noteEktra;
 
         $event = array(
-            'summary' => $this->request->getVar('namaAcara'),
+            'summary' => $judul,
             'description' => $this->request->getVar('deskripsiAcara'),
             'location' => $this->request->getVar('lokasi'),
             'colorId' => $this->request->getVar('color'),
@@ -87,8 +91,8 @@ class Penjadwalan extends BaseController
 
         if ($resultCalendar[0]['status'] == 'confirmed') {
             $data = [
-                'penjadwalanJenisJadwalId' => $this->request->getVar('jenisJadwal'),
-                'penjadwalanMatkulBlokId' => $this->request->getVar('blok'),
+                'penjadwalanJenisJadwalId' => explode(',', $this->request->getVar('jenisJadwal'))[0],
+                'penjadwalanMatkulBlokId' => explode(',', $this->request->getVar('blok'))[0],
                 'penjadwalanSesiId' => $this->request->getVar('sesi'),
                 'penjadwalanCalenderId' => $resultCalendar[0]['id'],
                 'penjadwalanJudul' => $this->request->getVar('namaAcara'),
@@ -128,6 +132,7 @@ class Penjadwalan extends BaseController
 
     public function loadData()
     {
+        $warna = konversiColor();
         $data = $this->penjadwalan->findAll();
         $events = [];
         foreach ($data as $key => $cal) {
@@ -136,7 +141,7 @@ class Penjadwalan extends BaseController
                 'start' => $cal->penjadwalanStartDate,
                 'end' => $cal->penjadwalanEndDate,
                 'title' => $cal->penjadwalanJudul,
-                'color'  => konversiColor($cal->penjadwalanColorId),
+                'color'  => $warna[$cal->penjadwalanColorId],
             ];
         }
 

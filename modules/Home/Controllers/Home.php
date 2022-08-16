@@ -85,7 +85,7 @@ class Home extends BaseController
 
     public function colorCalendar()
     {
-        dd(colorEvent());
+        dd(konversiColor());
     }
 
     public function getProfile()
