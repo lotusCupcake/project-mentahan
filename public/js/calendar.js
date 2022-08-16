@@ -178,7 +178,7 @@ function displayMessage(message) {
   iziToast.show({
     theme: "dark",
     icon: "fas fa-check",
-    title: "Notification",
+    title: "sukri Bahenol",
     message: message,
     position: "topRight",
     progressBarColor: "rgb(0, 255, 184)",
