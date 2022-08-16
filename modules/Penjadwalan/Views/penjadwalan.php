@@ -61,7 +61,7 @@
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
                                                 <td>
                                                     <button class="btn btn-info"><i class="fas fa-eye"></i></button>
-                                                    <button class="btn btn-warning"><i class="fas fa-pen"></i></button>
+                                                    <button class="btn btn-warning" id="editPenjadwalan<?= $jadwal->penjadwalanId ?>" onclick=" editPenjadwalan(<?= $jadwal->penjadwalanId ?>)"><i class="fas fa-pen"></i></button>
                                                     <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
                                             </tr>
@@ -98,8 +98,8 @@
                     <label>Nama Blok</label>
                     <select class="form-control select2" name="blok">
                         <option value="">Pilih Blok</option>
-                        <?php foreach ($blok as $key => $blok) : ?>
-                            <option value="<?= $blok->matkulBlokId ?>,<?= $blok->matkulBlokNama ?>"><?= $blok->matkulBlokNama ?></option>
+                        <?php foreach ($blok as $key => $bk) : ?>
+                            <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>"><?= $bk->matkulBlokNama ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -115,8 +115,8 @@
                             <label>Sesi</label>
                             <select class="form-control select2" name="sesi">
                                 <option value="">Pilih Sesi</option>
-                                <?php foreach ($sesi as $key => $sesi) : ?>
-                                    <option value="<?= $sesi->sesiId ?>,<?= $sesi->sesiStart ?>,<?= $sesi->sesiEnd ?>"><?= $sesi->sesiNama ?> (<?= $sesi->sesiStart ?>-<?= $sesi->sesiEnd ?>)</option>
+                                <?php foreach ($sesi as $key => $ses) : ?>
+                                    <option value="<?= $ses->sesiId ?>,<?= $ses->sesiStart ?>,<?= $ses->sesiEnd ?>"><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
                                 <?php endforeach ?>
                             </select>
                         </div>
@@ -168,6 +168,98 @@
         </div>
     </form>
 </div>
+
+<?php foreach ($penjadwalan as $jadwalEdit) : ?>
+    <div class="edit<?= $jadwalEdit->penjadwalanId ?>">
+        <form action="/penjadwalan/edit/<?= $jadwalEdit->penjadwalanId ?>" id="formEdit<?= $jadwalEdit->penjadwalanId ?>" method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Jadwal</label>
+                        <div class="selectgroup selectgroup-pills">
+                            <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenis->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? "checked" : "" ?>>
+                                    <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                </label>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Blok</label>
+                        <select class="form-control select2" name="blok">
+                            <option value="">Pilih Blok</option>
+                            <?php foreach ($blok as $key => $bk) : ?>
+                                <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>"><?= $bk->matkulBlokNama ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tanggal</label>
+                                <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Sesi</label>
+                                <select class="form-control select2" name="sesi">
+                                    <option value="">Pilih Sesi</option>
+                                    <?php foreach ($sesi as $key => $ses) : ?>
+                                        <option value="<?= $ses->sesiId ?>,<?= $ses->sesiStart ?>,<?= $ses->sesiEnd ?>"><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Dosen</label>
+                        <select class="form-control select2" multiple="" name="dosen[]">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nama Acara</label>
+                        <input name="namaAcara" type="text" class="form-control" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>Lokasi Acara</label>
+                        <input name="lokasi" type="text" class="form-control" value="">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Kelas</label>
+                                <input type="text" name="deskripsiAcara" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class=" form-group">
+                                <label>Catatan Ekstra</label>
+                                <input type="text" name="noteAcara" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Warna Acara</label>
+                        <div class="row gutters-xs">
+                            <div class="col-auto">
+                                <?php foreach ($color as $key => $col) : ?>
+                                    <label class="colorinput">
+                                        <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" />
+                                        <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
+                                    </label>
+                                <?php endforeach ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+<?php endforeach ?>
 
 <?= view('layout/templateFooter'); ?>
 

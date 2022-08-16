@@ -89,6 +89,33 @@ function formatDate(date) {
   );
 }
 
+function editPenjadwalan(id) {
+  $("#editPenjadwalan" + id).fireModal({
+    body: $(".edit" + id).html(),
+    title: "Edit " + $("#judul").text(),
+    center: true,
+    size: "modal-xl",
+    closeButton: true,
+    buttons: [
+      {
+        text: "Close",
+        class: "btn btn-secondary btn-shadow",
+        handler: function (modal) {
+          modal.modal("hide");
+        },
+      },
+      {
+        text: "Save",
+        submit: true,
+        class: "btn btn-primary btn-shadow",
+        handler: function (modal) {
+          modal.click();
+        },
+      },
+    ],
+  });
+}
+
 function padTo2Digits(num) {
   return num.toString().padStart(2, "0");
 }

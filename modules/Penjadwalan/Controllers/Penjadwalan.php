@@ -51,7 +51,7 @@ class Penjadwalan extends BaseController
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
             'dosen' => [],
         ];
-        // dd($data['jenisJadwal']);
+        // dd($data['blok']);
         return view('Modules\Penjadwalan\Views\penjadwalan', $data);
     }
 
