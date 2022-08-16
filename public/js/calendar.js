@@ -75,6 +75,9 @@ $(document).ready(function () {
         success: function (response) {
           displayMessage("Event Updated Successfully");
         },
+        error: function (xhr, ajaxOptions, thrownError) {
+          alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+        },
       });
     },
     eventClick: function (event) {
@@ -90,6 +93,9 @@ $(document).ready(function () {
           success: function (response) {
             calendar.fullCalendar("removeEvents", event.id);
             displayMessage("Event Deleted Successfully");
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
           },
         });
       }

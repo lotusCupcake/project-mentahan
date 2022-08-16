@@ -157,19 +157,45 @@ class Penjadwalan extends BaseController
                 break;
             case 'update':
                 $jadwal = $this->penjadwalan->where(['penjadwalanId' => $this->request->getVar('id')])->findAll();
-                $data = [
-                    'penjadwalanStartDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanStartDate))),
-                    'penjadwalanEndDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanEndDate))),
-                ];
-                $penjadwalanId = $this->request->getVar('id');
-                $this->penjadwalan->update($penjadwalanId, $data);
-                return json_encode($this->penjadwalan);
-                break;
+                $event = array(
+                    'summary' => $jadwal[0]->penjadwalanJudul,
+                    'description' => $jadwal[0]->penjadwalanDeskripsi,
+                    'location' => $jadwal[0]->penjadwalanLokasi,
+                    'colorId' => $jadwal[0]->penjadwalanColorId,
+                    'start' => array(
+                        'dateTime' => timeAppToGoogle(
+                            date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanStartDate)))
+                        )
+                    ),
+                    'end' => array(
+                        'dateTime' => timeAppToGoogle(date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanEndDate))))
+                        // ),
+                        // 'attendees' => array(
+                        //     array('email' => 'fikriansari.mfa@gmail.com'),
+                    ),
+                    'guestsCanInviteOthers' => false,
+                    'guestsCanModify' => false,
+                    'guestsCanSeeOtherGuests' => false,
+                );
+                if (editEvent($jadwal[0]->penjadwalanCalenderId, $event) == "confirmed") {
+                    $data = [
+                        'penjadwalanStartDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanStartDate))),
+                        'penjadwalanEndDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanEndDate))),
+                    ];
+                    $penjadwalanId = $this->request->getVar('id');
+                    $this->penjadwalan->update($penjadwalanId, $data);
+                    return json_encode($this->penjadwalan);
+                    break;
+                }
+
             case 'delete':
-                $penjadwalanId = $this->request->getVar('id');
-                $this->penjadwalan->delete($penjadwalanId);
-                return json_encode($this->penjadwalan);
-                break;
+                $jadwal = $this->penjadwalan->where(['penjadwalanId' => $this->request->getVar('id')])->findAll();
+                if (delEvent($jadwal[0]->penjadwalanCalenderId) == 204) {
+                    $penjadwalanId = $this->request->getVar('id');
+                    $this->penjadwalan->delete($penjadwalanId);
+                    return json_encode($this->penjadwalan);
+                    break;
+                }
             default:
                 break;
         }
