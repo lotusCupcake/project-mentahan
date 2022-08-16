@@ -73,7 +73,7 @@ $(document).ready(function () {
         },
         type: "POST",
         success: function (response) {
-          displayMessage("Event Updated Successfully");
+          displayMessage(event.title + " Updated Successfully");
         },
         error: function (xhr, ajaxOptions, thrownError) {
           alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -92,7 +92,7 @@ $(document).ready(function () {
           },
           success: function (response) {
             calendar.fullCalendar("removeEvents", event.id);
-            displayMessage("Event Deleted Successfully");
+            displayMessage(event.title + " Deleted Successfully");
           },
           error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -204,5 +204,5 @@ function cekAvailDosen() {
 }
 
 function displayMessage(message) {
-  toastr.success(message, "Event");
+  toastr.success(message, "Notification");
 }
