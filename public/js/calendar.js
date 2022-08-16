@@ -174,7 +174,6 @@ function cekAvailDosen() {
 }
 
 function displayMessage(message) {
-  // toastr.success(message, "Notification");
   iziToast.show({
     theme: "dark",
     icon: "fas fa-check",
