@@ -18,7 +18,7 @@
         <div class="section-body">
             <div class="card">
                 <div class="card-header">
-                    <button class="btn btn-icon icon-left btn-primary" data-toggle="modal" data-target="#upload"><i class="fas fa-file-excel"></i> Upload Data</button>
+                    <button class="btn btn-icon icon-left btn-primary" data-toggle="modal" data-target="#tambah"><i class="fas fa-plus"></i> Tambah Data</button>
                 </div>
                 <div class="card-body">
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
@@ -50,7 +50,7 @@
 </div>
 
 <!-- start modal hapus  -->
-<div class="modal fade" tabindex="-1" role="dialog" id="upload">
+<div class="modal fade" tabindex="-1" role="dialog" id="tambah">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -59,14 +59,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="/absensi/unggah" enctype="multipart/form-data">
+            <form method="post" action="/absensi/tambah" enctype="multipart/form-data">
                 <?= csrf_field(); ?>
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Tahun Ajaran</label>
                         <select class="form-control select2" name="absensiTahunAjaran">
                             <option value="">Pilih Tahun Ajaran</option>
-                            <option value="2021/Genap">2021/Genap</option>
+                            <?php foreach ($tahunAjaran as $key => $option) : ?>
+                                <option value="<?= $option->Term_Year_Id ?>"><?= $option->Term_Year_Name ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
                     <div class="form-group">
@@ -77,8 +79,8 @@
                         <label>Nama Blok</label>
                         <select class="form-control select2" name="absensiMatkulBlokId">
                             <option value="">Pilih Blok</option>
-                            <?php foreach ($blok as $key => $blok) : ?>
-                                <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokNama ?></option>
+                            <?php foreach ($blok as $key => $option) : ?>
+                                <option value="<?= $option->matkulBlokId ?>"><?= $option->matkulBlokNama ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -86,8 +88,8 @@
                         <label>Dosen</label>
                         <select class="form-control select2" multiple="" name="absensiPeserta[]">
                             <option value="">Pilih Dosen</option>
-                            <?php foreach ($dosen as $key => $dosen) : ?>
-                                <option value="<?= $dosen->dosenId ?>"><?= $dosen->dosenFullname ?></option>
+                            <?php foreach ($dosen as $key => $option) : ?>
+                                <option value="<?= $option->dosenEmailGeneral ?>"><?= $option->dosenFullname ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
