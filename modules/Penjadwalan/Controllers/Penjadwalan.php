@@ -95,6 +95,7 @@ class Penjadwalan extends BaseController
                 'penjadwalanMatkulBlokId' => explode(',', $this->request->getVar('blok'))[0],
                 'penjadwalanSesiId' => $this->request->getVar('sesi'),
                 'penjadwalanCalenderId' => $resultCalendar[0]['id'],
+                'penjadwalanJudulShow' => $judul,
                 'penjadwalanJudul' => $this->request->getVar('namaAcara'),
                 'penjadwalanDeskripsi' => $this->request->getVar('deskripsiAcara'),
                 'penjadwalanLokasi' => $this->request->getVar('lokasi'),
@@ -140,7 +141,7 @@ class Penjadwalan extends BaseController
                 'id' => $cal->penjadwalanId,
                 'start' => $cal->penjadwalanStartDate,
                 'end' => $cal->penjadwalanEndDate,
-                'title' => $cal->penjadwalanJudul,
+                'title' => $cal->penjadwalanJudulShow,
                 'color'  => $warna[$cal->penjadwalanColorId],
             ];
         }
@@ -163,7 +164,7 @@ class Penjadwalan extends BaseController
             case 'update':
                 $jadwal = $this->penjadwalan->where(['penjadwalanId' => $this->request->getVar('id')])->findAll();
                 $event = array(
-                    'summary' => $jadwal[0]->penjadwalanJudul,
+                    'summary' => $jadwal[0]->penjadwalanJudulShow,
                     'description' => $jadwal[0]->penjadwalanDeskripsi,
                     'location' => $jadwal[0]->penjadwalanLokasi,
                     'colorId' => $jadwal[0]->penjadwalanColorId,
