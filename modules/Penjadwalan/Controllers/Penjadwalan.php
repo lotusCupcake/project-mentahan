@@ -65,9 +65,13 @@ class Penjadwalan extends BaseController
         foreach ($this->request->getVar('dosen') as $key => $value) {
             $dosen[] = ['email' => $value];
         }
+        $angkatan  = '2020';
+        $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
+        $noteEktra = ($this->request->getVar('noteAcara') != null) ? "(" . $this->request->getVar('noteAcara') . ")" : "";
+        $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1] . " " . $noteEktra;
 
         $event = array(
-            'summary' => $this->request->getVar('namaAcara'),
+            'summary' => $judul,
             'description' => $this->request->getVar('deskripsiAcara'),
             'location' => $this->request->getVar('lokasi'),
             'colorId' => $this->request->getVar('color'),
@@ -87,10 +91,11 @@ class Penjadwalan extends BaseController
 
         if ($resultCalendar[0]['status'] == 'confirmed') {
             $data = [
-                'penjadwalanJenisJadwalId' => $this->request->getVar('jenisJadwal'),
-                'penjadwalanMatkulBlokId' => $this->request->getVar('blok'),
+                'penjadwalanJenisJadwalId' => explode(',', $this->request->getVar('jenisJadwal'))[0],
+                'penjadwalanMatkulBlokId' => explode(',', $this->request->getVar('blok'))[0],
                 'penjadwalanSesiId' => $this->request->getVar('sesi'),
                 'penjadwalanCalenderId' => $resultCalendar[0]['id'],
+                'penjadwalanJudulShow' => $judul,
                 'penjadwalanJudul' => $this->request->getVar('namaAcara'),
                 'penjadwalanDeskripsi' => $this->request->getVar('deskripsiAcara'),
                 'penjadwalanLokasi' => $this->request->getVar('lokasi'),
@@ -128,6 +133,7 @@ class Penjadwalan extends BaseController
 
     public function loadData()
     {
+        $warna = konversiColor();
         $data = $this->penjadwalan->findAll();
         $events = [];
         foreach ($data as $key => $cal) {
@@ -135,8 +141,8 @@ class Penjadwalan extends BaseController
                 'id' => $cal->penjadwalanId,
                 'start' => $cal->penjadwalanStartDate,
                 'end' => $cal->penjadwalanEndDate,
-                'title' => $cal->penjadwalanJudul,
-                'color'  => konversiColor($cal->penjadwalanColorId),
+                'title' => $cal->penjadwalanJudulShow,
+                'color'  => $warna[$cal->penjadwalanColorId],
             ];
         }
 
@@ -156,20 +162,46 @@ class Penjadwalan extends BaseController
                 return json_encode($this->penjadwalan);
                 break;
             case 'update':
-                $data = [
-                    'penjadwalanJudul' => $this->request->getVar('title'),
-                    'penjadwalanStartDate' => $this->request->getVar('start'),
-                    'penjadwalanEndDate' => $this->request->getVar('end'),
-                ];
-                $penjadwalanId = $this->request->getVar('id');
-                $this->penjadwalan->update($penjadwalanId, $data);
-                return json_encode($this->penjadwalan);
-                break;
+                $jadwal = $this->penjadwalan->where(['penjadwalanId' => $this->request->getVar('id')])->findAll();
+                $event = array(
+                    'summary' => $jadwal[0]->penjadwalanJudulShow,
+                    'description' => $jadwal[0]->penjadwalanDeskripsi,
+                    'location' => $jadwal[0]->penjadwalanLokasi,
+                    'colorId' => $jadwal[0]->penjadwalanColorId,
+                    'start' => array(
+                        'dateTime' => timeAppToGoogle(
+                            date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanStartDate)))
+                        )
+                    ),
+                    'end' => array(
+                        'dateTime' => timeAppToGoogle(date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanEndDate))))
+                        // ),
+                        // 'attendees' => array(
+                        //     array('email' => 'fikriansari.mfa@gmail.com'),
+                    ),
+                    'guestsCanInviteOthers' => false,
+                    'guestsCanModify' => false,
+                    'guestsCanSeeOtherGuests' => false,
+                );
+                if (editEvent($jadwal[0]->penjadwalanCalenderId, $event) == "confirmed") {
+                    $data = [
+                        'penjadwalanStartDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanStartDate))),
+                        'penjadwalanEndDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanEndDate))),
+                    ];
+                    $penjadwalanId = $this->request->getVar('id');
+                    $this->penjadwalan->update($penjadwalanId, $data);
+                    return json_encode($this->penjadwalan);
+                    break;
+                }
+
             case 'delete':
-                $penjadwalanId = $this->request->getVar('id');
-                $this->penjadwalan->delete($penjadwalanId);
-                return json_encode($this->penjadwalan);
-                break;
+                $jadwal = $this->penjadwalan->where(['penjadwalanId' => $this->request->getVar('id')])->findAll();
+                if (delEvent($jadwal[0]->penjadwalanCalenderId) == 204) {
+                    $penjadwalanId = $this->request->getVar('id');
+                    $this->penjadwalan->delete($penjadwalanId);
+                    return json_encode($this->penjadwalan);
+                    break;
+                }
             default:
                 break;
         }

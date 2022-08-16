@@ -1,101 +1,81 @@
 $(document).ready(function () {
   $(".tambah").hide();
   cekAvailDosen();
+});
 
-  var calendar = $("#calendar").fullCalendar({
-    height: "auto",
-    header: {
-      left: "prev,next today",
-      center: "title",
-      right: "month,agendaWeek,agendaDay,listWeek",
+var calendar = $("#calendar").fullCalendar({
+  height: "auto",
+  header: {
+    left: "prev,next today",
+    center: "title",
+    right: "month,agendaWeek,agendaDay,listWeek",
+  },
+  editable: true,
+  events: "/penjadwalan/event",
+  eventRender: function (event, element, view) {
+    if (event.allDay === "true") {
+      event.allDay = true;
+    } else {
+      event.allDay = false;
+    }
+  },
+  timeFormat: "h:mm",
+  selectable: true,
+  selectHelper: true,
+  select: function (start, end, allDay) {
+    const [date, time] = formatDate(new Date(start)).split(" ");
+    $('[name="startDate"]').val(date);
+    startDate = date;
+    cekAvailDosen();
+    $("#myModal").modal("show");
+  },
+  eventDrop: function (event, delta) {
+    $.ajax({
+      url: "/penjadwalan/eventAjax",
+      data: {
+        interval: delta._days,
+        id: event.id,
+        type: "update",
+      },
+      type: "POST",
+      success: function (response) {
+        displayMessage(event.title + " Updated Successfully");
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+      },
+    });
+  },
+  eventClick: function (event) {
+    // console.log(event);
+    var deleteMsg = confirm("Do you really want to delete?");
+    if (deleteMsg) {
+      hapusEvent(event.id, event);
+    }
+  },
+});
+
+function hapusEvent(id, title, from) {
+  $.ajax({
+    type: "POST",
+    url: "/penjadwalan/eventAjax",
+    data: {
+      id: id,
+      type: "delete",
     },
-    editable: true,
-    events: "/penjadwalan/event",
-    eventRender: function (event, element, view) {
-      if (event.allDay === "true") {
-        event.allDay = true;
+    success: function (response) {
+      if (from == "penjadwalan") {
+        window.location.replace("/penjadwalan");
       } else {
-        event.allDay = false;
+        calendar.fullCalendar("removeEvents", id);
+        displayMessage(title + " Deleted Successfully");
       }
     },
-    timeFormat: "h:mm",
-    selectable: true,
-    selectHelper: true,
-    select: function (start, end, allDay) {
-      // var title = prompt("Event Title:");
-      // if (title) {
-      //   var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-      //   var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-      //   $.ajax({
-      //     url: "/penjadwalan/eventAjax",
-      //     data: {
-      //       title: title,
-      //       start: start,
-      //       end: end,
-      //       type: "add",
-      //     },
-      //     type: "POST",
-      //     success: function (data) {
-      //       displayMessage("Event Created Successfully");
-      //       calendar.fullCalendar(
-      //         "renderEvent",
-      //         {
-      //           id: data.id,
-      //           title: title,
-      //           start: start,
-      //           end: end,
-      //           allDay: allDay,
-      //         },
-      //         true
-      //       );
-      //       calendar.fullCalendar("unselect");
-      //     },
-      //   });
-      // }
-      const [date, time] = formatDate(new Date(start)).split(" ");
-      $('[name="startDate"]').val(date);
-      startDate = date;
-      cekAvailDosen();
-      $("#myModal").modal("show");
-    },
-    eventDrop: function (event, delta) {
-      var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-      var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-
-      $.ajax({
-        url: "/penjadwalan/eventAjax",
-        data: {
-          title: event.title,
-          start: start,
-          end: end,
-          id: event.id,
-          type: "update",
-        },
-        type: "POST",
-        success: function (response) {
-          displayMessage("Event Updated Successfully");
-        },
-      });
-    },
-    eventClick: function (event) {
-      var deleteMsg = confirm("Do you really want to delete?");
-      if (deleteMsg) {
-        $.ajax({
-          type: "POST",
-          url: "/penjadwalan/eventAjax",
-          data: {
-            id: event.id,
-            type: "delete",
-          },
-          success: function (response) {
-            calendar.fullCalendar("removeEvents", event.id);
-            displayMessage("Event Deleted Successfully");
-          },
-        });
-      }
+    error: function (xhr, ajaxOptions, thrownError) {
+      alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
     },
   });
-});
+}
 
 function formatDate(date) {
   return (
@@ -105,11 +85,7 @@ function formatDate(date) {
       padTo2Digits(date.getDate()),
     ].join("-") +
     " " +
-    [
-      padTo2Digits(date.getHours()),
-      padTo2Digits(date.getMinutes()),
-      // padTo2Digits(date.getSeconds()),  // 👈️ can also add seconds
-    ].join(":")
+    [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes())].join(":")
   );
 }
 
@@ -198,5 +174,12 @@ function cekAvailDosen() {
 }
 
 function displayMessage(message) {
-  toastr.danger(message, "Event");
+  iziToast.show({
+    theme: "dark",
+    icon: "fas fa-check",
+    title: "Notification",
+    message: message,
+    position: "topRight",
+    progressBarColor: "rgb(0, 255, 184)",
+  });
 }

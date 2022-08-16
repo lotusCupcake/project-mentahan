@@ -45,7 +45,7 @@ class Home extends BaseController
 
     public function editCalendar()
     {
-        $id = 'e1ba56c2up6og4eqi444viohb0';
+        $id = '9sobjjnfeoshc3m8krf1rrsf68';
         $event = array(
             'summary' => 'Jadwal KKD',
             'description' => 'Sukrianto Lc, Ma',
@@ -69,7 +69,7 @@ class Home extends BaseController
 
     public function delCalendar()
     {
-        $id = '2avv37gn29k113ai0fagpjk0hk';
+        $id = '2dtniq19l3dcd4k0grnptkcoic';
         dd(delEvent($id));
     }
 
@@ -85,7 +85,7 @@ class Home extends BaseController
 
     public function colorCalendar()
     {
-        dd(colorEvent());
+        dd(konversiColor());
     }
 
     public function getProfile()

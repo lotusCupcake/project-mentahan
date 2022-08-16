@@ -58,25 +58,25 @@ class GoogleCalendar
     {
         $event = new Google_Service_Calendar_Event($event);
         $event = $this->service->events->update($this->calId, $id, $event);
-        $data = [];
-        $data[] = [
-            'status' => $event->status,
-            'id' => $event->id,
-            'summary' => $event->summary,
-            'description' => $event->description,
-            'location' => $event->location,
-            'colorId' => $event->colorId,
-            'start' => $event->start->dateTime,
-            'end' => $event->end->dateTime,
-            'attendees' => $event->attendees
-        ];
-        return $data;
+        // $data = [];
+        // $data[] = [
+        //     'status' => $event->status,
+        //     'id' => $event->id,
+        //     'summary' => $event->summary,
+        //     'description' => $event->description,
+        //     'location' => $event->location,
+        //     'colorId' => $event->colorId,
+        //     'start' => $event->start->dateTime,
+        //     'end' => $event->end->dateTime,
+        //     'attendees' => $event->attendees
+        // ];
+        return $event->status;
     }
 
     public function delCalendar($id)
     {
         $event = $this->service->events->delete($this->calId, $id);
-        return $event;
+        return $event->getStatusCode();
     }
 
     public function listCalendar()
