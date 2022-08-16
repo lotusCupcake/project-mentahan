@@ -174,5 +174,13 @@ function cekAvailDosen() {
 }
 
 function displayMessage(message) {
-  toastr.success(message, "Notification");
+  // toastr.success(message, "Notification");
+  iziToast.show({
+    theme: "dark",
+    icon: "fas fa-check",
+    title: "Notification",
+    message: message,
+    position: "topRight",
+    progressBarColor: "rgb(0, 255, 184)",
+  });
 }
