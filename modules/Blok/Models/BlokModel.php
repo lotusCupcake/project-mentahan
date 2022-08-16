@@ -8,7 +8,7 @@ class BlokModel extends Model
 {
     protected $table = 'matkul_blok';
     protected $primaryKey = 'matkulBlokId';
-    protected $allowedFields = ['matkulBlokKode', 'matkulBlokNama', 'matkulBlokEnglish', 'matkulBlokProdiId', 'matkulBlokProdiNama', 'matkulBlokProdiAkronim', 'matkulBlokSemester', 'matkulBlokKurikulumId', 'matkulBlokKurikulumNama', 'matkulBlokType'];
+    protected $allowedFields = ['matkulBlokNama', 'matkulBlokProdiNama'];
     protected $returnType = 'object';
 
     public function getMatkulBlok($keyword = null)
