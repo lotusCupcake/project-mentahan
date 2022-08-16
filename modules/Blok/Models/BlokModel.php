@@ -16,12 +16,8 @@ class BlokModel extends Model
         $builder = $this->table('matkul_blok');
         $builder->where('matkulBlokType', 'BLOK');
         if ($keyword) {
-            $builder->like('matkul_blok.matkulBlokKode', $keyword);
             $builder->orlike('matkul_blok.matkulBlokNama', $keyword);
-            $builder->orlike('matkul_blok.matkulBlokEnglish', $keyword);
             $builder->orlike('matkul_blok.matkulBlokProdiNama', $keyword);
-            $builder->orlike('matkul_blok.matkulBlokProdiAkronim', $keyword);
-            $builder->orlike('matkul_blok.matkulBlokKurikulumNama', $keyword);
         }
         $builder->orderBy('matkul_blok.matkulBlokId', 'DESC');
         return $builder;
