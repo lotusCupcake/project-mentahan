@@ -69,7 +69,6 @@
   <?= script_tag('template/node_modules/summernote/dist/summernote-bs4.js') ?>
 
   <!-- Template JS File -->
-  <?= script_tag('template/assets/js/scripts.js') ?>
   <?= script_tag('https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js') ?>
 
   <!-- Page Specific JS File -->
@@ -77,6 +76,7 @@
   <?= script_tag('template/assets/js/page/modules-datatables.js') ?>
 
   <?= script_tag('js/calendar.js') ?>
+  <?= script_tag('template/assets/js/scripts.js') ?>
 
   <script>
 

@@ -62,7 +62,7 @@
                                                 <td>
                                                     <button class="btn btn-info"><i class="fas fa-eye"></i></button>
                                                     <button class="btn btn-warning"><i class="fas fa-pen"></i></button>
-                                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                    <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <?= $jadwal->penjadwalanJudul; ?>?" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>

@@ -39,7 +39,7 @@
             <form action="/penjadwalan/add" id="formTambah" method="post">
                 <input type="hidden" name="from" value="dashboard">
                 <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4>
+                    <h4 class="modal-title">Tambah Penjadwalan</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;
                     </button>
                 </div>
