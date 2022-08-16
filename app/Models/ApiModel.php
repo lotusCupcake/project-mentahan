@@ -33,7 +33,7 @@ class ApiModel extends Model
         return json_decode($response->getBody())->data;
     }
 
-    public function getTermYear()
+    public function getTahunAjaran()
     {
         $response = $this->curl->request("GET", "https://api.umsu.ac.id/Laporankeu/getTermYear", [
             "headers" => [

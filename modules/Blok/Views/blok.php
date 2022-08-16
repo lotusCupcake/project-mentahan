@@ -149,7 +149,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Apakah kamu benar ingin menghapus data blok <strong><?= $hapus->matkulBlokKode; ?> - <?= $hapus->matkulBlokNama; ?> (<?= $hapus->matkulBlokKurikulumNama; ?>)</strong>?</p>
+                    <p>Apakah kamu benar ingin menghapus data blok <strong><?= $hapus->matkulBlokNama; ?></strong>?</p>
                     <p class="text-warning"><small>This action cannot be undone</small></p>
                 </div>
                 <form action="/blok/hapus/<?= $hapus->matkulBlokId; ?>" method="post">
