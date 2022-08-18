@@ -1,5 +1,6 @@
 $(document).ready(function () {
   $(".tambah").hide();
+  $(".edit").hide();
   cekAvailDosen();
 });
 
@@ -89,33 +90,6 @@ function formatDate(date) {
   );
 }
 
-function editPenjadwalan(id) {
-  $("#editPenjadwalan" + id).fireModal({
-    body: $(".edit" + id).html(),
-    title: "Edit " + $("#judul").text(),
-    center: true,
-    size: "modal-xl",
-    closeButton: true,
-    buttons: [
-      {
-        text: "Close",
-        class: "btn btn-secondary btn-shadow",
-        handler: function (modal) {
-          modal.modal("hide");
-        },
-      },
-      {
-        text: "Save",
-        submit: true,
-        class: "btn btn-primary btn-shadow",
-        handler: function (modal) {
-          modal.click();
-        },
-      },
-    ],
-  });
-}
-
 function padTo2Digits(num) {
   return num.toString().padStart(2, "0");
 }
@@ -158,16 +132,74 @@ $("[name=startDate]").change(function () {
   cekAvailDosen();
 });
 
+function editJadwal(id) {
+  sesi = $("#editPenjadwalan" + id)
+    .find("[name=sesi]")
+    .val()
+    .split(",")[0];
+  startDate = $("#editPenjadwalan" + id)
+    .find("[name=startDate]")
+    .val();
+  cekAvailDosen({ id: id });
+}
+
 function dateIsValid(date) {
   return date instanceof Date && !isNaN(date);
 }
 
-function cekAvailDosen() {
-  console.log([sesi, startDate]);
+function cekDosenSelect(id, result) {
   if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
     $.ajax({
       type: "POST",
-      url: "/dosen/load",
+      url: "/penjadwalan/select",
+      dataType: "json",
+      data: {
+        id: id,
+      },
+      beforeSend: function (e) {
+        if (e && e.overrideMimeType) {
+          e.overrideMimeType("application/json;charset=UTF-8");
+        }
+      },
+      success: function (response) {
+        // console.log([result, response]);
+        let dosen = response;
+        let html = "";
+        result.forEach((element) => {
+          let selected = "";
+          selected = (dosen.includes(element.dosenEmailGeneral)) ? "selected" : "";
+          html +=
+            '<option value="' +
+            element.dosenEmailGeneral +
+            '" ' +
+            selected +
+            "> <strong>" +
+            element.jumlahAmpu +
+            "</strong> | " +
+            element.dosenFullname +
+            "</option>";
+        });
+        $("#editPenjadwalan" + id)
+          .find('[name="dosen[]"]')
+          .empty();
+        $("#editPenjadwalan" + id)
+          .find('[name="dosen[]"]')
+          .append(html);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+      },
+    });
+  }
+}
+
+function cekAvailDosen({id = null } = {}) {
+  // console.log([sesi, startDate]);
+
+  if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
+    $.ajax({
+      type: "POST",
+      url: (id==null)?"/dosen/load":"/dosen/loadEdit",
       dataType: "json",
       data: {
         sesi: sesi,
@@ -179,19 +211,23 @@ function cekAvailDosen() {
         }
       },
       success: function (response) {
-        let html = "";
-        response.forEach((element) => {
-          html +=
-            '<option value="' +
-            element.dosenEmailGeneral +
-            '"> <strong>' +
-            element.jumlahAmpu +
-            "</strong> | " +
-            element.dosenFullname +
-            "</option>";
-        });
-        $('[name="dosen[]"]').empty();
-        $('[name="dosen[]"]').append(html);
+        if (id == null) {
+          let html = "";
+          response.forEach((element) => {
+            html +=
+              '<option value="' +
+              element.dosenEmailGeneral +
+              '"> <strong>' +
+              element.jumlahAmpu +
+              "</strong> | " +
+              element.dosenFullname +
+              "</option>";
+          });
+          $('[name="dosen[]"]').empty();
+          $('[name="dosen[]"]').append(html);
+        } else {
+          cekDosenSelect(id, response);
+        }
       },
       error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);

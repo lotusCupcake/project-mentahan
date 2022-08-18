@@ -175,4 +175,12 @@ class Dosen extends BaseController
 
         echo json_encode($this->dosenModel->getDosenJadwal($sesi, $startDate)->getresult());
     }
+
+    public function loadDosenJadwalEdit()
+    {
+        $sesi = $this->request->getVar('sesi');
+        $startDate = $this->request->getVar('startDate');
+
+        echo json_encode($this->dosenModel->getDosenJadwalEdit($sesi, $startDate)->getresult());
+    }
 }

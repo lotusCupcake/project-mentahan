@@ -61,7 +61,7 @@
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
                                                 <td>
                                                     <button class="btn btn-info"><i class="fas fa-eye"></i></button>
-                                                    <button class="btn btn-warning" id="editPenjadwalan<?= $jadwal->penjadwalanId ?>" onclick=" editPenjadwalan(<?= $jadwal->penjadwalanId ?>)"><i class="fas fa-pen"></i></button>
+                                                    <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
                                                     <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
                                             </tr>
@@ -170,94 +170,113 @@
 </div>
 
 <?php foreach ($penjadwalan as $jadwalEdit) : ?>
-    <div class="edit<?= $jadwalEdit->penjadwalanId ?>">
-        <form action="/penjadwalan/edit/<?= $jadwalEdit->penjadwalanId ?>" id="formEdit<?= $jadwalEdit->penjadwalanId ?>" method="post">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">Jadwal</label>
-                        <div class="selectgroup selectgroup-pills">
-                            <?php foreach ($jenisJadwal as $key => $jenis) : ?>
-                                <label class="selectgroup-item">
-                                    <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenis->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? "checked" : "" ?>>
-                                    <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
-                                </label>
-                            <?php endforeach ?>
-                        </div>
+    <div class="modal fade" role="dialog" id="editPenjadwalan<?= $jadwalEdit->penjadwalanId; ?>">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <form action="/penjadwalan/edit/<?= $jadwalEdit->penjadwalanId ?>" id="formEdit<?= $jadwalEdit->penjadwalanId ?>" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Data <strong><?= $title; ?></strong></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label>Nama Blok</label>
-                        <select class="form-control select2" name="blok">
-                            <option value="">Pilih Blok</option>
-                            <?php foreach ($blok as $key => $bk) : ?>
-                                <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>"><?= $bk->matkulBlokNama ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Tanggal</label>
-                                <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate">
+                    <div class="modal-body">
+                        <input type="hidden" value="PUT" name="_method">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jadwal</label>
+                                    <div class="selectgroup selectgroup-pills">
+                                        <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenis->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? "checked" : "" ?>>
+                                                <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                            </label>
+                                        <?php endforeach ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Blok</label>
+                                    <select class="form-control select2" name="blok">
+                                        <option value="">Pilih Blok</option>
+                                        <?php foreach ($blok as $key => $bk) : ?>
+                                            <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= ($bk->matkulBlokId == $jadwalEdit->penjadwalanMatkulBlokId) ? "selected" : "" ?>><?= $bk->matkulBlokNama ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tanggal</label>
+                                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value="<?= reformat($jadwalEdit->penjadwalanStartDate) ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Sesi</label>
+                                            <select class="form-control select2" name="sesi">
+                                                <option value="">Pilih Sesi</option>
+                                                <?php foreach ($sesi as $key => $ses) : ?>
+                                                    <option value="<?= $ses->sesiId ?>,<?= $ses->sesiStart ?>,<?= $ses->sesiEnd ?>" <?= ($ses->sesiId == $jadwalEdit->penjadwalanSesiId) ? "selected" : "" ?>><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dosen</label>
+                                    <select class="form-control select2" multiple="" name="dosen[]">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Acara</label>
+                                    <input name="namaAcara" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanJudul ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label>Lokasi Acara</label>
+                                    <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi ?>">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Kelas</label>
+                                            <input type="text" name="deskripsiAcara" class="form-control" value="<?= $jadwalEdit->penjadwalanDeskripsi ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class=" form-group">
+                                            <label>Catatan Ekstra</label>
+                                            <input type="text" name="noteAcara" class="form-control" value="<?= $jadwalEdit->penjadwalanNotes ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Warna Acara</label>
+                                    <div class="row gutters-xs">
+                                        <div class="col-auto">
+                                            <?php foreach ($color as $key => $col) : ?>
+                                                <label class="colorinput">
+                                                    <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" <?= ($col['id'] == $jadwalEdit->penjadwalanColorId) ? "checked" : "" ?> />
+                                                    <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
+                                                </label>
+                                            <?php endforeach ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Sesi</label>
-                                <select class="form-control select2" name="sesi">
-                                    <option value="">Pilih Sesi</option>
-                                    <?php foreach ($sesi as $key => $ses) : ?>
-                                        <option value="<?= $ses->sesiId ?>,<?= $ses->sesiStart ?>,<?= $ses->sesiEnd ?>"><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                        </div>
+
                     </div>
-                    <div class="form-group">
-                        <label>Dosen</label>
-                        <select class="form-control select2" multiple="" name="dosen[]">
-                        </select>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Nama Acara</label>
-                        <input name="namaAcara" type="text" class="form-control" value="">
-                    </div>
-                    <div class="form-group">
-                        <label>Lokasi Acara</label>
-                        <input name="lokasi" type="text" class="form-control" value="">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Kelas</label>
-                                <input type="text" name="deskripsiAcara" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class=" form-group">
-                                <label>Catatan Ekstra</label>
-                                <input type="text" name="noteAcara" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Warna Acara</label>
-                        <div class="row gutters-xs">
-                            <div class="col-auto">
-                                <?php foreach ($color as $key => $col) : ?>
-                                    <label class="colorinput">
-                                        <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" />
-                                        <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
-                                    </label>
-                                <?php endforeach ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
-        </form>
+
+        </div>
     </div>
 <?php endforeach ?>
 
