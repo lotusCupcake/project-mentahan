@@ -35,6 +35,7 @@ class Dashboard extends BaseController
             'jenisJadwal' => $this->jenisJadwal->where('jenisJadwalIsAktif', '1')->findAll(),
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
             'color' => colorEvent(),
+            'calendar' => calendar(),
         ];
         return view('Modules\Dashboard\Views\dashboard', $data);
     }

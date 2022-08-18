@@ -1,12 +1,14 @@
 $(document).ready(function () {
   $(".tambah").hide();
+  $(".edit").hide();
   cekAvailDosen();
+  $('.fc-goToCalendar-button, .fc-prev-button, .fc-next-button, .fc-nextYear-button, .fc-prevYear-button, .fc-month-button, .fc-agendaWeek-button, .fc-agendaDay-button, .fc-listWeek-button').addClass('btn-primary');
 });
 
 var calendar = $("#calendar").fullCalendar({
   height: "auto",
   header: {
-    left: "prev,next today",
+    left: "prevYear,prev,next,nextYear today goToCalendar",
     center: "title",
     right: "month,agendaWeek,agendaDay,listWeek",
   },
@@ -18,6 +20,14 @@ var calendar = $("#calendar").fullCalendar({
     } else {
       event.allDay = false;
     }
+  },
+  customButtons: {
+    goToCalendar: {
+      text: 'Google Calendar',
+      click: function () {
+        window.open("http://calendar.google.com", '_blank');
+      }
+    },
   },
   timeFormat: "h:mm",
   selectable: true,
@@ -53,6 +63,7 @@ var calendar = $("#calendar").fullCalendar({
       hapusEvent(event.id, event);
     }
   },
+  event
 });
 
 function hapusEvent(id, title, from) {
@@ -66,6 +77,7 @@ function hapusEvent(id, title, from) {
     success: function (response) {
       if (from == "penjadwalan") {
         window.location.replace("/penjadwalan");
+        displayMessage(title + " Deleted Successfully");
       } else {
         calendar.fullCalendar("removeEvents", id);
         displayMessage(title + " Deleted Successfully");
@@ -131,16 +143,74 @@ $("[name=startDate]").change(function () {
   cekAvailDosen();
 });
 
+function editJadwal(id) {
+  sesi = $("#editPenjadwalan" + id)
+    .find("[name=sesi]")
+    .val()
+    .split(",")[0];
+  startDate = $("#editPenjadwalan" + id)
+    .find("[name=startDate]")
+    .val();
+  cekAvailDosen({ id: id });
+}
+
 function dateIsValid(date) {
   return date instanceof Date && !isNaN(date);
 }
 
-function cekAvailDosen() {
-  console.log([sesi, startDate]);
+function cekDosenSelect(id, result) {
   if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
     $.ajax({
       type: "POST",
-      url: "/dosen/load",
+      url: "/penjadwalan/select",
+      dataType: "json",
+      data: {
+        id: id,
+      },
+      beforeSend: function (e) {
+        if (e && e.overrideMimeType) {
+          e.overrideMimeType("application/json;charset=UTF-8");
+        }
+      },
+      success: function (response) {
+        // console.log([result, response]);
+        let dosen = response;
+        let html = "";
+        result.forEach((element) => {
+          let selected = "";
+          selected = (dosen.includes(element.dosenEmailGeneral)) ? "selected" : "";
+          html +=
+            '<option value="' +
+            element.dosenEmailGeneral +
+            '" ' +
+            selected +
+            "> <strong>" +
+            element.jumlahAmpu +
+            "</strong> | " +
+            element.dosenFullname +
+            "</option>";
+        });
+        $("#editPenjadwalan" + id)
+          .find('[name="dosen[]"]')
+          .empty();
+        $("#editPenjadwalan" + id)
+          .find('[name="dosen[]"]')
+          .append(html);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+      },
+    });
+  }
+}
+
+function cekAvailDosen({id = null } = {}) {
+  // console.log([sesi, startDate]);
+
+  if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
+    $.ajax({
+      type: "POST",
+      url: (id==null)?"/dosen/load":"/dosen/loadEdit",
       dataType: "json",
       data: {
         sesi: sesi,
@@ -152,19 +222,23 @@ function cekAvailDosen() {
         }
       },
       success: function (response) {
-        let html = "";
-        response.forEach((element) => {
-          html +=
-            '<option value="' +
-            element.dosenEmailGeneral +
-            '"> <strong>' +
-            element.jumlahAmpu +
-            "</strong> | " +
-            element.dosenFullname +
-            "</option>";
-        });
-        $('[name="dosen[]"]').empty();
-        $('[name="dosen[]"]').append(html);
+        if (id == null) {
+          let html = "";
+          response.forEach((element) => {
+            html +=
+              '<option value="' +
+              element.dosenEmailGeneral +
+              '"> <strong>' +
+              element.jumlahAmpu +
+              "</strong> | " +
+              element.dosenFullname +
+              "</option>";
+          });
+          $('[name="dosen[]"]').empty();
+          $('[name="dosen[]"]').append(html);
+        } else {
+          cekDosenSelect(id, response);
+        }
       },
       error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);

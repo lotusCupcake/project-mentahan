@@ -15,6 +15,33 @@
             </div>
         </div>
         <div class="section-body">
+            <?php if ($validation->hasError('blok')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('blok')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('jenisJadwal')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('jenisJadwal')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('startDate')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('startDate')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('sesi')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('sesi')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('dosen')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosen')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('namaAcara')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('namaAcara')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('lokasi')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('lokasi')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('deskripsiAcara')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('deskripsiAcara')]]); ?>
+            <?php endif; ?>
+            <?php if ($validation->hasError('color')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('color')]]); ?>
+            <?php endif; ?>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -50,18 +77,18 @@
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
-                                                <td class="align-middle"><i class="fas fa-map-marker <?= "text-" . randomColor() ?>"></i> <?= $jadwal->penjadwalanLokasi ?></td>
+                                                <td class="align-middle"><i class="fas fa-location-arrow text-info"></i> <?= $jadwal->penjadwalanLokasi ?></td>
                                                 <td>
                                                     <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
                                                         <?php if ($key < 5) : ?>
-                                                            <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-" . random_int(1, 5) . ".png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
+                                                            <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-3.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
                                                         <?php endif; ?>
                                                     <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
                                                 <td>
                                                     <button class="btn btn-info"><i class="fas fa-eye"></i></button>
-                                                    <button class="btn btn-warning"><i class="fas fa-pen"></i></button>
+                                                    <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
                                                     <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
                                             </tr>
@@ -88,7 +115,7 @@
                     <div class="selectgroup selectgroup-pills">
                         <?php foreach ($jenisJadwal as $key => $jenis) : ?>
                             <label class="selectgroup-item">
-                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input">
+                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenis->jenisJadwalId . ',' . $jenis->jenisJadwalKode) ? 'checked' : '' ?>>
                                 <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
                             </label>
                         <?php endforeach ?>
@@ -98,8 +125,8 @@
                     <label>Nama Blok</label>
                     <select class="form-control select2" name="blok">
                         <option value="">Pilih Blok</option>
-                        <?php foreach ($blok as $key => $blok) : ?>
-                            <option value="<?= $blok->matkulBlokId ?>,<?= $blok->matkulBlokNama ?>"><?= $blok->matkulBlokNama ?></option>
+                        <?php foreach ($blok as $key => $bk) : ?>
+                            <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= (old('blok') == $bk->matkulBlokId . ',' . $bk->matkulBlokNama) ? 'selected' : '' ?>><?= $bk->matkulBlokNama ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -107,7 +134,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Tanggal</label>
-                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate">
+                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value=<?= (old('startDate')) ? date('Y-m-d', strtotime(old('startDate'))) : "" ?>>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -115,8 +142,9 @@
                             <label>Sesi</label>
                             <select class="form-control select2" name="sesi">
                                 <option value="">Pilih Sesi</option>
-                                <?php foreach ($sesi as $key => $sesi) : ?>
-                                    <option value="<?= $sesi->sesiId ?>,<?= $sesi->sesiStart ?>,<?= $sesi->sesiEnd ?>"><?= $sesi->sesiNama ?> (<?= $sesi->sesiStart ?>-<?= $sesi->sesiEnd ?>)</option>
+                                <?php foreach ($sesi as $key => $ses) : ?>
+                                    <?php $valSesi = $ses->sesiId . ',' . $ses->sesiStart . ',' . $ses->sesiEnd ?>
+                                    <option value="<?= $valSesi ?>" <?= (old('sesi') == $valSesi) ? 'selected' : '' ?>><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
                                 <?php endforeach ?>
                             </select>
                         </div>
@@ -131,33 +159,33 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Nama Acara</label>
-                    <input name="namaAcara" type="text" class="form-control" value="">
+                    <input name="namaAcara" type="text" class="form-control" value="<?= old('namaAcara'); ?>">
                 </div>
                 <div class="form-group">
                     <label>Lokasi Acara</label>
-                    <input name="lokasi" type="text" class="form-control" value="">
+                    <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Kelas</label>
-                            <input type="text" name="deskripsiAcara" class="form-control">
+                            <input type="text" name="deskripsiAcara" class="form-control" value="<?= old('deskripsiAcara'); ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class=" form-group">
                             <label>Catatan Ekstra</label>
-                            <input type="text" name="noteAcara" class="form-control">
+                            <input type="text" name="noteAcara" class="form-control" value="<?= old('noteAcara'); ?>">
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class=" form-group">
                     <label class="form-label">Warna Acara</label>
                     <div class="row gutters-xs">
                         <div class="col-auto">
                             <?php foreach ($color as $key => $col) : ?>
                                 <label class="colorinput">
-                                    <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" />
+                                    <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" <?= (old('color') == $col['id']) ? 'checked' : '' ?> />
                                     <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
                                 </label>
                             <?php endforeach ?>
@@ -168,6 +196,117 @@
         </div>
     </form>
 </div>
+
+<?php foreach ($penjadwalan as $jadwalEdit) : ?>
+    <div class="modal fade" role="dialog" id="editPenjadwalan<?= $jadwalEdit->penjadwalanId; ?>">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <form action="/penjadwalan/edit/<?= $jadwalEdit->penjadwalanId ?>" id="formEdit<?= $jadwalEdit->penjadwalanId ?>" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Data <strong><?= $title; ?></strong></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" value="PUT" name="_method">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jadwal</label>
+                                    <div class="selectgroup selectgroup-pills">
+                                        <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenis->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? "checked" : "" ?>>
+                                                <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                            </label>
+                                        <?php endforeach ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Blok</label>
+                                    <select class="form-control select2" name="blok">
+                                        <option value="">Pilih Blok</option>
+                                        <?php foreach ($blok as $key => $bk) : ?>
+                                            <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= ($bk->matkulBlokId == $jadwalEdit->penjadwalanMatkulBlokId) ? "selected" : "" ?>><?= $bk->matkulBlokNama ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tanggal</label>
+                                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value="<?= reformat($jadwalEdit->penjadwalanStartDate) ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Sesi</label>
+                                            <select class="form-control select2" name="sesi">
+                                                <option value="">Pilih Sesi</option>
+                                                <?php foreach ($sesi as $key => $ses) : ?>
+                                                    <option value="<?= $ses->sesiId ?>,<?= $ses->sesiStart ?>,<?= $ses->sesiEnd ?>" <?= ($ses->sesiId == $jadwalEdit->penjadwalanSesiId) ? "selected" : "" ?>><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dosen</label>
+                                    <select class="form-control select2" multiple="" name="dosen[]">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Acara</label>
+                                    <input name="namaAcara" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanJudul ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label>Lokasi Acara</label>
+                                    <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi ?>">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Kelas</label>
+                                            <input type="text" name="deskripsiAcara" class="form-control" value="<?= $jadwalEdit->penjadwalanDeskripsi ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class=" form-group">
+                                            <label>Catatan Ekstra</label>
+                                            <input type="text" name="noteAcara" class="form-control" value="<?= $jadwalEdit->penjadwalanNotes ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Warna Acara</label>
+                                    <div class="row gutters-xs">
+                                        <div class="col-auto">
+                                            <?php foreach ($color as $key => $col) : ?>
+                                                <label class="colorinput">
+                                                    <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" <?= ($col['id'] == $jadwalEdit->penjadwalanColorId) ? "checked" : "" ?> />
+                                                    <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
+                                                </label>
+                                            <?php endforeach ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+<?php endforeach ?>
 
 <?= view('layout/templateFooter'); ?>
 

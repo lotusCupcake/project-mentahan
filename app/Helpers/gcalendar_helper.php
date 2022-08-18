@@ -42,6 +42,13 @@ function colorEvent()
     return $exe;
 }
 
+function calendar()
+{
+    $google = new App\Libraries\GoogleCalendar;
+    $exe = $google->calendar();
+    return $exe;
+}
+
 function konversiColor()
 {
     $google = new App\Libraries\GoogleCalendar;

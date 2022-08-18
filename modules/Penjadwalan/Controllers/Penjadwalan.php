@@ -51,14 +51,32 @@ class Penjadwalan extends BaseController
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
             'dosen' => [],
         ];
-        // dd($data['jenisJadwal']);
+        // dd($data['blok']);
         return view('Modules\Penjadwalan\Views\penjadwalan', $data);
     }
 
     public function penjadwalanAdd()
     {
-        // dd($_POST);
         ($this->request->getVar('from') != null) ? $from = $this->request->getVar('from') : $from = null;
+        $rules = [
+            'blok' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'jenisJadwal' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'startDate' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'sesi' => rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']),
+            'dosen' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+            'namaAcara' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'lokasi' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'deskripsiAcara' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'color' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+        ];
+        if (!$this->validate($rules)) {
+            if ($from == null) {
+                return redirect()->to('penjadwalan')->withInput();
+            } else {
+                return redirect()->to('dashboard')->withInput();
+            }
+        };
+
         $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
         $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
         $dosen = [];
@@ -147,6 +165,95 @@ class Penjadwalan extends BaseController
         }
 
         return json_encode($events);
+    }
+
+    public function select()
+    {
+        $data = $this->penjadwalan->where(['penjadwalanId' => $this->request->getVar('id')])->findAll();
+        $peserta = $data[0]->penjadwalanPeserta;
+        $result = [];
+        foreach (json_decode($peserta)->data as $key => $value) {
+            $result[] = $value->email;
+        }
+
+        return json_encode($result);
+    }
+
+    public function penjadwalanEdit($id)
+    {
+        $rules = [
+            'blok' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'jenisJadwal' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'startDate' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'sesi' => rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']),
+            'dosen' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+            'namaAcara' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'lokasi' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'deskripsiAcara' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'color' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+        ];
+        if (!$this->validate($rules)) {
+            return redirect()->to('penjadwalan')->withInput();
+        };
+        $jadwalExists = $this->penjadwalan->where(['penjadwalanId' => $id])->findAll();
+
+        $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
+        $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
+        $dosen = [];
+        foreach ($this->request->getVar('dosen') as $key => $value) {
+            $dosen[] = ['email' => $value];
+        }
+        $angkatan  = '2020';
+        $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
+        $noteEktra = ($this->request->getVar('noteAcara') != null) ? "(" . $this->request->getVar('noteAcara') . ")" : "";
+        $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1] . " " . $noteEktra;
+
+        $event = array(
+            'summary' => $judul,
+            'description' => $this->request->getVar('deskripsiAcara'),
+            'location' => $this->request->getVar('lokasi'),
+            'colorId' => $this->request->getVar('color'),
+            'start' => array(
+                'dateTime' => timeAppToGoogle($eventStart)
+            ),
+            'end' => array(
+                'dateTime' => timeAppToGoogle($eventEnd)
+            ),
+            // 'attendees' => array($dosen),
+            'guestsCanInviteOthers' => false,
+            'guestsCanModify' => false,
+            'guestsCanSeeOtherGuests' => false,
+        );
+        // dd($event);
+        $resultCalendar = editEvent($jadwalExists[0]->penjadwalanCalenderId, $event);
+
+        if ($resultCalendar == 'confirmed') {
+            $data = [
+                'penjadwalanJenisJadwalId' => explode(',', $this->request->getVar('jenisJadwal'))[0],
+                'penjadwalanMatkulBlokId' => explode(',', $this->request->getVar('blok'))[0],
+                'penjadwalanSesiId' => $this->request->getVar('sesi'),
+                'penjadwalanJudulShow' => $judul,
+                'penjadwalanJudul' => $this->request->getVar('namaAcara'),
+                'penjadwalanDeskripsi' => $this->request->getVar('deskripsiAcara'),
+                'penjadwalanLokasi' => $this->request->getVar('lokasi'),
+                'penjadwalanColorId' => $this->request->getVar('color'),
+                'penjadwalanStartDate' => $eventStart,
+                'penjadwalanEndDate' => $eventEnd,
+                'penjadwalanPeserta' => json_encode(['data' => $dosen]),
+                'penjadwalanNotes' => $this->request->getVar('noteAcara'),
+            ];
+            if ($this->penjadwalan->update($id, $data)) {
+                session()->setFlashdata('success', 'Data berhasil diubah');
+                return redirect()->to('penjadwalan');
+            } else {
+                delEvent($resultCalendar[0]['penjadwalanId']);
+                session()->setFlashdata('error', 'Data gagal diubah');
+                return redirect()->to('penjadwalan');
+            }
+        } else {
+            session()->setFlashdata('error', 'Data gagal ditambahkan');
+            return redirect()->to('penjadwalan');
+        }
     }
 
     public function ajax()

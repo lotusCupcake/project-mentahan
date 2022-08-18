@@ -28,10 +28,16 @@ class GoogleCalendar
 
         $this->service = new Google_Service_Calendar($this->client);
 
-        $calendarList = $this->service->calendarList->listCalendarList();
+
         $this->calId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
         // $this->calId = 'digisched@umsu.ac.id';
 
+    }
+
+    public function calendar()
+    {
+        $calendarList = $this->service->calendarList->listCalendarList();
+        return $calendarList;
     }
 
     public function addCalendar($event)

@@ -14,7 +14,7 @@ function timeGoogleToAppLong($string)
 function timeGoogleToAppShort($string)
 {
     $time = date($string);
-    $date = date('Y-m-d h:i:s ', strtotime($time));
+    $date = date('Y-m-d h:i:s', strtotime($time));
     return $date;
 }
 
@@ -22,5 +22,12 @@ function timeAppToGoogle($string)
 {
     $time = date($string);
     $date = date('Y-m-d\TH:i:sP', strtotime($time));
+    return $date;
+}
+
+function reformat($string)
+{
+    $time = date($string);
+    $date = date('Y-m-d', strtotime($time));
     return $date;
 }
