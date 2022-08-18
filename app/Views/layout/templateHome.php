@@ -78,10 +78,6 @@
   <?= script_tag('js/calendar.js') ?>
   <?= script_tag('template/assets/js/scripts.js') ?>
 
-  <script>
-
-  </script>
-
 </body>
 
 </html>

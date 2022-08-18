@@ -2,12 +2,13 @@ $(document).ready(function () {
   $(".tambah").hide();
   $(".edit").hide();
   cekAvailDosen();
+  $('.fc-goToCalendar-button').css({ 'background-color': '#6777ef', 'color': '#fff' });
 });
 
 var calendar = $("#calendar").fullCalendar({
   height: "auto",
   header: {
-    left: "prev,next today",
+    left: "prevYear,prev,next,nextYear today goToCalendar",
     center: "title",
     right: "month,agendaWeek,agendaDay,listWeek",
   },
@@ -19,6 +20,14 @@ var calendar = $("#calendar").fullCalendar({
     } else {
       event.allDay = false;
     }
+  },
+  customButtons: {
+    goToCalendar: {
+      text: 'Google Calendar',
+      click: function () {
+        window.open("http://calendar.google.com", '_blank');
+      }
+    },
   },
   timeFormat: "h:mm",
   selectable: true,
@@ -54,6 +63,7 @@ var calendar = $("#calendar").fullCalendar({
       hapusEvent(event.id, event);
     }
   },
+  event
 });
 
 function hapusEvent(id, title, from) {

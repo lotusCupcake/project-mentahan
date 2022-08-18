@@ -93,4 +93,10 @@ class Home extends BaseController
         $date = timeGoogleToAppLong(date('Y-m-d H:i:s'));
         dd($date);
     }
+
+    public function calendar()
+    {
+        $data = calendar();
+        dd($data);
+    }
 }
