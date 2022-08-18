@@ -77,11 +77,11 @@
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
-                                                <td class="align-middle"><i class="fas fa-map-marker <?= "text-" . randomColor() ?>"></i> <?= $jadwal->penjadwalanLokasi ?></td>
+                                                <td class="align-middle"><i class="fas fa-location-arrow text-info"></i> <?= $jadwal->penjadwalanLokasi ?></td>
                                                 <td>
                                                     <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
                                                         <?php if ($key < 5) : ?>
-                                                            <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-" . random_int(1, 5) . ".png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
+                                                            <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-3.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
                                                         <?php endif; ?>
                                                     <?php endforeach; ?>
                                                 </td>
