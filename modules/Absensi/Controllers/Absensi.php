@@ -55,19 +55,20 @@ class Absensi extends BaseController
         // dd($_POST);
         $url = $this->request->getServer('HTTP_REFERER');
         $dataDosen = $this->request->getVar('absensiPeserta');
-        foreach ($dataDosen as $dosen) {
-            $data = [
-                'absensiTahunAjaran' => trim($this->request->getvar('absensiTahunAjaran')),
-                'absensiAngkatan' => trim($this->request->getvar('absensiAngkatan')),
-                'absensiMatkulBlokId' => trim($this->request->getvar('absensiMatkulBlokId')),
-                'absensiPeserta' =>  $dosen,
-                'absensiCreatedBy' => user()->email,
-                'absensiCreatedDate' => date('Y-m-d H:i:s'),
-            ];
-            // dd($data);
-            $this->absensiModel->insert($data);
-            session()->setFlashdata('success', 'Data Absensi Berhasil Ditambahkan');
+        $dosen = [];
+        foreach ($dataDosen as $key => $value) {
+            $dosen[] = ['email' => $value];
         }
+        $data = [
+            'absensiTahunAjaran' => trim($this->request->getvar('absensiTahunAjaran')),
+            'absensiAngkatan' => trim($this->request->getvar('absensiAngkatan')),
+            'absensiMatkulBlokId' => trim($this->request->getvar('absensiMatkulBlokId')),
+            'absensiPeserta' => json_encode(['data' => $dosen]),
+            'absensiCreatedBy' => user()->email,
+            'absensiCreatedDate' => date('Y-m-d H:i:s'),
+        ];
+        $this->absensiModel->insert($data);
+        session()->setFlashdata('success', 'Data Absensi Berhasil Ditambahkan');
         return redirect()->to($url);
     }
 
