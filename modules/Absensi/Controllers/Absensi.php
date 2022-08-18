@@ -31,13 +31,20 @@ class Absensi extends BaseController
 
     public function index()
     {
+        $currentPage = $this->request->getVar('page_absen') ? $this->request->getVar('page_absen') : 1;
+        $keyword = $this->request->getVar('keyword');
+        $absen = $this->absensiModel->getAbsen($keyword);
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Absensi Workshop",
             'breadcrumb' => ['Home', 'Data', 'Absensi Workshop'],
+            'absen' => $absen->paginate($this->numberPage, 'absen'),
             'blok' => $this->blokModel->getMatkulBlok()->findAll(),
             'dosen' => $this->dosenModel->getDataDosen()->findAll(),
             'tahunAjaran' => $this->apiModel->getTahunAjaran(),
+            'currentPage' => $currentPage,
+            'numberPage' => $this->numberPage,
+            'pager' => $absen->pager,
             'validation' => \Config\Services::validation(),
         ];
         return view('Modules\Absensi\Views\absensi', $data);
@@ -45,7 +52,23 @@ class Absensi extends BaseController
 
     public function add()
     {
-        dd($_POST);
+        // dd($_POST);
+        $url = $this->request->getServer('HTTP_REFERER');
+        $dataDosen = $this->request->getVar('absensiPeserta');
+        foreach ($dataDosen as $dosen) {
+            $data = [
+                'absensiTahunAjaran' => trim($this->request->getvar('absensiTahunAjaran')),
+                'absensiAngkatan' => trim($this->request->getvar('absensiAngkatan')),
+                'absensiMatkulBlokId' => trim($this->request->getvar('absensiMatkulBlokId')),
+                'absensiPeserta' =>  $dosen,
+                'absensiCreatedBy' => user()->email,
+                'absensiCreatedDate' => date('Y-m-d H:i:s'),
+            ];
+            // dd($data);
+            $this->absensiModel->insert($data);
+            session()->setFlashdata('success', 'Data Absensi Berhasil Ditambahkan');
+        }
+        return redirect()->to($url);
     }
 
     // public function upload()

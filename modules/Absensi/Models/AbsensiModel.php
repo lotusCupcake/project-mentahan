@@ -8,6 +8,16 @@ class AbsensiModel extends Model
 {
     protected $table = 'absensi';
     protected $primaryKey = 'absensiId';
-    protected $allowedFields = ['absensiMatkulBlokId'];
+    protected $allowedFields = ['absensiAngkatan', 'absensiMatkulBlokId', 'absensiTahunAjaran', 'absensiPeserta', 'absensiCreatedBy', 'absensiCreatedDate', 'absensiModifiedBy', 'absensiModifiedDate'];
     protected $returnType = 'object';
+
+    public function getAbsen($keyword = null)
+    {
+        $builder = $this->table('absensi');
+        if ($keyword) {
+            $builder->orlike('absensi.absensiPeserta', $keyword);
+        }
+        $builder->orderBy('absensi.absensiId', 'DESC');
+        return $builder;
+    }
 }
