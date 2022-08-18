@@ -2,7 +2,7 @@ $(document).ready(function () {
   $(".tambah").hide();
   $(".edit").hide();
   cekAvailDosen();
-  $('.fc-goToCalendar-button').css({ 'background-color': '#6777ef', 'color': '#fff' });
+  $('.fc-goToCalendar-button, .fc-prev-button, .fc-next-button, .fc-nextYear-button, .fc-prevYear-button, .fc-month-button, .fc-agendaWeek-button, .fc-agendaDay-button, .fc-listWeek-button').addClass('btn-primary');
 });
 
 var calendar = $("#calendar").fullCalendar({
