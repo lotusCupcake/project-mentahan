@@ -67,6 +67,7 @@ function hapusEvent(id, title, from) {
     success: function (response) {
       if (from == "penjadwalan") {
         window.location.replace("/penjadwalan");
+        displayMessage(title + " Deleted Successfully");
       } else {
         calendar.fullCalendar("removeEvents", id);
         displayMessage(title + " Deleted Successfully");

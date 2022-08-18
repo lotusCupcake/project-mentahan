@@ -57,8 +57,26 @@ class Penjadwalan extends BaseController
 
     public function penjadwalanAdd()
     {
-        // dd($_POST);
         ($this->request->getVar('from') != null) ? $from = $this->request->getVar('from') : $from = null;
+        $rules = [
+            'blok' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'jenisJadwal' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'startDate' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'sesi' => rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']),
+            'dosen' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+            'namaAcara' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'lokasi' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'deskripsiAcara' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'color' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+        ];
+        if (!$this->validate($rules)) {
+            if ($from == null) {
+                return redirect()->to('penjadwalan')->withInput();
+            } else {
+                return redirect()->to('dashboard')->withInput();
+            }
+        };
+
         $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
         $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
         $dosen = [];
@@ -163,6 +181,20 @@ class Penjadwalan extends BaseController
 
     public function penjadwalanEdit($id)
     {
+        $rules = [
+            'blok' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'jenisJadwal' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'startDate' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'sesi' => rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']),
+            'dosen' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+            'namaAcara' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
+            'lokasi' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
+            'deskripsiAcara' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
+            'color' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+        ];
+        if (!$this->validate($rules)) {
+            return redirect()->to('penjadwalan')->withInput();
+        };
         $jadwalExists = $this->penjadwalan->where(['penjadwalanId' => $id])->findAll();
 
         $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
