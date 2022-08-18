@@ -195,7 +195,7 @@ class Penjadwalan extends BaseController
         // dd($event);
         $resultCalendar = editEvent($jadwalExists[0]->penjadwalanCalenderId, $event);
 
-        if ($resultCalendar[0]['status'] == 'confirmed') {
+        if ($resultCalendar == 'confirmed') {
             $data = [
                 'penjadwalanJenisJadwalId' => explode(',', $this->request->getVar('jenisJadwal'))[0],
                 'penjadwalanMatkulBlokId' => explode(',', $this->request->getVar('blok'))[0],
