@@ -36,12 +36,31 @@
                                     <th scope="col">Angkatan</th>
                                     <th scope="col">Blok</th>
                                     <th scope="col">Dosen</th>
+                                    <th style="text-align:center" scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?= view('layout/templateEmpty', ['jumlahSpan' => 5]); ?>
+                                <?php if (!empty($absen)) : ?>
+                                    <?php
+                                    $no = 1 + ($numberPage * ($currentPage - 1));
+                                    foreach ($absen as $data) : ?>
+                                        <tr>
+                                            <td style="text-align:center" scope="row"><?= $no++; ?></td>
+                                            <td><?= $data->absensiTahunAjaran ?></td>
+                                            <td><?= $data->absensiAngkatan; ?></td>
+                                            <td><?= $data->absensiMatkulBlokId; ?></td>
+                                            <td><?= $data->absensiPeserta; ?></td>
+                                            <td style="text-align:center">
+                                                <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php else : ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 5]); ?>
+                                <?php endif ?>
                             </tbody>
                         </table>
+                        <?= $pager->links('absen', 'pager') ?>
                     </div>
                 </div>
             </div>
@@ -50,7 +69,7 @@
 </div>
 
 <!-- start modal hapus  -->
-<div class="modal fade" tabindex="-1" role="dialog" id="tambah">
+<div class="modal fade" role="dialog" id="tambah">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
