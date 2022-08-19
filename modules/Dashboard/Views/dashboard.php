@@ -96,9 +96,24 @@
                                 <label>Nama Acara</label>
                                 <input name="namaAcara" type="text" class="form-control" value="">
                             </div>
-                            <div class="form-group">
-                                <label>Lokasi Acara</label>
-                                <input name="lokasi" type="text" class="form-control" value="">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Angkatan</label>
+                                        <select class="form-control select2" name="angkatan">
+                                            <option value="">Pilih Angkatan</option>
+                                            <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                                <option value="<?= $i ?>" <?= (old('angkatan') == $i) ? "selected" : ""; ?>><?= $i ?></option>
+                                            <?php endfor ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Lokasi Acara</label>
+                                        <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
