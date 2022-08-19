@@ -124,6 +124,7 @@ class Penjadwalan extends BaseController
                 'penjadwalanPeserta' => json_encode(['data' => $dosen]),
                 'penjadwalanNotes' => $this->request->getVar('noteAcara'),
                 'penjadwalanAngkatan' => $this->request->getVar('angkatan'),
+                'penjadwalanTahunAjaran' => getTahunAjaran()
             ];
             if ($this->penjadwalan->insert($data)) {
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
@@ -243,7 +244,7 @@ class Penjadwalan extends BaseController
                 'penjadwalanEndDate' => $eventEnd,
                 'penjadwalanPeserta' => json_encode(['data' => $dosen]),
                 'penjadwalanNotes' => $this->request->getVar('noteAcara'),
-                'penjadwalanAngkatan' => $this->request->getVar('angkatan'),
+                'penjadwalanAngkatan' => $this->request->getVar('angkatan')
             ];
             if ($this->penjadwalan->update($id, $data)) {
                 session()->setFlashdata('success', 'Data berhasil diubah');
