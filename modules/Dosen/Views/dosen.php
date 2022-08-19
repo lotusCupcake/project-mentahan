@@ -18,6 +18,67 @@
             <div class="card">
                 <div class="card-header">
                     <button class="btn btn-icon icon-left btn-primary" data-toggle="modal" data-target="#tambah"><i class="fas fa-plus"></i> Tambah Data</button>
+                </div>
+                <div class="card-body">
+                    <?php if (!empty(session()->getFlashdata('abort'))) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('abort')]]); ?>
+                    <?php endif; ?>
+                    <?php if (!empty(session()->get('dataSession')['dtDosen'])) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['info', 'far fa-lightbulb', 'Info!', 'Pastikan Email General Dosen Valid/Tidak Kosong']]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('dosenEmail')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosenEmail')]]); ?>
+                    <?php endif; ?>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="2%" style="text-align:center" scope="col">No.</th>
+                                    <th width="25%" scope="col">Nama Lengkap</th>
+                                    <th scope="col">Nama</th>
+                                    <th width="15%" scope="col">Email Corporate</th>
+                                    <th width="15%" scope="col">Email General</th>
+                                    <th scope="col">Handphone</th>
+                                    <th width="8%" scope="col">Status</th>
+                                    <th width="8%" scope="col"></th>
+                                </tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty(session()->get('dataSession')['dtDosen'])) : ?>
+                                    <?php $no = 1;
+                                    foreach (session()->get('dataSession')['dtDosen'] as $sync) : ?>
+                                        <form action="/dosen/simpan" method="POST">
+                                            <input type="hidden" name="dosenSimakadId[]" value="<?= $sync['dosenSimakadId']; ?>">
+                                            <input type="hidden" name="dosenId[]" value="<?= $sync['dosenId']; ?>">
+                                            <tr>
+                                                <td style="text-align:center" scope="row"><?= $no++; ?></td>
+                                                <td><input type="text" name="dosenFullname[]" class="form-control" value="<?= $sync['dosenFullname']; ?>" readonly></td>
+                                                <td><input type="text" name="dosenShortname[]" class="form-control" value="<?= $sync['dosenShortname']; ?>" readonly></td>
+                                                <td><input type="text" name="dosenEmailCorporate[]" class="form-control" value="<?= $sync['dosenEmailCorporate']; ?>" readonly></td>
+                                                <td><input type="text" name="dosenEmailGeneral[]" class="form-control" value="<?= $sync['dosenEmailGeneral']; ?>" required></td>
+                                                <td><input type="text" name="dosenPhone[]" class="form-control" value="<?= $sync['dosenPhone']; ?>" readonly></td>
+                                                <td><input type="text" name="dosenStatus[]" class="form-control" value="<?= ($sync['dosenStatus'] == 1) ? 'Internal' : 'Eksternal'; ?>" readonly></td>
+                                                <td><input type="hidden" name="dosenAkun[]" class="form-control" id="akun" value="<?= $sync['dosenAkun']; ?>" readonly> <label for="akun" class="<?= ($sync['dosenAkun'] == 'Match Found') ? 'text-warning' : (($sync['dosenAkun'] == 'Denied/Duplicate') ? 'text-danger' : (($sync['dosenAkun'] == 'Insert New') ? 'text-success' : '')); ?>"><?= $sync['dosenAkun']; ?></label></td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    <?php else : ?>
+                                        <?= view('layout/templateEmpty', ['jumlahSpan' => 7]); ?>
+                                    <?php endif ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <?php if (!empty(session()->get('dataSession')['dtDosen'])) : ?>
+                    <div class="card-footer">
+                        <a href="/dosen/batal" type="button" class="btn btn-icon icon-left btn-danger mr-2"><i class="fas fa-trash"></i> Batal</a>
+                        <button type="submit" class="btn btn-icon icon-left btn-success"><i class="fas fa-check"></i> Simpan</button>
+                    </div>
+                <?php endif ?>
+                </form>
+            </div>
+            <div class="card">
+                <div class="card-header">
                     <h4></h4>
                     <div class="card-header-form col-md-4">
                         <form action="">
@@ -106,7 +167,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Data<strong> <?= $title; ?></strong></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hin="tr-e">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -140,7 +201,7 @@
                                             <tr>
                                                 <td style="text-align:center" scope="row">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "#" . $data->Name . "#" . $data->Email_Corporate . "#" . $data->Email_General . "#" . $data->Phone_Mobile  ?>">
+                                                        <input type="checkbox" class="custom-control-input" id="check<?= $data->Employee_Id ?>" name="dataDosen[]" value="<?= $data->Full_Name . "#" . $data->Name . "#" . $data->Email_Corporate . "#" . $data->Email_General . "#" . $data->Phone_Mobile . "#" .  $data->Employee_Id   ?>">
                                                         <label class="custom-control-label" for="check<?= $data->Employee_Id ?>"></label>
                                                     </div>
                                                 </td>

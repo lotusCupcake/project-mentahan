@@ -43,6 +43,7 @@ class Dosen extends BaseController
 
     public function add()
     {
+        // dd($_POST);
         $url = $this->request->getServer('HTTP_REFERER');
         if ($this->request->getVar('dosen') == 'internal') {
             $rules = [
@@ -52,25 +53,47 @@ class Dosen extends BaseController
                 return redirect()->to($url)->withInput();
             };
             $dataDosen = $this->request->getVar('dataDosen');
+            $dtDosen = [];
+
             foreach ($dataDosen as $dosen) {
-                $jumlah = $this->dosenModel->dataExist(
-                    [
-                        'dosenEmailCorporate' => explode('#', $dosen)[2],
-                    ]
-                );
-                if ($jumlah == 0) {
-                    $data = [
-                        'dosenFullname' => trim(explode('#', $dosen)[0]),
-                        'dosenShortname' => trim(explode('#', $dosen)[1]),
-                        'dosenEmailCorporate' => (explode('#', $dosen)[2] == null) ? null : trim(explode('#', $dosen)[2]),
-                        'dosenEmailGeneral' => (explode('#', $dosen)[3] == null) ? null : trim(explode('#', $dosen)[3]),
-                        'dosenPhone' => (explode('#', $dosen)[4] == null) ? null : trim(explode('#', $dosen)[4]),
-                        'dosenStatus' => 1
-                    ];
-                    $this->dosenModel->insert($data);
-                    session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
+                $dosenEmail = $this->dosenModel->cekDosen(['dosenEmailGeneral' => explode('#', $dosen)[3],])->findAll();
+                $dosenId = $this->dosenModel->cekDosen(['dosenSimakadId' => explode('#', $dosen)[5],])->findAll();
+                $idDosen = $this->dosenModel->cekDosen(['dosenSimakadId' => explode('#', $dosen)[5],])->findAll();
+                $email = [];
+                foreach ($dosenEmail as $key => $value) {
+                    $email[] = $value->dosenEmailGeneral;
                 }
+                $id = [];
+                foreach ($dosenId as $key => $value) {
+                    $id[] = $value->dosenSimakadId;
+                }
+                $dsn = '';
+                foreach ($idDosen as $key => $value) {
+                    $dsn = $value->dosenId;
+                }
+                if ($email == null && $id != null) {
+                    $akun = 'Match Found';
+                } elseif ($email != null && $id == null) {
+                    $akun = 'Denied/Duplicate';
+                } elseif ($email == null && $id == null) {
+                    $akun = 'Insert New';
+                } else {
+                    $akun = 'Up To Date';
+                }
+                array_push($dtDosen, [
+                    'dosenFullname' => trim(explode('#', $dosen)[0]),
+                    'dosenShortname' => trim(explode('#', $dosen)[1]),
+                    'dosenEmailCorporate' => (explode('#', $dosen)[2] == null) ? null : trim(explode('#', $dosen)[2]),
+                    'dosenEmailGeneral' => (explode('#', $dosen)[3] == null) ? null : trim(explode('#', $dosen)[3]),
+                    'dosenPhone' => (explode('#', $dosen)[4] == null) ? null : trim(explode('#', $dosen)[4]),
+                    'dosenStatus' => 1,
+                    'dosenAkun' => $akun,
+                    'dosenId' => $dsn,
+                    'dosenSimakadId' => trim(explode('#', $dosen)[5]),
+                ]);
             };
+            $dataSession = ['dtDosen' => $dtDosen];
+            session()->set('dataSession', $dataSession);
         } else {
             $rules = [
                 'dosenFullname' => rv('required', ['required' => 'Nama Lengkap Dosen Harus Diisi']),
@@ -81,24 +104,116 @@ class Dosen extends BaseController
             if (!$this->validate($rules)) {
                 return redirect()->to($url)->withInput();
             };
-            $jumlah = $this->dosenModel->dataExist(
-                [
-                    'dosenEmailGeneral' => $this->request->getVar('dosenEmailGeneral'),
-                ]
-            );
-            if ($jumlah == 0) {
+            $dosenSimakadId = md5($this->request->getvar('dosenEmailGeneral'));
+            $dosenEmail = $this->dosenModel->cekDosen(['dosenEmailGeneral' => $this->request->getvar('dosenEmailGeneral')])->findAll();
+            $dosenId = $this->dosenModel->cekDosen(['dosenSimakadId' => $dosenSimakadId])->findAll();
+            $idDosen = $this->dosenModel->cekDosen(['dosenSimakadId' => $dosenSimakadId])->findAll();
+            $email = [];
+            foreach ($dosenEmail as $key => $value) {
+                $email[] = $value->dosenEmailGeneral;
+            }
+            $id = [];
+            foreach ($dosenId as $key => $value) {
+                $id[] = $value->dosenSimakadId;
+            }
+            $dsn = '';
+            foreach ($idDosen as $key => $value) {
+                $dsn = $value->dosenId;
+            }
+            if ($email == null && $id != null) {
+                $akun = 'Match Found';
+            } elseif ($email != null && $id == null) {
+                $akun = 'Denied/Duplicate';
+            } elseif ($email == null && $id == null) {
+                $akun = 'Insert New';
+            } else {
+                $akun = 'Up To Date';
+            }
+            $dtDosen = [];
+            array_push($dtDosen, [
+                'dosenFullname' => $this->request->getVar('dosenFullname'),
+                'dosenShortname' => $this->request->getVar('dosenShortname'),
+                'dosenEmailCorporate' => null,
+                'dosenEmailGeneral' => $this->request->getVar('dosenEmailGeneral'),
+                'dosenPhone' => $this->request->getVar('dosenPhone'),
+                'dosenStatus' => 0,
+                'dosenAkun' => $akun,
+                'dosenId' => $dsn,
+                'dosenSimakadId' => $dosenSimakadId,
+            ]);
+            $dataSession = ['dtDosen' => $dtDosen];
+            session()->set('dataSession', $dataSession);
+        }
+        return redirect()->to($url);
+    }
+
+    public function abort()
+    {
+        $url = $this->request->getServer('HTTP_REFERER');
+        session()->remove('dataSession');
+        session()->setFlashdata('abort', 'Pembatalan Berhasil!');
+        return redirect()->to($url);
+    }
+
+    public function save()
+    {
+        $dosenId = $this->request->getVar('dosenId');
+        $dosenSimakadId = $this->request->getVar('dosenSimakadId');
+        $dosenFullname = $this->request->getVar('dosenFullname');
+        $dosenShortname = $this->request->getVar('dosenShortname');
+        $dosenEmailCorporate = $this->request->getVar('dosenEmailCorporate');
+        $dosenEmailGeneral = $this->request->getVar('dosenEmailGeneral');
+        $dosenPhone = $this->request->getVar('dosenPhone');
+        $dosenStatus = $this->request->getVar('dosenStatus');
+        $dosenAkun = $this->request->getVar('dosenAkun');
+        $counts = array_count_values($dosenAkun);
+        // $insert = $counts['Insert New'];
+        // $noaction = $counts['Up To Date'];
+        // $update = $counts['Match Found'];
+        // $denied = $counts['Denied/Duplicate'];
+        $dataEktract = [];
+        foreach ($dosenSimakadId as $key => $data) {
+            $dataEktract[] = [
+                'dosenId' => $dosenId[$key],
+                'dosenSimakadId' => $dosenSimakadId[$key],
+                'dosenFullname' => $dosenFullname[$key],
+                'dosenShortname' => $dosenShortname[$key],
+                'dosenEmailCorporate' => $dosenEmailCorporate[$key],
+                'dosenEmailGeneral' => $dosenEmailGeneral[$key],
+                'dosenPhone' => $dosenPhone[$key],
+                'dosenStatus' => $dosenStatus[$key],
+                'dosenAkun' => $dosenAkun[$key],
+            ];
+        }
+
+        foreach ($dataEktract as $key => $value) {
+            if ($value['dosenAkun'] == 'Insert New') {
                 $data = [
-                    'dosenFullname' => trim($this->request->getVar('dosenFullname')),
-                    'dosenShortname' => trim($this->request->getVar('dosenShortname')),
-                    'dosenEmailCorporate' => null,
-                    'dosenEmailGeneral' => ($this->request->getVar('dosenEmailGeneral') == null) ? null : trim($this->request->getVar('dosenEmailGeneral')),
-                    'dosenPhone' => ($this->request->getVar('dosenPhone') == null) ? null : trim($this->request->getVar('dosenPhone')),
-                    'dosenStatus' => 0
+                    'dosenSimakadId' => $value['dosenSimakadId'],
+                    'dosenFullname' => $value['dosenFullname'],
+                    'dosenShortname' => $value['dosenShortname'],
+                    'dosenEmailCorporate' => ($value['dosenEmailCorporate'] == null) ? null : $value['dosenEmailCorporate'],
+                    'dosenEmailGeneral' => $value['dosenEmailGeneral'],
+                    'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
+                    'dosenStatus' => $value['dosenStatus'],
                 ];
                 $this->dosenModel->insert($data);
-                session()->setFlashdata('success', 'Data Dosen Berhasil Ditambahkan');
+            } elseif ($value['dosenAkun'] == 'Match Found') {
+                $data = [
+                    'dosenSimakadId' => $value['dosenSimakadId'],
+                    'dosenFullname' => $value['dosenFullname'],
+                    'dosenShortname' => $value['dosenShortname'],
+                    'dosenEmailCorporate' => ($value['dosenEmailCorporate'] == null) ? null : $value['dosenEmailCorporate'],
+                    'dosenEmailGeneral' => $value['dosenEmailGeneral'],
+                    'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
+                    'dosenStatus' => $value['dosenStatus'],
+                ];
+                $this->dosenModel->update($value['dosenId'], $data);
             }
         }
+        $url = $this->request->getServer('HTTP_REFERER');
+        session()->remove('dataSession');
+
         return redirect()->to($url);
     }
 

@@ -17,7 +17,8 @@ class DosenModel extends Model
         if ($keyword) {
             $builder->like('dosen.dosenFullname', $keyword);
             $builder->orlike('dosen.dosenShortname', $keyword);
-            $builder->orlike('dosen.dosenEmail', $keyword);
+            $builder->orlike('dosen.dosenEmailCorporate', $keyword);
+            $builder->orlike('dosen.dosenEmailGeneral', $keyword);
             $builder->orlike('dosen.dosenPhone', $keyword);
         }
         $builder->orderBy('dosen.dosenId', 'DESC');
@@ -30,6 +31,13 @@ class DosenModel extends Model
         $builder->where($where);
         $query = $builder->countAllResults();
         return $query;
+    }
+
+    public function cekDosen($where)
+    {
+        $builder = $this->table('dosen');
+        $builder->where($where);
+        return $builder;
     }
 
     public function getDosenJadwal($sesi, $tgl)
