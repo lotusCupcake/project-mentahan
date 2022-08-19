@@ -295,7 +295,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Lokasi Acara</label>
-                                            <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
+                                            <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi; ?>">
                                         </div>
                                     </div>
                                 </div>
