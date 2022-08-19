@@ -57,13 +57,17 @@ var calendar = $("#calendar").fullCalendar({
     });
   },
   eventClick: function (event) {
-    // console.log(event);
     var deleteMsg = confirm("Do you really want to delete?");
     if (deleteMsg) {
       hapusEvent(event.id, event);
     }
   },
-  event
+  loading: function (bool) {
+    console.log('loading');
+  },
+  eventAfterAllRender: function (view) {
+    console.log('loading dismiss');
+  }
 });
 
 function hapusEvent(id, title, from) {
@@ -96,8 +100,7 @@ function formatDate(date) {
       padTo2Digits(date.getMonth() + 1),
       padTo2Digits(date.getDate()),
     ].join("-") +
-    " " +
-    [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes())].join(":")
+    " " + [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes())].join(":")
   );
 }
 
@@ -114,8 +117,7 @@ $("#tambahPenjadwalan").fireModal({
   center: true,
   size: "modal-xl",
   closeButton: true,
-  buttons: [
-    {
+  buttons: [{
       text: "Close",
       class: "btn btn-secondary btn-shadow",
       handler: function (modal) {
@@ -151,7 +153,9 @@ function editJadwal(id) {
   startDate = $("#editPenjadwalan" + id)
     .find("[name=startDate]")
     .val();
-  cekAvailDosen({ id: id });
+  cekAvailDosen({
+    id: id
+  });
 }
 
 function dateIsValid(date) {
@@ -204,13 +208,15 @@ function cekDosenSelect(id, result) {
   }
 }
 
-function cekAvailDosen({id = null } = {}) {
+function cekAvailDosen({
+  id = null
+} = {}) {
   // console.log([sesi, startDate]);
 
   if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
     $.ajax({
       type: "POST",
-      url: (id==null)?"/dosen/load":"/dosen/loadEdit",
+      url: (id == null) ? "/dosen/load" : "/dosen/loadEdit",
       dataType: "json",
       data: {
         sesi: sesi,
