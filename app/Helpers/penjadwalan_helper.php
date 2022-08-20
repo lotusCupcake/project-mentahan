@@ -12,3 +12,20 @@ function randomColor()
     $color = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
     return $color[random_int(1, 5)];
 }
+
+function decryptPeserta($peserta)
+{
+    $result = [];
+    foreach (json_decode($peserta)->data as $key => $value) {
+        $result[] = $value->email;
+    }
+    return $result;
+}
+
+
+function getTahunAjaran()
+{
+    $tahunAjaran = new \App\Models\ApiModel;
+    $response = $tahunAjaran->getTahunAjaran();
+    return $response;
+}

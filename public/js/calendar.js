@@ -1,101 +1,97 @@
 $(document).ready(function () {
   $(".tambah").hide();
+  $(".edit").hide();
   cekAvailDosen();
+  $('.fc-goToCalendar-button, .fc-prev-button, .fc-next-button, .fc-nextYear-button, .fc-prevYear-button, .fc-month-button, .fc-agendaWeek-button, .fc-agendaDay-button, .fc-listWeek-button').addClass('btn-primary');
+});
 
-  var calendar = $("#calendar").fullCalendar({
-    height: "auto",
-    header: {
-      left: "prev,next today",
-      center: "title",
-      right: "month,agendaWeek,agendaDay,listWeek",
+var calendar = $("#calendar").fullCalendar({
+  height: "auto",
+  header: {
+    left: "prevYear,prev,next,nextYear today goToCalendar",
+    center: "title",
+    right: "month,agendaWeek,agendaDay,listWeek",
+  },
+  editable: true,
+  events: "/penjadwalan/event",
+  eventRender: function (event, element, view) {
+    if (event.allDay === "true") {
+      event.allDay = true;
+    } else {
+      event.allDay = false;
+    }
+  },
+  customButtons: {
+    goToCalendar: {
+      text: 'Google Calendar',
+      click: function () {
+        window.open("http://calendar.google.com", '_blank');
+      }
     },
-    editable: true,
-    events: "/penjadwalan/event",
-    eventRender: function (event, element, view) {
-      if (event.allDay === "true") {
-        event.allDay = true;
+  },
+  timeFormat: "h:mm",
+  selectable: true,
+  selectHelper: true,
+  select: function (start, end, allDay) {
+    const [date, time] = formatDate(new Date(start)).split(" ");
+    $('[name="startDate"]').val(date);
+    startDate = date;
+    cekAvailDosen();
+    $("#myModal").modal("show");
+  },
+  eventDrop: function (event, delta) {
+    $.ajax({
+      url: "/penjadwalan/eventAjax",
+      data: {
+        interval: delta._days,
+        id: event.id,
+        type: "update",
+      },
+      type: "POST",
+      success: function (response) {
+        displayMessage(event.title + " Updated Successfully");
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+      },
+    });
+  },
+  eventClick: function (event) {
+    var deleteMsg = confirm("Do you really want to delete?");
+    if (deleteMsg) {
+      hapusEvent(event.id, event);
+    }
+  },
+  loading: function (bool) {
+    console.log('loading');
+  },
+  eventAfterAllRender: function (view) {
+    console.log('loading dismiss');
+  }
+});
+
+function hapusEvent(id, title, from) {
+  $.ajax({
+    type: "POST",
+    url: "/penjadwalan/eventAjax",
+    data: {
+      id: id,
+      type: "delete",
+    },
+    success: function (response) {
+      if (from == "penjadwalan") {
+        window.location.replace("/penjadwalan");
+        displayMessage(title + " Deleted Successfully");
       } else {
-        event.allDay = false;
+        calendar.fullCalendar("removeEvents", id);
+        displayMessage(title + " Deleted Successfully");
       }
     },
-    timeFormat: "h:mm",
-    selectable: true,
-    selectHelper: true,
-    select: function (start, end, allDay) {
-      // var title = prompt("Event Title:");
-      // if (title) {
-      //   var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-      //   var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-      //   $.ajax({
-      //     url: "/penjadwalan/eventAjax",
-      //     data: {
-      //       title: title,
-      //       start: start,
-      //       end: end,
-      //       type: "add",
-      //     },
-      //     type: "POST",
-      //     success: function (data) {
-      //       displayMessage("Event Created Successfully");
-      //       calendar.fullCalendar(
-      //         "renderEvent",
-      //         {
-      //           id: data.id,
-      //           title: title,
-      //           start: start,
-      //           end: end,
-      //           allDay: allDay,
-      //         },
-      //         true
-      //       );
-      //       calendar.fullCalendar("unselect");
-      //     },
-      //   });
-      // }
-      const [date, time] = formatDate(new Date(start)).split(" ");
-      $('[name="startDate"]').val(date);
-      startDate = date;
-      cekAvailDosen();
-      $("#myModal").modal("show");
-    },
-    eventDrop: function (event, delta) {
-      // let startDate = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-      // console.log(event.id);
-      // console.log($.fullCalendar.formatDate(event.start, "Y-MM-DD"));
-      // var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-      // var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-      $.ajax({
-        url: "/penjadwalan/eventAjax",
-        data: {
-          interval: delta._days,
-          id: event.id,
-          type: "update",
-        },
-        type: "POST",
-        success: function (response) {
-          displayMessage("Event Updated Successfully");
-        },
-      });
-    },
-    eventClick: function (event) {
-      var deleteMsg = confirm("Do you really want to delete?");
-      if (deleteMsg) {
-        $.ajax({
-          type: "POST",
-          url: "/penjadwalan/eventAjax",
-          data: {
-            id: event.id,
-            type: "delete",
-          },
-          success: function (response) {
-            calendar.fullCalendar("removeEvents", event.id);
-            displayMessage("Event Deleted Successfully");
-          },
-        });
-      }
+    error: function (xhr, ajaxOptions, thrownError) {
+      alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
     },
   });
-});
+}
 
 function formatDate(date) {
   return (
@@ -104,12 +100,7 @@ function formatDate(date) {
       padTo2Digits(date.getMonth() + 1),
       padTo2Digits(date.getDate()),
     ].join("-") +
-    " " +
-    [
-      padTo2Digits(date.getHours()),
-      padTo2Digits(date.getMinutes()),
-      // padTo2Digits(date.getSeconds()),  // 👈️ can also add seconds
-    ].join(":")
+    " " + [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes())].join(":")
   );
 }
 
@@ -126,8 +117,7 @@ $("#tambahPenjadwalan").fireModal({
   center: true,
   size: "modal-xl",
   closeButton: true,
-  buttons: [
-    {
+  buttons: [{
       text: "Close",
       class: "btn btn-secondary btn-shadow",
       handler: function (modal) {
@@ -155,16 +145,78 @@ $("[name=startDate]").change(function () {
   cekAvailDosen();
 });
 
+function editJadwal(id) {
+  sesi = $("#editPenjadwalan" + id)
+    .find("[name=sesi]")
+    .val()
+    .split(",")[0];
+  startDate = $("#editPenjadwalan" + id)
+    .find("[name=startDate]")
+    .val();
+  cekAvailDosen({
+    id: id
+  });
+}
+
 function dateIsValid(date) {
   return date instanceof Date && !isNaN(date);
 }
 
-function cekAvailDosen() {
-  console.log([sesi, startDate]);
+function cekDosenSelect(id, result) {
   if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
     $.ajax({
       type: "POST",
-      url: "/dosen/load",
+      url: "/penjadwalan/select",
+      dataType: "json",
+      data: {
+        id: id,
+      },
+      beforeSend: function (e) {
+        if (e && e.overrideMimeType) {
+          e.overrideMimeType("application/json;charset=UTF-8");
+        }
+      },
+      success: function (response) {
+        // console.log([result, response]);
+        let dosen = response;
+        let html = "";
+        result.forEach((element) => {
+          let selected = "";
+          selected = (dosen.includes(element.dosenEmailGeneral)) ? "selected" : "";
+          html +=
+            '<option value="' +
+            element.dosenEmailGeneral +
+            '" ' +
+            selected +
+            "> <strong>" +
+            element.jumlahAmpu +
+            "</strong> | " +
+            element.dosenFullname +
+            "</option>";
+        });
+        $("#editPenjadwalan" + id)
+          .find('[name="dosen[]"]')
+          .empty();
+        $("#editPenjadwalan" + id)
+          .find('[name="dosen[]"]')
+          .append(html);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+      },
+    });
+  }
+}
+
+function cekAvailDosen({
+  id = null
+} = {}) {
+  // console.log([sesi, startDate]);
+
+  if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
+    $.ajax({
+      type: "POST",
+      url: (id == null) ? "/dosen/load" : "/dosen/loadEdit",
       dataType: "json",
       data: {
         sesi: sesi,
@@ -176,19 +228,23 @@ function cekAvailDosen() {
         }
       },
       success: function (response) {
-        let html = "";
-        response.forEach((element) => {
-          html +=
-            '<option value="' +
-            element.dosenEmailGeneral +
-            '"> <strong>' +
-            element.jumlahAmpu +
-            "</strong> | " +
-            element.dosenFullname +
-            "</option>";
-        });
-        $('[name="dosen[]"]').empty();
-        $('[name="dosen[]"]').append(html);
+        if (id == null) {
+          let html = "";
+          response.forEach((element) => {
+            html +=
+              '<option value="' +
+              element.dosenEmailGeneral +
+              '"> <strong>' +
+              element.jumlahAmpu +
+              "</strong> | " +
+              element.dosenFullname +
+              "</option>";
+          });
+          $('[name="dosen[]"]').empty();
+          $('[name="dosen[]"]').append(html);
+        } else {
+          cekDosenSelect(id, response);
+        }
       },
       error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -198,5 +254,12 @@ function cekAvailDosen() {
 }
 
 function displayMessage(message) {
-  toastr.success(message, "Event");
+  iziToast.show({
+    theme: "dark",
+    icon: "fas fa-check",
+    title: "Notification",
+    message: message,
+    position: "topRight",
+    progressBarColor: "rgb(0, 255, 184)",
+  });
 }

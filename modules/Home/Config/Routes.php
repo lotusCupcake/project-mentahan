@@ -11,3 +11,4 @@ $routes->get('home/list', '\Modules\Home\Controllers\Home::listCalendar');
 $routes->get('home/listAll', '\Modules\Home\Controllers\Home::listCalendarAll');
 $routes->get('home/col', '\Modules\Home\Controllers\Home::colorCalendar');
 $routes->get('home/profile', '\Modules\Home\Controllers\Home::getProfile');
+$routes->get('home/umay', '\Modules\Home\Controllers\Home::calendar');

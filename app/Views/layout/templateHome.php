@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/summernote/dist/summernote-bs4.css">
   <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/bootstrap-social/bootstrap-social.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/izitoast/dist/css/iziToast.min.css">
+
 
   <!--fullcalendar plugin files -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
@@ -31,6 +33,27 @@
 
   <!-- for plugin notification -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+  <style>
+    #loading {
+      /* width: 100%;
+      height: 100%;
+      top: 30%;
+      left: 30%;
+      position: fixed;
+      display: block;
+      opacity: 0.7;
+      background-color: #fff;*/
+      z-index: 99;
+      text-align: center;
+    }
+
+    #loading-image {
+      /*position: absolute;
+      top: 100px;
+      left: 240px;*/
+      z-index: 100;
+    }
+  </style>
 </head>
 
 
@@ -45,11 +68,9 @@
   </div>
   <!-- General JS Scripts -->
   <?= script_tag('template/node_modules/jquery/dist/jquery.min.js') ?>
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
   <?= script_tag('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js') ?>
   <?= script_tag('template/node_modules/moment/min/moment.min.js') ?>
   <?= script_tag("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js") ?>
-  <?= script_tag("https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js") ?>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <?= script_tag('template/node_modules/bootstrap/dist/js/bootstrap.min.js') ?>
   <?= script_tag('template/node_modules/jquery.nicescroll/dist/jquery.nicescroll.min.js') ?>
@@ -67,20 +88,16 @@
   <?= script_tag('template/node_modules/cleave.js/dist/cleave.min.js') ?>
   <?= script_tag('template/node_modules/cleave.js/dist/addons/cleave-phone.us.js') ?>
   <?= script_tag('template/node_modules/summernote/dist/summernote-bs4.js') ?>
+  <?= script_tag('template/node_modules/izitoast/dist/js/iziToast.min.js') ?>
 
   <!-- Template JS File -->
-  <?= script_tag('template/assets/js/scripts.js') ?>
   <?= script_tag('https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js') ?>
 
   <!-- Page Specific JS File -->
-  <?= script_tag('template/assets/js/page/forms-advanced-forms.js') ?>
   <?= script_tag('template/assets/js/page/modules-datatables.js') ?>
 
   <?= script_tag('js/calendar.js') ?>
-
-  <script>
-
-  </script>
+  <?= script_tag('template/assets/js/scripts.js') ?>
 
 </body>
 

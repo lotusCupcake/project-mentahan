@@ -39,7 +39,7 @@
             <form action="/penjadwalan/add" id="formTambah" method="post">
                 <input type="hidden" name="from" value="dashboard">
                 <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4>
+                    <h4 class="modal-title">Tambah Penjadwalan</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;
                     </button>
                 </div>
@@ -51,7 +51,7 @@
                                 <div class="selectgroup selectgroup-pills">
                                     <?php foreach ($jenisJadwal as $key => $jenis) : ?>
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>" class="selectgroup-input">
+                                            <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input">
                                             <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
                                         </label>
                                     <?php endforeach ?>
@@ -62,7 +62,7 @@
                                 <select class="form-control select2" name="blok">
                                     <option value="">Pilih Blok</option>
                                     <?php foreach ($blok as $key => $blok) : ?>
-                                        <option value="<?= $blok->matkulBlokId ?>"><?= $blok->matkulBlokKode ?> - <?= $blok->matkulBlokNama ?> (<?= $blok->matkulBlokKurikulumNama ?>)</option>
+                                        <option value="<?= $blok->matkulBlokId ?>,<?= $blok->matkulBlokNama ?>"><?= $blok->matkulBlokNama ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -90,20 +90,44 @@
                                 <select class="form-control select2" multiple="" name="dosen[]">
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nama Acara</label>
                                 <input name="namaAcara" type="text" class="form-control" value="">
                             </div>
-
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Lokasi Acara</label>
-                                <input name="lokasi" type="text" class="form-control" value="">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Angkatan</label>
+                                        <select class="form-control select2" name="angkatan">
+                                            <option value="">Pilih Angkatan</option>
+                                            <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                                <option value="<?= $i ?>" <?= (old('angkatan') == $i) ? "selected" : ""; ?>><?= $i ?></option>
+                                            <?php endfor ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Lokasi Acara</label>
+                                        <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Deskripsi Acara</label>
-                                <textarea name="deskripsiAcara" class="form-control" style="height:100px"></textarea>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Kelas</label>
+                                        <input type="text" name="deskripsiAcara" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class=" form-group">
+                                        <label>Catatan Ekstra</label>
+                                        <input type="text" name="noteAcara" class="form-control">
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Warna Acara</label>
@@ -118,13 +142,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class=" form-group">
-                                <label>Catatan Ekstra</label>
-                                <textarea name="noteAcara" class="form-control" style="height:90px"></textarea>
-                            </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Modal footer -->
