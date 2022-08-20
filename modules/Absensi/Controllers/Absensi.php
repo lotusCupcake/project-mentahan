@@ -69,6 +69,11 @@ class Absensi extends BaseController
         return redirect()->to($url);
     }
 
+    public function edit($id)
+    {
+        dd($_POST);
+    }
+
     // public function upload()
     // {
     //     $file_excel = $this->request->getFile('fileexcel');

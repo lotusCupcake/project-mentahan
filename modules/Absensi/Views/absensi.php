@@ -49,9 +49,10 @@
                                             <td><?= $data->absensiTahunAjaran ?></td>
                                             <td><?= $data->absensiAngkatan; ?></td>
                                             <td><?= $data->matkulBlokNama; ?></td>
-                                            <td><span data-toggle="modal" data-target="#dosen" class="text-primary" style="cursor:pointer">Lihat Daftar Dosen</span></td>
+                                            <td><span data-toggle="modal" data-target="#dosen<?= $data->absensiId ?>" class="text-primary" style="cursor:pointer">Lihat Daftar Dosen</span></td>
                                             <td style="text-align:center">
-                                                <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus"><i class="fas fa-trash"></i></button>
+                                                <button class="btn btn-icon icon-left btn-warning" data-toggle="modal" data-target="#edit<?= $data->absensiId ?>"><i class="fas fa-pen"></i></button>
+                                                <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->absensiId ?>"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
@@ -68,8 +69,8 @@
     </section>
 </div>
 
-<!-- start modal hapus  -->
-<div class="modal fade" role="dialog" id="tambah">
+<!-- start modal tambah  -->
+<div class="modal fade" role="dialog" id="edit">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -118,54 +119,134 @@
         </div>
     </div>
 </div>
-<!-- end modal hapus -->
+<!-- end modal tambah -->
 
-<!-- start modal dosen  -->
-<div class="modal fade" role="dialog" id="dosen">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Data <strong><?= $title; ?></strong></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" name="absensiTahunAjaran" value="<?= $tahunAjaran ?>">
-                <div class="form-group">
-                    <label>Angkatan</label>
-                    <select class="form-control select2" name="absensiAngkatan">
-                        <option value="">Pilih Angkatan</option>
-                        <?php for ($i = date("Y"); $i >= 2016; $i--) : ?>
-                            <option value="<?= $i ?>"><?= $i ?></option>
-                        <?php endfor ?>
-                    </select>
+<!-- start modal edit  -->
+<?php foreach ($absen as $edit) : ?>
+    <div class="modal fade" role="dialog" id="edit<?= $edit->absensiId ?>">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data <strong><?= $title; ?></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>Nama Blok</label>
-                    <select class="form-control select2" name="absensiMatkulBlokId">
-                        <option value="">Pilih Blok</option>
-                        <?php foreach ($blok as $key => $option) : ?>
-                            <option value="<?= $option->matkulBlokId ?>"><?= $option->matkulBlokNama ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Dosen</label>
-                    <select class="form-control select2" multiple="" name="absensiPeserta[]">
-                        <option value="">Pilih Dosen</option>
-                        <?php foreach ($dosen as $key => $option) : ?>
-                            <option value="<?= $option->dosenEmailGeneral ?>"><?= $option->dosenFullname ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer bg-whitesmoke br">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form method="post" action="/absensi/ubah/<?= $edit->absensiId ?>">
+                    <?= csrf_field(); ?>
+                    <div class="modal-body">
+                        <input type="hidden" value="PUT" name="_method">
+                        <input type="hidden" name="absensiTahunAjaran" value="<?= $edit->absensiTahunAjaran ?>">
+                        <div class="form-group">
+                            <label>Angkatan</label>
+                            <select class="form-control select2" name="absensiAngkatan">
+                                <option value="">Pilih Angkatan</option>
+                                <?php for ($i = date("Y"); $i >= 2016; $i--) : ?>
+                                    <option value="<?= $i ?>" <?= ($i == $edit->absensiAngkatan) ? 'selected' : ''; ?>><?= $i ?></option>
+                                <?php endfor ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Blok</label>
+                            <select class="form-control select2" name="absensiMatkulBlokId">
+                                <option value="">Pilih Blok</option>
+                                <?php foreach ($blok as $key => $option) : ?>
+                                    <option value="<?= $option->matkulBlokId ?>" <?= ($option->matkulBlokId == $edit->absensiMatkulBlokId) ? 'selected' : ''; ?>><?= $option->matkulBlokNama ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dosen</label>
+                            <select class="form-control select2" multiple="" name="absensiPeserta[]">
+                                <option value="">Pilih Dosen</option>
+                                <?php foreach ($dosen as $key => $option) : ?>
+                                    <option value="<?= $option->dosenEmailGeneral ?>" <?= (in_array($option->dosenEmailGeneral, decryptPeserta($edit->absensiPeserta))) ? 'selected' : ''; ?>><?= $option->dosenFullname ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+<?php endforeach ?>
+<!-- end modal edit -->
+
+<!-- start modal hapus  -->
+<?php foreach ($absen as $hapus) : ?>
+    <div class="modal fade" tabindex="-1" role="dialog" id="hapus<?= $hapus->absensiId; ?>">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus Data <strong><?= $title; ?></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah kamu benar ingin menghapus data <?= $title ?> blok <strong><?= $hapus->matkulBlokNama; ?></strong> angkatan <strong><?= $hapus->absensiAngkatan; ?></strong> tahun ajaran <strong><?= $hapus->absensiTahunAjaran; ?></strong>?</p>
+                    <p class="text-warning"><small>This action cannot be undone</small></p>
+                </div>
+                <form action="/absensi/hapus/<?= $hapus->absensiId; ?>" method="post">
+                    <?= csrf_field(); ?>
+                    <input type="hidden" name="_method" value="DELETE">
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endforeach ?>
+<!-- end modal hapus -->
+
+<!-- start modal dosen  -->
+<?php foreach ($absen as $dosen) : ?>
+    <div class="modal fade" role="dialog" id="dosen<?= $dosen->absensiId ?>">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Daftar <strong>Dosen</strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php $dsn = json_decode($dosen->absensiPeserta)->data ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="2%" style="text-align:center" scope="col">No.</th>
+                                    <th scope="col">Nama Lengkap</th>
+                                    <th scope="col">Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 1;
+                                foreach ($dsn as $dt) : ?>
+                                    <tr>
+                                        <td style="text-align:center" scope="row"><?= $no++; ?></td>
+                                        <td><?= getDosenName($dt->email) ?></td>
+                                        <td><?= $dt->email ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach ?>
 <!-- end modal dosen -->
 
 <?= view('layout/templateFooter'); ?>

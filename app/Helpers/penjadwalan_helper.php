@@ -29,3 +29,10 @@ function getTahunAjaran()
     $response = $tahunAjaran->getTahunAjaran();
     return $response;
 }
+
+function getDosenName($email)
+{
+    $dosen = new \Modules\Dosen\Models\DosenModel;
+    $fullName = $dosen->where(['dosenEmailGeneral' => $email])->findAll()[0]->dosenFullname;
+    return $fullName;
+}
