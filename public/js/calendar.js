@@ -40,21 +40,9 @@ var calendar = $("#calendar").fullCalendar({
     $("#myModal").modal("show");
   },
   eventDrop: function (event, delta) {
-    $.ajax({
-      url: "/penjadwalan/eventAjax",
-      data: {
-        interval: delta._days,
-        id: event.id,
-        type: "update",
-      },
-      type: "POST",
-      success: function (response) {
-        displayMessage(event.title + " Updated Successfully");
-      },
-      error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
-      },
-    });
+    // calendar.fullCalendar("refetchEvents");
+    // displayMessageError(event.title );
+    ubahJdwl(event, delta);
   },
   eventClick: function (event) {
     var deleteMsg = confirm("Do you really want to delete?");
@@ -69,6 +57,25 @@ var calendar = $("#calendar").fullCalendar({
     console.log('loading dismiss');
   }
 });
+
+function ubahJdwl(event, delta) {
+  $.ajax({
+      url: "/penjadwalan/eventAjax",
+      data: {
+        interval: delta._days,
+        id: event.id,
+        type: "update",
+      },
+      type: "POST",
+      success: function (response) {
+        displayMessage(event.title + " Updated Successfully");
+        
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+      },
+    });
+}
 
 function hapusEvent(id, title, from) {
   $.ajax({
@@ -261,5 +268,16 @@ function displayMessage(message) {
     message: message,
     position: "topRight",
     progressBarColor: "rgb(0, 255, 184)",
+  });
+}
+
+function displayMessageError(message) {
+  iziToast.show({
+    theme: "dark",
+    icon: "fas fa-times",
+    title: "Error",
+    message: message + " Update Failure",
+    position: "topRight",
+    progressBarColor: "rgb(255, 0, 72)",
   });
 }
