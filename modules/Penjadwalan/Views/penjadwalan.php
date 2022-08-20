@@ -42,6 +42,9 @@
             <?php if ($validation->hasError('color')) : ?>
                 <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('color')]]); ?>
             <?php endif; ?>
+            <?php if ($validation->hasError('angkatan')) : ?>
+                <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('angkatan')]]); ?>
+            <?php endif; ?>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -161,9 +164,24 @@
                     <label>Nama Acara</label>
                     <input name="namaAcara" type="text" class="form-control" value="<?= old('namaAcara'); ?>">
                 </div>
-                <div class="form-group">
-                    <label>Lokasi Acara</label>
-                    <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Angkatan</label>
+                            <select class="form-control select2" name="angkatan">
+                                <option value="">Pilih Angkatan</option>
+                                <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Lokasi Acara</label>
+                            <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -262,9 +280,24 @@
                                     <label>Nama Acara</label>
                                     <input name="namaAcara" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanJudul ?>">
                                 </div>
-                                <div class="form-group">
-                                    <label>Lokasi Acara</label>
-                                    <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi ?>">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Angkatan</label>
+                                            <select class="form-control select2" name="angkatan">
+                                                <option value="">Pilih Angkatan</option>
+                                                <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                                    <option value="<?= $i ?>" <?= ($i == $jadwalEdit->penjadwalanAngkatan) ? "selected" : "" ?>><?= $i ?></option>
+                                                <?php endfor ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Lokasi Acara</label>
+                                            <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi; ?>">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">

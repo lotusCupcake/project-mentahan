@@ -68,6 +68,7 @@ class Penjadwalan extends BaseController
             'lokasi' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
             'deskripsiAcara' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
             'color' => rv('required', ['required' => 'Dosen Harus Dipilih']),
+            'angkatan' => rv('required', ['required' => 'Angkatan Harus Dipilih']),
         ];
         if (!$this->validate($rules)) {
             if ($from == null) {
@@ -122,6 +123,8 @@ class Penjadwalan extends BaseController
                 'penjadwalanEndDate' => $eventEnd,
                 'penjadwalanPeserta' => json_encode(['data' => $dosen]),
                 'penjadwalanNotes' => $this->request->getVar('noteAcara'),
+                'penjadwalanAngkatan' => $this->request->getVar('angkatan'),
+                'penjadwalanTahunAjaran' => getTahunAjaran()
             ];
             if ($this->penjadwalan->insert($data)) {
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
@@ -241,6 +244,8 @@ class Penjadwalan extends BaseController
                 'penjadwalanEndDate' => $eventEnd,
                 'penjadwalanPeserta' => json_encode(['data' => $dosen]),
                 'penjadwalanNotes' => $this->request->getVar('noteAcara'),
+                'penjadwalanAngkatan' => $this->request->getVar('angkatan'),
+                'penjadwalanTahunAjaran' => getTahunAjaran()
             ];
             if ($this->penjadwalan->update($id, $data)) {
                 session()->setFlashdata('success', 'Data berhasil diubah');

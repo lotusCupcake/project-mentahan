@@ -33,6 +33,27 @@
 
   <!-- for plugin notification -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+  <style>
+    #loading {
+      /* width: 100%;
+      height: 100%;
+      top: 30%;
+      left: 30%;
+      position: fixed;
+      display: block;
+      opacity: 0.7;
+      background-color: #fff;*/
+      z-index: 99;
+      text-align: center;
+    }
+
+    #loading-image {
+      /*position: absolute;
+      top: 100px;
+      left: 240px;*/
+      z-index: 100;
+    }
+  </style>
 </head>
 
 

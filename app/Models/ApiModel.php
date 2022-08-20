@@ -35,7 +35,7 @@ class ApiModel extends Model
 
     public function getTahunAjaran()
     {
-        $response = $this->curl->request("GET", "https://api.umsu.ac.id/Laporankeu/getTermYear", [
+        $response = $this->curl->request("GET", "https://api.umsu.ac.id/digiSched/getTahunAkademik", [
             "headers" => [
                 "Accept" => "application/json"
             ],

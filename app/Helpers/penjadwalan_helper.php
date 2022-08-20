@@ -21,3 +21,11 @@ function decryptPeserta($peserta)
     }
     return $result;
 }
+
+
+function getTahunAjaran()
+{
+    $tahunAjaran = new \App\Models\ApiModel;
+    $response = $tahunAjaran->getTahunAjaran();
+    return $response;
+}
