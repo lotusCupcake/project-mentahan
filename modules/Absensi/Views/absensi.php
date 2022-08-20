@@ -48,8 +48,8 @@
                                             <td style="text-align:center" scope="row"><?= $no++; ?></td>
                                             <td><?= $data->absensiTahunAjaran ?></td>
                                             <td><?= $data->absensiAngkatan; ?></td>
-                                            <td><?= $data->absensiMatkulBlokId; ?></td>
-                                            <td><?= $data->absensiPeserta; ?></td>
+                                            <td><?= $data->matkulBlokNama; ?></td>
+                                            <td><span data-toggle="modal" data-target="#dosen" class="text-primary" style="cursor:pointer">Lihat Daftar Dosen</span></td>
                                             <td style="text-align:center">
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus"><i class="fas fa-trash"></i></button>
                                             </td>
@@ -78,21 +78,18 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="/absensi/tambah" enctype="multipart/form-data">
+            <form method="post" action="/absensi/tambah">
                 <?= csrf_field(); ?>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Tahun Ajaran</label>
-                        <select class="form-control select2" name="absensiTahunAjaran">
-                            <option value="">Pilih Tahun Ajaran</option>
-                            <?php foreach ($tahunAjaran as $key => $option) : ?>
-                                <option value="<?= $option->Term_Year_Id ?>"><?= $option->Term_Year_Name ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
+                    <input type="hidden" name="absensiTahunAjaran" value="<?= $tahunAjaran ?>">
                     <div class="form-group">
                         <label>Angkatan</label>
-                        <input name="absensiAngkatan" type="number" class="form-control">
+                        <select class="form-control select2" name="absensiAngkatan">
+                            <option value="">Pilih Angkatan</option>
+                            <?php for ($i = date("Y"); $i >= 2016; $i--) : ?>
+                                <option value="<?= $i ?>"><?= $i ?></option>
+                            <?php endfor ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Nama Blok</label>
@@ -122,6 +119,54 @@
     </div>
 </div>
 <!-- end modal hapus -->
+
+<!-- start modal dosen  -->
+<div class="modal fade" role="dialog" id="dosen">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Data <strong><?= $title; ?></strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="absensiTahunAjaran" value="<?= $tahunAjaran ?>">
+                <div class="form-group">
+                    <label>Angkatan</label>
+                    <select class="form-control select2" name="absensiAngkatan">
+                        <option value="">Pilih Angkatan</option>
+                        <?php for ($i = date("Y"); $i >= 2016; $i--) : ?>
+                            <option value="<?= $i ?>"><?= $i ?></option>
+                        <?php endfor ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nama Blok</label>
+                    <select class="form-control select2" name="absensiMatkulBlokId">
+                        <option value="">Pilih Blok</option>
+                        <?php foreach ($blok as $key => $option) : ?>
+                            <option value="<?= $option->matkulBlokId ?>"><?= $option->matkulBlokNama ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Dosen</label>
+                    <select class="form-control select2" multiple="" name="absensiPeserta[]">
+                        <option value="">Pilih Dosen</option>
+                        <?php foreach ($dosen as $key => $option) : ?>
+                            <option value="<?= $option->dosenEmailGeneral ?>"><?= $option->dosenFullname ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal dosen -->
 
 <?= view('layout/templateFooter'); ?>
 
