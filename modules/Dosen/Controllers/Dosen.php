@@ -72,13 +72,13 @@ class Dosen extends BaseController
                     $dsn = $value->dosenId;
                 }
                 if ($email == null && $id != null) {
-                    $akun = 'Match Found';
+                    $akun = 'Update';
                 } elseif ($email != null && $id == null) {
                     $akun = 'Denied/Duplicate';
                 } elseif ($email == null && $id == null) {
                     $akun = 'Insert New';
                 } else {
-                    $akun = 'Up To Date';
+                    $akun = 'No Action';
                 }
                 array_push($dtDosen, [
                     'dosenFullname' => trim(explode('#', $dosen)[0]),
@@ -121,13 +121,13 @@ class Dosen extends BaseController
                 $dsn = $value->dosenId;
             }
             if ($email == null && $id != null) {
-                $akun = 'Match Found';
+                $akun = 'Update';
             } elseif ($email != null && $id == null) {
                 $akun = 'Denied/Duplicate';
             } elseif ($email == null && $id == null) {
                 $akun = 'Insert New';
             } else {
-                $akun = 'Up To Date';
+                $akun = 'No Action';
             }
             $dtDosen = [];
             array_push($dtDosen, [
@@ -166,11 +166,11 @@ class Dosen extends BaseController
         $dosenPhone = $this->request->getVar('dosenPhone');
         $dosenStatus = $this->request->getVar('dosenStatus');
         $dosenAkun = $this->request->getVar('dosenAkun');
-        $counts = array_count_values($dosenAkun);
-        // $insert = $counts['Insert New'];
-        // $noaction = $counts['Up To Date'];
-        // $update = $counts['Match Found'];
-        // $denied = $counts['Denied/Duplicate'];
+        $counts['inserted'] = 0;
+        $counts['noaction'] = 0;
+        $counts['updated'] = 0;
+        $counts['denied'] = 0;
+        $counts['error'] = 0;
         $dataEktract = [];
         foreach ($dosenSimakadId as $key => $data) {
             $dataEktract[] = [
@@ -197,8 +197,12 @@ class Dosen extends BaseController
                     'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
                     'dosenStatus' => $value['dosenStatus'],
                 ];
-                $this->dosenModel->insert($data);
-            } elseif ($value['dosenAkun'] == 'Match Found') {
+                if ($this->dosenModel->insert($data)) {
+                    $counts['inserted']++;
+                } else {
+                    $counts['error']++;
+                }
+            } elseif ($value['dosenAkun'] == 'Update') {
                 $data = [
                     'dosenSimakadId' => $value['dosenSimakadId'],
                     'dosenFullname' => $value['dosenFullname'],
@@ -208,12 +212,21 @@ class Dosen extends BaseController
                     'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
                     'dosenStatus' => $value['dosenStatus'],
                 ];
-                $this->dosenModel->update($value['dosenId'], $data);
+                if ($this->dosenModel->update($value['dosenId'], $data)) {
+                    $counts['updated']++;
+                } else {
+                    $counts['error']++;
+                }
+            } elseif ($value['dosenAkun'] == 'Denied/Duplicate') {
+                $counts['denied']++;
+            } else {
+                $counts['noaction']++;
             }
         }
         $url = $this->request->getServer('HTTP_REFERER');
         session()->remove('dataSession');
-
+        session()->setFlashdata('counts', $counts);
+        session()->setFlashdata('success', 'Perintah Berhasil Dijalankan');
         return redirect()->to($url);
     }
 
@@ -236,7 +249,7 @@ class Dosen extends BaseController
             if ($jumlah == 0) {
                 $data = ['dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral'))];
                 if ($this->dosenModel->update($id, $data)) {
-                    session()->setFlashdata('success', 'Data Dosen Berhasil Diupdate');
+                    session()->setFlashdata('update', 'Data Dosen Berhasil Diupdate');
                 }
             } else {
                 session()->setFlashdata('danger', 'Email General Dosen Sudah Terdaftar');
@@ -265,7 +278,7 @@ class Dosen extends BaseController
                     'dosenPhone' => trim($this->request->getVar('dosenPhone')),
                 ];
                 if ($this->dosenModel->update($id, $data)) {
-                    session()->setFlashdata('success', 'Data Dosen Berhasil Diupdate');
+                    session()->setFlashdata('update', 'Data Dosen Berhasil Diupdate');
                 }
             } else {
                 session()->setFlashdata('danger', 'Email Dosen Sudah Terdaftar');
@@ -278,7 +291,7 @@ class Dosen extends BaseController
     {
         $url = $this->request->getServer('HTTP_REFERER');
         if ($this->dosenModel->delete($id)) {
-            session()->setFlashdata('success', 'Data Dosen Berhasil Dihapus');
+            session()->setFlashdata('update', 'Data Dosen Berhasil Dihapus');
         };
         return redirect()->to($url);
     }

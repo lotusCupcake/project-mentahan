@@ -20,17 +20,20 @@
                     <button class="btn btn-icon icon-left btn-primary" data-toggle="modal" data-target="#tambah"><i class="fas fa-plus"></i> Tambah Data</button>
                 </div>
                 <div class="card-body">
+                    <?php if (!empty(session()->getFlashdata('success'))) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
+                    <?php endif; ?>
                     <?php if (!empty(session()->getFlashdata('abort'))) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('abort')]]); ?>
                     <?php endif; ?>
                     <?php if (!empty(session()->get('dataSession')['dtDosen'])) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['info', 'far fa-lightbulb', 'Info!', 'Pastikan Email General Dosen Valid/Tidak Kosong']]); ?>
                     <?php endif; ?>
-                    <?php if ($validation->hasError('dosenEmail')) : ?>
-                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosenEmail')]]); ?>
+                    <?php if ($validation->hasError('dataDosen')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataDosen')]]); ?>
                     <?php endif; ?>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th width="2%" style="text-align:center" scope="col">No.</th>
@@ -59,16 +62,24 @@
                                                 <td><input type="text" name="dosenEmailGeneral[]" class="form-control" value="<?= $sync['dosenEmailGeneral']; ?>" required></td>
                                                 <td><input type="text" name="dosenPhone[]" class="form-control" value="<?= $sync['dosenPhone']; ?>" readonly></td>
                                                 <td><input type="text" name="dosenStatus[]" class="form-control" value="<?= ($sync['dosenStatus'] == 1) ? 'Internal' : 'Eksternal'; ?>" readonly></td>
-                                                <td><input type="hidden" name="dosenAkun[]" class="form-control" id="akun" value="<?= $sync['dosenAkun']; ?>" readonly> <label for="akun" class="<?= ($sync['dosenAkun'] == 'Match Found') ? 'text-warning' : (($sync['dosenAkun'] == 'Denied/Duplicate') ? 'text-danger' : (($sync['dosenAkun'] == 'Insert New') ? 'text-success' : '')); ?>"><?= $sync['dosenAkun']; ?></label></td>
+                                                <td><input type="hidden" name="dosenAkun[]" class="form-control" id="akun" value="<?= $sync['dosenAkun']; ?>" readonly> <label for="akun" class="<?= ($sync['dosenAkun'] == 'Update') ? 'text-warning' : (($sync['dosenAkun'] == 'Denied/Duplicate') ? 'text-danger' : (($sync['dosenAkun'] == 'Insert New') ? 'text-success' : '')); ?>"><?= $sync['dosenAkun']; ?></label></td>
                                             </tr>
                                         <?php endforeach ?>
                                     <?php else : ?>
-                                        <?= view('layout/templateEmpty', ['jumlahSpan' => 7]); ?>
+                                        <?= view('layout/templateEmptySession', ['jumlahSpan' => 8]); ?>
                                     <?php endif ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <?php if (!empty(session()->getFlashdata('counts'))) : ?>
+                    <div class="card-footer">
+                        <div><span><strong>Insert New: <?= session()->get('counts')['inserted'] ?></strong></span></div>
+                        <div><span><strong>Update: <?= session()->get('counts')['updated'] ?></strong></span></div>
+                        <div><span><strong>Denied/Duplicate: <?= session()->get('counts')['denied'] ?></strong></span></div>
+                        <div><span><strong>No Action: <?= session()->get('counts')['noaction'] ?></strong></span></div>
+                    </div>
+                <?php endif ?>
                 <?php if (!empty(session()->get('dataSession')['dtDosen'])) : ?>
                     <div class="card-footer">
                         <a href="/dosen/batal" type="button" class="btn btn-icon icon-left btn-danger mr-2"><i class="fas fa-trash"></i> Batal</a>
@@ -92,14 +103,11 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <?php if (!empty(session()->getFlashdata('success'))) : ?>
-                        <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
+                    <?php if (!empty(session()->getFlashdata('update'))) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('update')]]); ?>
                     <?php endif; ?>
                     <?php if (!empty(session()->getFlashdata('danger'))) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', session()->getFlashdata('danger')]]); ?>
-                    <?php endif; ?>
-                    <?php if ($validation->hasError('dataDosen')) : ?>
-                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataDosen')]]); ?>
                     <?php endif; ?>
                     <?php if ($validation->hasError('dosenFullname')) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dosenFullname')]]); ?>
@@ -227,19 +235,19 @@
                             <input type="hidden" name="dosen" value="eksternal">
                             <div class="form-group">
                                 <label>Nama Lengkap</label>
-                                <input name="dosenFullname" type="text" class="form-control">
+                                <input name="dosenFullname" type="text" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Nama</label>
-                                <input name="dosenShortname" type="text" class="form-control">
+                                <input name="dosenShortname" type="text" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input name="dosenEmailGeneral" type="email" class="form-control">
+                                <input name="dosenEmailGeneral" type="email" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Handphone</label>
-                                <input name="dosenPhone" type="number" class="form-control">
+                                <input name="dosenPhone" type="number" class="form-control" required>
                             </div>
                             <div class="modal-footer bg-whitesmoke br">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
