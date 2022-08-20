@@ -233,7 +233,7 @@ function cekAvailDosen({
           response.forEach((element) => {
             html +=
               '<option value="' +
-              element.dosenEmailGeneral +
+              element.dosenSimakadId +','+element.dosenEmailGeneral+
               '"> <strong>' +
               element.jumlahAmpu +
               "</strong> | " +
