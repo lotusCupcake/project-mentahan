@@ -192,7 +192,7 @@ function cekDosenSelect(id, result) {
           selected = (dosen.includes(element.dosenEmailGeneral)) ? "selected" : "";
           html +=
             '<option value="' +
-            element.dosenEmailGeneral +
+            element.dosenSimakadId +','+element.dosenEmailGeneral+
             '" ' +
             selected +
             "> <strong>" +

@@ -14,6 +14,7 @@ class AbsensiModel extends Model
     public function getAbsen($keyword = null)
     {
         $builder = $this->table('absensi');
+        $builder->join('matkul_blok', 'matkul_blok.matkulBlokId = absensi.absensiMatkulBlokId');
         if ($keyword) {
             $builder->orlike('absensi.absensiPeserta', $keyword);
         }

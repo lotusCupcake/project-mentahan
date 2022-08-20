@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "codeigniter4/framework",
-            "version": "v4.2.3",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeigniter4/framework.git",
-                "reference": "c7549f2efce9b7ab9d3c79987c5f3934cd1ea47b"
+                "reference": "f91bc95493dcbdc398372e1366f09827656f2982"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeigniter4/framework/zipball/c7549f2efce9b7ab9d3c79987c5f3934cd1ea47b",
-                "reference": "c7549f2efce9b7ab9d3c79987c5f3934cd1ea47b",
+                "url": "https://api.github.com/repos/codeigniter4/framework/zipball/f91bc95493dcbdc398372e1366f09827656f2982",
+                "reference": "f91bc95493dcbdc398372e1366f09827656f2982",
                 "shasum": ""
             },
             "require": {
@@ -62,7 +62,7 @@
                 "slack": "https://codeigniterchat.slack.com",
                 "source": "https://github.com/codeigniter4/CodeIgniter4"
             },
-            "time": "2022-08-07T00:10:38+00:00"
+            "time": "2022-08-13T13:46:07+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -249,16 +249,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.261.0",
+            "version": "v0.262.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "c91c5a694e3b8bca37136b830072a23f2c1250fa"
+                "reference": "c2e1408ba2b9e31df2d1c0b136f3247e8818874d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/c91c5a694e3b8bca37136b830072a23f2c1250fa",
-                "reference": "c91c5a694e3b8bca37136b830072a23f2c1250fa",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/c2e1408ba2b9e31df2d1c0b136f3247e8818874d",
+                "reference": "c2e1408ba2b9e31df2d1c0b136f3247e8818874d",
                 "shasum": ""
             },
             "require": {
@@ -287,9 +287,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.261.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.262.0"
             },
-            "time": "2022-08-08T01:28:12+00:00"
+            "time": "2022-08-14T01:06:11+00:00"
         },
         {
             "name": "google/auth",
@@ -4303,7 +4303,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.4 || ^8.1"
+        "php": "^7.4"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"
