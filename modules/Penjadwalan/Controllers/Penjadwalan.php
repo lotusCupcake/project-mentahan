@@ -82,7 +82,7 @@ class Penjadwalan extends BaseController
         $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
         $dosen = [];
         foreach ($this->request->getVar('dosen') as $key => $value) {
-            $dosen[] = ['email' => $value];
+            $dosen[] = ['id' => explode(',', $value)[0], 'email' => explode(',', $value)[1]];
         }
         $angkatan  = '2020';
         $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
@@ -124,7 +124,8 @@ class Penjadwalan extends BaseController
                 'penjadwalanPeserta' => json_encode(['data' => $dosen]),
                 'penjadwalanNotes' => $this->request->getVar('noteAcara'),
                 'penjadwalanAngkatan' => $this->request->getVar('angkatan'),
-                'penjadwalanTahunAjaran' => getTahunAjaran()
+                'penjadwalanTahunAjaran' => getTahunAjaran(),
+                'penjadwalanCreatedBy' => user()->email,
             ];
             if ($this->penjadwalan->insert($data)) {
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
@@ -204,7 +205,7 @@ class Penjadwalan extends BaseController
         $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
         $dosen = [];
         foreach ($this->request->getVar('dosen') as $key => $value) {
-            $dosen[] = ['email' => $value];
+            $dosen[] = ['id' => explode(',', $value)[0], 'email' => explode(',', $value)[1]];
         }
         $angkatan  = '2020';
         $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
@@ -245,7 +246,8 @@ class Penjadwalan extends BaseController
                 'penjadwalanPeserta' => json_encode(['data' => $dosen]),
                 'penjadwalanNotes' => $this->request->getVar('noteAcara'),
                 'penjadwalanAngkatan' => $this->request->getVar('angkatan'),
-                'penjadwalanTahunAjaran' => getTahunAjaran()
+                'penjadwalanTahunAjaran' => getTahunAjaran(),
+                'penjadwalanModifiedBy' => user()->email,
             ];
             if ($this->penjadwalan->update($id, $data)) {
                 session()->setFlashdata('success', 'Data berhasil diubah');
@@ -299,6 +301,7 @@ class Penjadwalan extends BaseController
                     $data = [
                         'penjadwalanStartDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanStartDate))),
                         'penjadwalanEndDate' => date('Y-m-d H:i:s', strtotime($this->request->getVar('interval') . ' day', strtotime($jadwal[0]->penjadwalanEndDate))),
+                        'penjadwalanModifiedBy' => user()->email,
                     ];
                     $penjadwalanId = $this->request->getVar('id');
                     $this->penjadwalan->update($penjadwalanId, $data);
