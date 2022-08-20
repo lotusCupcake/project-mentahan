@@ -10,8 +10,11 @@ class PenjadwalanModel extends Model
     protected $primaryKey = 'penjadwalanId';
     protected $allowedFields = [
         'penjadwalanJenisJadwalId', 'penjadwalanMatkulBlokId', 'penjadwalanSesiId', 'penjadwalanCalenderId', 'penjadwalanJudul', 'penjadwalanDeskripsi', 'penjadwalanLokasi',
-        'penjadwalanColorId', 'penjadwalanStartDate', 'penjadwalanEndDate', 'penjadwalanPeserta', 'penjadwalanNotes', 'penjadwalanJudulShow', 'penjadwalanAngkatan', 'penjadwalanTahunAjaran'
+        'penjadwalanColorId', 'penjadwalanStartDate', 'penjadwalanEndDate', 'penjadwalanPeserta', 'penjadwalanNotes', 'penjadwalanJudulShow', 'penjadwalanAngkatan', 'penjadwalanTahunAjaran', 'penjadwalanCreatedBy', 'penjadwalanCreatedDate', 'penjadwalanModifiedBy', 'penjadwalanModifiedDate'
     ];
+    protected $useTimestamps = 'false';
+    protected $createdField = 'penjadwalanCreatedDate';
+    protected $updatedField = 'penjadwalanModifiedDate';
     protected $returnType = 'object';
 
     public function getPenjadwalan($keyword = null)
