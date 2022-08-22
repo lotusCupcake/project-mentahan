@@ -154,7 +154,7 @@ let sesi;
 let startDate;
 let jenis;
 let angkatan;
-let thnAjar;
+let blok;
 
 $("#tambahPenjadwalan").fireModal({
     body: $(".tambah").html(),
@@ -220,7 +220,12 @@ $("[name=jenisJadwal]").change(function() {
 });
 
 $("[name=blok]").change(function() {
-    startDate = $(this).val();
+    blok = $(this).val();
+    cekAvailDosen();
+});
+
+$("[name=angkatan]").change(function() {
+    angkatan = $(this).val();
     cekAvailDosen();
 });
 
@@ -292,7 +297,7 @@ function cekAvailDosen({
 } = {}) {
     // console.log([sesi, startDate]);
 
-    if (typeof sesi !== "undefined" && typeof startDate !== "undefined" && typeof jenis !== "undefined") {
+    if (typeof sesi !== "undefined" && typeof startDate !== "undefined" && typeof jenis !== "undefined"&& typeof angkatan !== "undefined" && typeof blok !== "undefined") {
         $.ajax({
             type: "POST",
             url: (id == null) ? "/dosen/load" : "/dosen/loadEdit",
@@ -300,7 +305,9 @@ function cekAvailDosen({
             data: {
               sesi: sesi,
               startDate: startDate,
-              jenis:jenis
+              jenis: jenis,
+              angkatan: angkatan,
+              blok: blok,
             },
             beforeSend: function(e) {
                 if (e && e.overrideMimeType) {

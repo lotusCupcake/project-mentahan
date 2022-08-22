@@ -57,15 +57,31 @@
                                     <?php endforeach ?>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Nama Blok</label>
-                                <select class="form-control select2" name="blok">
-                                    <option value="">Pilih Blok</option>
-                                    <?php foreach ($blok as $key => $blok) : ?>
-                                        <option value="<?= $blok->matkulBlokId ?>,<?= $blok->matkulBlokNama ?>"><?= $blok->matkulBlokNama ?></option>
-                                    <?php endforeach ?>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nama Blok</label>
+                                        <select class="form-control select2" name="blok">
+                                            <option value="">Pilih Blok</option>
+                                            <?php foreach ($blok as $key => $blok) : ?>
+                                                <option value="<?= $blok->matkulBlokId ?>,<?= $blok->matkulBlokNama ?>"><?= $blok->matkulBlokNama ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Angkatan</label>
+                                        <select class="form-control select2" name="angkatan">
+                                            <option value="">Pilih Angkatan</option>
+                                            <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                                <option value="<?= $i ?>" <?= (old('angkatan') == $i) ? "selected" : ""; ?>><?= $i ?></option>
+                                            <?php endfor ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -96,24 +112,9 @@
                                 <label>Nama Acara</label>
                                 <input name="namaAcara" type="text" class="form-control" value="">
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Angkatan</label>
-                                        <select class="form-control select2" name="angkatan">
-                                            <option value="">Pilih Angkatan</option>
-                                            <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
-                                                <option value="<?= $i ?>" <?= (old('angkatan') == $i) ? "selected" : ""; ?>><?= $i ?></option>
-                                            <?php endfor ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Lokasi Acara</label>
-                                        <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label>Lokasi Acara</label>
+                                <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
