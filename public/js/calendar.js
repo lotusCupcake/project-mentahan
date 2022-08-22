@@ -82,11 +82,12 @@ function cekJadwalBentrok(event, delta, calendar) {
     },
     type: "POST",
     success: function (response) {
-      if (response.status == "success") {
+      // console.log(JSON.parse(response).status);
+      if (JSON.parse(response).status) {
         ubahJdwl(event, delta);
       } else {
         calendar.fullCalendar("refetchEvents");
-        displayMessageError(response.message);
+        displayMessageError(JSON.parse(response).message);
       }
     },
     error: function (xhr, ajaxOptions, thrownError) {

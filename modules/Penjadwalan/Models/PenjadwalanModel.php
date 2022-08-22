@@ -32,4 +32,10 @@ class PenjadwalanModel extends Model
         $builder->orderBy($this->primaryKey, 'DESC');
         return $builder;
     }
+
+    public function cekBentrok($id, $interval)
+    {
+        $builder = $this->db->query("CALL cekBentrok(" . $id . "," . $interval . ")");
+        return $builder;
+    }
 }

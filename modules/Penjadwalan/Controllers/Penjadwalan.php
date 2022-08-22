@@ -324,5 +324,13 @@ class Penjadwalan extends BaseController
 
     public function cekBentrok()
     {
+        $id = $this->request->getVar('id');
+        $interval = $this->request->getVar('interval');
+        $exe = $this->penjadwalan->cekBentrok($id, $interval)->getresult();
+        if (count($exe) < 1) {
+            echo json_encode(['status' => true, 'message' => 'Tidak ada bentrok']);
+        } else {
+            echo json_encode(['status' => false, 'message' => 'Ada Jadwal Dosen yang Bentrok']);
+        }
     }
 }
