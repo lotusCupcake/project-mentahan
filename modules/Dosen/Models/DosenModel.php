@@ -45,9 +45,9 @@ class DosenModel extends Model
         $builder = $this->db->query("CALL loadDosenJadwal(" . $sesi . ",'" . $tgl . "')");
         return $builder;
     }
-    public function getDosenJadwalEdit($sesi, $tgl)
+    public function getDosenJadwalEdit($data)
     {
-        $builder = $this->db->query("CALL loadDosenJadwalEdit(" . $sesi . ",'" . $tgl . "')");
+        $builder = $this->db->query("CALL loadDosenJadwalEdit(" . $data[0] . ",'" . $data[1] . "'," . $data[2] . ",'" . $data[3] . "'," . $data[4] . "," . $data[5] . ")");
         return $builder;
     }
 }
