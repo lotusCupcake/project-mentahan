@@ -49,7 +49,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4><button class="btn btn-primary" id="tambahPenjadwalan"><i class="fas fa-plus"></i> Tambah</button></h4>
+                            <h4><button class="btn btn-primary" id="tambahPenjadwalan"><i class="fas fa-plus"></i> Tambah Data</button></h4>
                             <div class="card-header-form">
                                 <form action="">
                                     <div class="input-group">
@@ -61,7 +61,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <tr>
@@ -70,7 +70,7 @@
                                         <th>Lokasi</th>
                                         <th>Dosen</th>
                                         <th>Jadwal</th>
-                                        <th>Action</th>
+                                        <th style="text-align:center">Action</th>
                                     </tr>
                                     <?php if (!empty($penjadwalan)) : ?>
                                         <?php
@@ -89,7 +89,7 @@
                                                     <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
-                                                <td>
+                                                <td style="text-align:center">
                                                     <button class="btn btn-info"><i class="fas fa-eye"></i></button>
                                                     <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
                                                     <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>

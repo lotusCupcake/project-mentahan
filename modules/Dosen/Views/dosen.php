@@ -91,7 +91,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4></h4>
-                    <div class="card-header-form col-md-4">
+                    <div class="card-header-form">
                         <form action="">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search" name="keyword" value="<?= isset($_GET['keyword']) ? $_GET['keyword'] : "" ?>">
