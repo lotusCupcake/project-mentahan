@@ -124,14 +124,29 @@
                         <?php endforeach ?>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Nama Blok</label>
-                    <select class="form-control select2" name="blok">
-                        <option value="">Pilih Blok</option>
-                        <?php foreach ($blok as $key => $bk) : ?>
-                            <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= (old('blok') == $bk->matkulBlokId . ',' . $bk->matkulBlokNama) ? 'selected' : '' ?>><?= $bk->matkulBlokNama ?></option>
-                        <?php endforeach ?>
-                    </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nama Blok</label>
+                            <select class="form-control select2" name="blok">
+                                <option value="">Pilih Blok</option>
+                                <?php foreach ($blok as $key => $bk) : ?>
+                                    <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= (old('blok') == $bk->matkulBlokId . ',' . $bk->matkulBlokNama) ? 'selected' : '' ?>><?= $bk->matkulBlokNama ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Angkatan</label>
+                            <select class="form-control select2" name="angkatan">
+                                <option value="">Pilih Angkatan</option>
+                                <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -164,24 +179,9 @@
                     <label>Nama Acara</label>
                     <input name="namaAcara" type="text" class="form-control" value="<?= old('namaAcara'); ?>">
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Angkatan</label>
-                            <select class="form-control select2" name="angkatan">
-                                <option value="">Pilih Angkatan</option>
-                                <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
-                                    <option value="<?= $i ?>"><?= $i ?></option>
-                                <?php endfor ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Lokasi Acara</label>
-                            <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Lokasi Acara</label>
+                    <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -241,15 +241,31 @@
                                         <?php endforeach ?>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Nama Blok</label>
-                                    <select class="form-control select2" name="blok">
-                                        <option value="">Pilih Blok</option>
-                                        <?php foreach ($blok as $key => $bk) : ?>
-                                            <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= ($bk->matkulBlokId == $jadwalEdit->penjadwalanMatkulBlokId) ? "selected" : "" ?>><?= $bk->matkulBlokNama ?></option>
-                                        <?php endforeach ?>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Nama Blok</label>
+                                            <select class="form-control select2" name="blok">
+                                                <option value="">Pilih Blok</option>
+                                                <?php foreach ($blok as $key => $bk) : ?>
+                                                    <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= ($bk->matkulBlokId == $jadwalEdit->penjadwalanMatkulBlokId) ? "selected" : "" ?>><?= $bk->matkulBlokNama ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Angkatan</label>
+                                            <select class="form-control select2" name="angkatan">
+                                                <option value="">Pilih Angkatan</option>
+                                                <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                                    <option value="<?= $i ?>" <?= ($i == $jadwalEdit->penjadwalanAngkatan) ? "selected" : "" ?>><?= $i ?></option>
+                                                <?php endfor ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -280,24 +296,9 @@
                                     <label>Nama Acara</label>
                                     <input name="namaAcara" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanJudul ?>">
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Angkatan</label>
-                                            <select class="form-control select2" name="angkatan">
-                                                <option value="">Pilih Angkatan</option>
-                                                <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
-                                                    <option value="<?= $i ?>" <?= ($i == $jadwalEdit->penjadwalanAngkatan) ? "selected" : "" ?>><?= $i ?></option>
-                                                <?php endfor ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Lokasi Acara</label>
-                                            <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi; ?>">
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label>Lokasi Acara</label>
+                                    <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi; ?>">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">

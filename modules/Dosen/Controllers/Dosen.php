@@ -300,15 +300,25 @@ class Dosen extends BaseController
     {
         $sesi = $this->request->getVar('sesi');
         $startDate = $this->request->getVar('startDate');
+        $jenisJadwal =  explode(',', $this->request->getVar('jenis'))[0];
+        $angkatan = $this->request->getVar('angkatan');
+        $blok =  explode(',', $this->request->getVar('blok'))[0];
+        $thnAjaran = getTahunAjaran();
+        $data = [$sesi, $startDate, $jenisJadwal, $thnAjaran, $angkatan, $blok];
 
-        echo json_encode($this->dosenModel->getDosenJadwal($sesi, $startDate)->getresult());
+        echo json_encode($this->dosenModel->getDosenJadwal($data)->getresult());
     }
 
     public function loadDosenJadwalEdit()
     {
         $sesi = $this->request->getVar('sesi');
         $startDate = $this->request->getVar('startDate');
+        $jenisJadwal =  explode(',', $this->request->getVar('jenis'))[0];
+        $angkatan = $this->request->getVar('angkatan');
+        $blok =  explode(',', $this->request->getVar('blok'))[0];
+        $thnAjaran = getTahunAjaran();
+        $data = [$sesi, $startDate, $jenisJadwal, $thnAjaran, $angkatan, $blok];
 
-        echo json_encode($this->dosenModel->getDosenJadwalEdit($sesi, $startDate)->getresult());
+        echo json_encode($this->dosenModel->getDosenJadwalEdit($data)->getresult());
     }
 }

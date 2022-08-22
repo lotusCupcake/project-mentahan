@@ -63,7 +63,6 @@ var calendar = $("#calendar").fullCalendar({
     },
     eventDrop: function(event, delta) {
         cekJadwalBentrok(event, delta, calendar);
-        // ubahJdwl(event, delta);
     },
     loading: function(bool) {
         console.log('loading');
@@ -106,7 +105,6 @@ function ubahJdwl(event, delta) {
         type: "POST",
         success: function(response) {
             displayMessage(event.title + " Updated Successfully");
-
         },
         error: function(xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -154,6 +152,9 @@ function padTo2Digits(num) {
 
 let sesi;
 let startDate;
+let jenis;
+let angkatan;
+let blok;
 
 $("#tambahPenjadwalan").fireModal({
     body: $(".tambah").html(),
@@ -210,6 +211,21 @@ $("[name=sesi]").change(function() {
 
 $("[name=startDate]").change(function() {
     startDate = $(this).val();
+    cekAvailDosen();
+});
+
+$("[name=jenisJadwal]").change(function() {
+    jenis = $(this).val();
+    cekAvailDosen();
+});
+
+$("[name=blok]").change(function() {
+    blok = $(this).val();
+    cekAvailDosen();
+});
+
+$("[name=angkatan]").change(function() {
+    angkatan = $(this).val();
     cekAvailDosen();
 });
 
@@ -281,14 +297,17 @@ function cekAvailDosen({
 } = {}) {
     // console.log([sesi, startDate]);
 
-    if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
+    if (typeof sesi !== "undefined" && typeof startDate !== "undefined" && typeof jenis !== "undefined"&& typeof angkatan !== "undefined" && typeof blok !== "undefined") {
         $.ajax({
             type: "POST",
             url: (id == null) ? "/dosen/load" : "/dosen/loadEdit",
             dataType: "json",
             data: {
-                sesi: sesi,
-                startDate: startDate,
+              sesi: sesi,
+              startDate: startDate,
+              jenis: jenis,
+              angkatan: angkatan,
+              blok: blok,
             },
             beforeSend: function(e) {
                 if (e && e.overrideMimeType) {
