@@ -9,6 +9,9 @@ class AbsensiModel extends Model
     protected $table = 'absensi';
     protected $primaryKey = 'absensiId';
     protected $allowedFields = ['absensiAngkatan', 'absensiMatkulBlokId', 'absensiTahunAjaran', 'absensiPeserta', 'absensiCreatedBy', 'absensiCreatedDate', 'absensiModifiedBy', 'absensiModifiedDate'];
+    protected $useTimestamps = 'false';
+    protected $createdField = 'absensiCreatedDate';
+    protected $updatedField = 'absensiModifiedDate';
     protected $returnType = 'object';
 
     public function getAbsen($keyword = null)

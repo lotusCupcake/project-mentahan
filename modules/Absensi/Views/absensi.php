@@ -24,8 +24,14 @@
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
                     <?php endif; ?>
-                    <?php if ($validation->hasError('dataBlok')) : ?>
-                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataBlok')]]); ?>
+                    <?php if ($validation->hasError('absensiAngkatan')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('absensiAngkatan')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('absensiMatkulBlokId')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('absensiMatkulBlokId')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('absensiPeserta')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('absensiPeserta')]]); ?>
                     <?php endif; ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -70,7 +76,7 @@
 </div>
 
 <!-- start modal tambah  -->
-<div class="modal fade" role="dialog" id="edit">
+<div class="modal fade" role="dialog" id="tambah">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -93,7 +99,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Nama Blok</label>
+                        <label>Blok</label>
                         <select class="form-control select2" name="absensiMatkulBlokId">
                             <option value="">Pilih Blok</option>
                             <?php foreach ($blok as $key => $option) : ?>
@@ -104,7 +110,6 @@
                     <div class="form-group">
                         <label>Dosen</label>
                         <select class="form-control select2" multiple="" name="absensiPeserta[]">
-                            <option value="">Pilih Dosen</option>
                             <?php foreach ($dosen as $key => $option) : ?>
                                 <option value="<?= $option->dosenEmailGeneral ?>"><?= $option->dosenFullname ?></option>
                             <?php endforeach ?>
@@ -147,7 +152,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Nama Blok</label>
+                            <label>Blok</label>
                             <select class="form-control select2" name="absensiMatkulBlokId">
                                 <option value="">Pilih Blok</option>
                                 <?php foreach ($blok as $key => $option) : ?>
@@ -158,7 +163,6 @@
                         <div class="form-group">
                             <label>Dosen</label>
                             <select class="form-control select2" multiple="" name="absensiPeserta[]">
-                                <option value="">Pilih Dosen</option>
                                 <?php foreach ($dosen as $key => $option) : ?>
                                     <option value="<?= $option->dosenEmailGeneral ?>" <?= (in_array($option->dosenEmailGeneral, decryptPeserta($edit->absensiPeserta))) ? 'selected' : ''; ?>><?= $option->dosenFullname ?></option>
                                 <?php endforeach ?>
