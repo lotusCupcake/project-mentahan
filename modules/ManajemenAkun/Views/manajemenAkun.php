@@ -62,7 +62,7 @@
                                             <td style="text-align:center" scope="row"><?= $no++; ?></td>
                                             <td><?= $user->email; ?></td>
                                             <td><?= $user->username; ?></td>
-                                            <td><?= $user->name; ?></td>
+                                            <td><?= $user->description; ?></td>
                                             <td style="text-align:center"><span class="badge <?= $user->active == 1 ? "badge-success" : "badge-danger"; ?>"><?= $user->active == 1 ? "Aktif" : "Tidak Aktif"; ?></span></td>
                                             <td style="text-align:center">
                                                 <button class="btn btn-icon icon-left btn-info" data-toggle="modal" data-target="#editAkun<?= $user->user_id; ?>"><i class="fas fa-edit"></i></button>
@@ -108,7 +108,7 @@
                             <label>Role</label>
                             <select name="userRole" class="form-control select2">
                                 <?php foreach ($authGroups as $groups) : ?>
-                                    <option value="<?= $groups->id; ?>" <?php if ($groups->id == $edit->id) echo "selected" ?>><?= $groups->name; ?></option>
+                                    <option value="<?= $groups->id; ?>" <?php if ($groups->id == $edit->id) echo "selected" ?>><?= $groups->description; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
