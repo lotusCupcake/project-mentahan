@@ -22,10 +22,10 @@ var calendar = $("#calendar").fullCalendar({
     }
     element.bind('click', function () {
       if (element.data('alreadyclicked')) {
-        element.data('alreadyclicked', false); // reset
+        element.data('alreadyclicked', false); 
 
         if (element.data('alreadyclickedTimeout')) {
-          clearTimeout(element.data('alreadyclickedTimeout')); // prevent this from happening
+          clearTimeout(element.data('alreadyclickedTimeout')); 
         }
         var deleteMsg = confirm("Do you really want to delete?");
         if (deleteMsg) {
@@ -34,11 +34,11 @@ var calendar = $("#calendar").fullCalendar({
       } else {
         element.data('alreadyclicked', true);
         var alreadyclickedTimeout = setTimeout(function () {
-          element.data('alreadyclicked', false); // reset when it happens
+          element.data('alreadyclicked', false); 
           console.log('Was single clicked');
           // Letak Modal View trigger disini
         }, 300);
-        element.data('alreadyclickedTimeout', alreadyclickedTimeout); // store this id to clear if necessary
+        element.data('alreadyclickedTimeout', alreadyclickedTimeout); 
       }
       return false;
     });
