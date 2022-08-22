@@ -20,6 +20,28 @@ var calendar = $("#calendar").fullCalendar({
     } else {
       event.allDay = false;
     }
+    element.bind('click', function () {
+      if (element.data('alreadyclicked')) {
+        element.data('alreadyclicked', false); 
+
+        if (element.data('alreadyclickedTimeout')) {
+          clearTimeout(element.data('alreadyclickedTimeout')); 
+        }
+        var deleteMsg = confirm("Do you really want to delete?");
+        if (deleteMsg) {
+          hapusEvent(event.id, event);
+        }
+      } else {
+        element.data('alreadyclicked', true);
+        var alreadyclickedTimeout = setTimeout(function () {
+          element.data('alreadyclicked', false); 
+          console.log('Was single clicked');
+          // Letak Modal View trigger disini
+        }, 300);
+        element.data('alreadyclickedTimeout', alreadyclickedTimeout); 
+      }
+      return false;
+    });
   },
   customButtons: {
     goToCalendar: {
@@ -40,15 +62,8 @@ var calendar = $("#calendar").fullCalendar({
     $("#myModal").modal("show");
   },
   eventDrop: function (event, delta) {
-    // calendar.fullCalendar("refetchEvents");
-    // displayMessageError(event.title );
-    ubahJdwl(event, delta);
-  },
-  eventClick: function (event) {
-    var deleteMsg = confirm("Do you really want to delete?");
-    if (deleteMsg) {
-      hapusEvent(event.id, event);
-    }
+    cekJadwalBentrok(event, delta, calendar);
+    // ubahJdwl(event, delta);
   },
   loading: function (bool) {
     console.log('loading');
@@ -58,23 +73,45 @@ var calendar = $("#calendar").fullCalendar({
   }
 });
 
+function cekJadwalBentrok(event, delta, calendar) {
+  $.ajax({
+    url: "/penjadwalan/cekBentrok",
+    data: {
+      interval: delta._days,
+      id: event.id,
+    },
+    type: "POST",
+    success: function (response) {
+      if (response.status == "success") {
+        ubahJdwl(event, delta);
+      } else {
+        calendar.fullCalendar("refetchEvents");
+        displayMessageError(response.message);
+      }
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+      alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+    },
+  });
+}
+
 function ubahJdwl(event, delta) {
   $.ajax({
-      url: "/penjadwalan/eventAjax",
-      data: {
-        interval: delta._days,
-        id: event.id,
-        type: "update",
-      },
-      type: "POST",
-      success: function (response) {
-        displayMessage(event.title + " Updated Successfully");
-        
-      },
-      error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
-      },
-    });
+    url: "/penjadwalan/eventAjax",
+    data: {
+      interval: delta._days,
+      id: event.id,
+      type: "update",
+    },
+    type: "POST",
+    success: function (response) {
+      displayMessage(event.title + " Updated Successfully");
+
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+      alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+    },
+  });
 }
 
 function hapusEvent(id, title, from) {
@@ -192,7 +229,7 @@ function cekDosenSelect(id, result) {
           selected = (dosen.includes(element.dosenEmailGeneral)) ? "selected" : "";
           html +=
             '<option value="' +
-            element.dosenEmailGeneral +
+            element.dosenSimakadId + ',' + element.dosenEmailGeneral +
             '" ' +
             selected +
             "> <strong>" +
@@ -240,7 +277,7 @@ function cekAvailDosen({
           response.forEach((element) => {
             html +=
               '<option value="' +
-              element.dosenSimakadId +','+element.dosenEmailGeneral+
+              element.dosenSimakadId + ',' + element.dosenEmailGeneral +
               '"> <strong>' +
               element.jumlahAmpu +
               "</strong> | " +
