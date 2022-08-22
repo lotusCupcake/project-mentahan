@@ -321,4 +321,8 @@ class Penjadwalan extends BaseController
                 break;
         }
     }
+
+    public function cekBentrok()
+    {
+    }
 }
