@@ -69,23 +69,5 @@
         "status": true,
         "icon": "fas fa-calendar-check",
         "pages": "/penjadwalan"
-    },
-    {
-        "id": "8",
-        "nama": "User",
-        "parent": "0",
-        "level": "title",
-        "status": true,
-        "icon": "",
-        "pages": ""
-    },
-    {
-        "id": "9",
-        "nama": "Manajemen Akun",
-        "parent": "8",
-        "level": "child",
-        "status": true,
-        "icon": "fas fa-user",
-        "pages": "/manajemenAkun"
     }
 ]
