@@ -33,7 +33,7 @@
     </section>
 </div>
 
-<div class="modal fade" id="myModal">
+<div class="modal fade" id="tambahJadwalDashboard">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <form action="/penjadwalan/add" id="formTambah" method="post">

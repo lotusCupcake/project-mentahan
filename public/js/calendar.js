@@ -35,7 +35,7 @@ var calendar = $("#calendar").fullCalendar({
                 element.data('alreadyclicked', true);
                 var alreadyclickedTimeout = setTimeout(function() {
                     element.data('alreadyclicked', false);
-                    console.log('Was single clicked');
+                    console.log('Was single clicked'+event.id );
                     $("#editJadwal").modal("show");
                 }, 300);
                 element.data('alreadyclickedTimeout', alreadyclickedTimeout);
@@ -59,7 +59,7 @@ var calendar = $("#calendar").fullCalendar({
         $('[name="startDate"]').val(date);
         startDate = date;
         cekAvailDosen();
-        $("#myModal").modal("show");
+        $("#tambahJadwalDashboard").modal("show");
     },
     eventDrop: function(event, delta) {
         cekJadwalBentrok(event, delta, calendar);
