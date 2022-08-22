@@ -90,7 +90,7 @@
                                                 </td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
                                                 <td style="text-align:center">
-                                                    <button class="btn btn-info"><i class="fas fa-eye"></i></button>
+                                                    <button class="btn btn-info" data-toggle="modal" data-target="#viewJadwal<?= $jadwal->penjadwalanId ?>"><i class="fas fa-eye"></i></button>
                                                     <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
                                                     <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
@@ -338,6 +338,60 @@
                 </form>
             </div>
 
+        </div>
+    </div>
+<?php endforeach ?>
+
+<?php foreach ($penjadwalan as $view) : ?>
+    <div class="modal fade" id="viewJadwal<?= $view->penjadwalanId ?>">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php $peserta = getPeserta($view->penjadwalanId); ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Jadwal</h5>
+                            <p><i class="fas fa-clipboard-list mr-2 text-info"></i><?= $view->jenisJadwalNama ?></p>
+                            <h5>Blok</h5>
+                            <p><i class="fas fa-book mr-2 text-info"></i></i><?= $view->matkulBlokNama ?></p>
+                            <h5>Tanggal/Sesi</h5>
+                            <p><i class="fas fa-calendar mr-2 text-info"></i><?= $view->penjadwalanStartDate ?> - <?= $view->penjadwalanEndDate ?></p>
+                            <h5>Dosen</h5>
+                            <p>
+                                <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
+                                    <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-3.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
+                                <?php endforeach; ?>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Nama Acara</h5>
+                            <p><i class="fab fa-elementor mr-2 text-info"></i></i></i><?= $view->penjadwalanJudul ?></p>
+                            <h5>Angkatan</h5>
+                            <p><i class="fas fa-graduation-cap mr-2 text-info"></i></i><?= $view->penjadwalanAngkatan ?></p>
+                            <h5>Lokasi</h5>
+                            <p><i class="fas fa-location-arrow mr-2 text-info"></i><?= $view->penjadwalanLokasi ?></p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Kelas</h5>
+                                    <p><i class="fas fa-building mr-2 text-info"></i></i><?= $view->penjadwalanDeskripsi ?></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Catatan</h5>
+                                    <p><i class="fas fa-align-left mr-2 text-info"></i></i><?= $view->penjadwalanNotes ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 <?php endforeach ?>

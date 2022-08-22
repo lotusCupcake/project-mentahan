@@ -35,8 +35,8 @@ var calendar = $("#calendar").fullCalendar({
                 element.data('alreadyclicked', true);
                 var alreadyclickedTimeout = setTimeout(function() {
                     element.data('alreadyclicked', false);
-                    console.log('Was single clicked'+event.id );
-                    $("#editJadwal").modal("show");
+                    console.log('Was single clicked' + event.id);
+                    $("#viewJadwal" + event.id).modal("show");
                 }, 300);
                 element.data('alreadyclickedTimeout', alreadyclickedTimeout);
             }
@@ -73,25 +73,25 @@ var calendar = $("#calendar").fullCalendar({
 });
 
 function cekJadwalBentrok(event, delta, calendar) {
-  $.ajax({
-    url: "/penjadwalan/cekBentrok",
-    data: {
-      interval: delta._days,
-      id: event.id,
-    },
-    type: "POST",
-    success: function (response) {
-      if (JSON.parse(response).status) {
-        ubahJdwl(event, delta);
-      } else {
-        calendar.fullCalendar("refetchEvents");
-        displayMessageError(JSON.parse(response).message);
-      }
-    },
-    error: function (xhr, ajaxOptions, thrownError) {
-      alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
-    },
-  });
+    $.ajax({
+        url: "/penjadwalan/cekBentrok",
+        data: {
+            interval: delta._days,
+            id: event.id,
+        },
+        type: "POST",
+        success: function(response) {
+            if (JSON.parse(response).status) {
+                ubahJdwl(event, delta);
+            } else {
+                calendar.fullCalendar("refetchEvents");
+                displayMessageError(JSON.parse(response).message);
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+        },
+    });
 }
 
 function ubahJdwl(event, delta) {
