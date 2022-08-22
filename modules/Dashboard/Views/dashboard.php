@@ -155,6 +155,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="editJadwal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form action="/penjadwalan/add" id="formTambah" method="post">
+                <input type="hidden" name="from" value="dashboard">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Penjadwalan</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <?= view('layout/templateFooter'); ?>
 
 <?= $this->endSection(); ?>
