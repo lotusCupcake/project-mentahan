@@ -140,10 +140,10 @@
 <!-- start modal hapus  -->
 <?php foreach ($matkulBlok as $hapus) : ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="hapus<?= $hapus->matkulBlokId; ?>">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Hapus Data <strong><?= $title; ?></strong></h5>
+                    <h5 class="modal-title"><strong>Konfirmasi</strong></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -156,7 +156,7 @@
                     <?= csrf_field(); ?>
                     <input type="hidden" name="_method" value="DELETE">
                     <div class="modal-footer bg-whitesmoke br">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Yes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
