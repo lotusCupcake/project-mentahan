@@ -180,30 +180,6 @@ $("#tambahPenjadwalan").fireModal({
     ],
 });
 
-$("#tambahPenjadwalan").fireModal({
-    body: $(".tambah").html(),
-    title: "Tambah " + $("#judul").text(),
-    center: true,
-    size: "modal-xl",
-    closeButton: true,
-    buttons: [{
-            text: "Close",
-            class: "btn btn-secondary btn-shadow",
-            handler: function(modal) {
-                modal.modal("hide");
-            },
-        },
-        {
-            text: "Save",
-            submit: true,
-            class: "btn btn-primary btn-shadow",
-            handler: function(modal) {
-                modal.click();
-            },
-        },
-    ],
-});
-
 $("[name=sesi]").change(function() {
     sesi = $(this).val().split(",")[0];
     cekAvailDosen();
@@ -297,17 +273,17 @@ function cekAvailDosen({
 } = {}) {
     // console.log([sesi, startDate]);
 
-    if (typeof sesi !== "undefined" && typeof startDate !== "undefined" && typeof jenis !== "undefined"&& typeof angkatan !== "undefined" && typeof blok !== "undefined") {
+    if (typeof sesi !== "undefined" && typeof startDate !== "undefined" && typeof jenis !== "undefined" && typeof angkatan !== "undefined" && typeof blok !== "undefined") {
         $.ajax({
             type: "POST",
             url: (id == null) ? "/dosen/load" : "/dosen/loadEdit",
             dataType: "json",
             data: {
-              sesi: sesi,
-              startDate: startDate,
-              jenis: jenis,
-              angkatan: angkatan,
-              blok: blok,
+                sesi: sesi,
+                startDate: startDate,
+                jenis: jenis,
+                angkatan: angkatan,
+                blok: blok,
             },
             beforeSend: function(e) {
                 if (e && e.overrideMimeType) {
