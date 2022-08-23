@@ -19,7 +19,9 @@ class AbsensiModel extends Model
         $builder = $this->table('absensi');
         $builder->join('matkul_blok', 'matkul_blok.matkulBlokId = absensi.absensiMatkulBlokId');
         if ($keyword) {
-            $builder->orlike('absensi.absensiPeserta', $keyword);
+            $builder->orlike('absensi.absensiTahunAjaran', $keyword);
+            $builder->orlike('matkul_blok.matkulBlokNama', $keyword);
+            $builder->orlike('absensi.absensiAngkatan', $keyword);
         }
         $builder->orderBy('absensi.absensiId', 'DESC');
         return $builder;

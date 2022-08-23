@@ -19,6 +19,17 @@
             <div class="card">
                 <div class="card-header">
                     <button class="btn btn-icon icon-left btn-primary" data-toggle="modal" data-target="#tambah"><i class="fas fa-plus"></i> Tambah Data</button>
+                    <h4></h4>
+                    <div class="card-header-form">
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" name="keyword" value="<?= isset($_GET['keyword']) ? $_GET['keyword'] : "" ?>">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body">
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
@@ -63,7 +74,7 @@
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 5]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 6]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
