@@ -32,8 +32,21 @@ class Penjadwalan extends BaseController
     public function index()
     {
         $currentPage = $this->request->getVar('page_penjadwalan') ? $this->request->getVar('page_penjadwalan') : 1;
+        if (in_groups('kuliah')) {
+            $jenis = 1;
+        } elseif (in_groups('praktikum')) {
+            $jenis = 2;
+        } elseif (in_groups('ujian')) {
+            $jenis = 3;
+        } elseif (in_groups('sgd')) {
+            $jenis = 4;
+        } elseif (in_groups('kkd')) {
+            $jenis = 5;
+        } else {
+            $jenis = '';
+        }
         $keyword = $this->request->getVar('keyword');
-        $jadwal = $this->penjadwalan->getPenjadwalan($keyword);
+        $jadwal = $this->penjadwalan->getPenjadwalan($keyword, $jenis);
         $data = [
             'menu' => $this->fetchMenu(),
             'penjadwalanJudul' => "Penjadwalan",

@@ -17,12 +17,15 @@ class PenjadwalanModel extends Model
     protected $updatedField = 'penjadwalanModifiedDate';
     protected $returnType = 'object';
 
-    public function getPenjadwalan($keyword = null)
+    public function getPenjadwalan($keyword = null, $jenis = null)
     {
         $builder = $this->table($this->table);
         $builder->join('jenis_jadwal', 'jenis_jadwal.jenisJadwalId = ' . $this->table . '.penjadwalanJenisJadwalId', 'LEFT');
         $builder->join('matkul_blok', 'matkul_blok.matkulBlokId = ' . $this->table . '.penjadwalanMatkulBlokId', 'LEFT');
         $builder->join('sesi', 'sesi.sesiId = ' . $this->table . '.penjadwalanSesiId', 'LEFT');
+        if ($jenis) {
+            $builder->where('jenis_jadwal.jenisJadwalId', $jenis);
+        }
         if ($keyword) {
             $builder->like($this->table . '.penjadwalanJudul', $keyword);
             $builder->like('matkul_blok.matkulBlokKode', $keyword);

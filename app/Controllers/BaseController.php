@@ -145,6 +145,9 @@ abstract class BaseController extends Controller
             case "kkd":
                 $file = "public/menu/menuKkd.json";
                 break;
+            case "biasa":
+                $file = "public/menu/menuGeneralUser.json";
+                break;
             default:
                 $file = "public/menu/menuGeneralUser.json";
         }

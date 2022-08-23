@@ -36,3 +36,10 @@ function getDosenName($email)
     $fullName = $dosen->where(['dosenEmailGeneral' => $email])->findAll()[0]->dosenFullname;
     return $fullName;
 }
+
+function getSpecificUser($where)
+{
+    $manajemen = new \Modules\ManajemenAkun\Models\ManajemenAkunModel;
+    $result = $manajemen->getSpecificUser($where)->getResult()[0];
+    return $result;
+}
