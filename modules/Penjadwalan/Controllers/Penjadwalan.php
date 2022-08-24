@@ -33,15 +33,15 @@ class Penjadwalan extends BaseController
     {
         $currentPage = $this->request->getVar('page_penjadwalan') ? $this->request->getVar('page_penjadwalan') : 1;
         $grup = getSpecificUser(['users.id' => user()->id])->name;
-        if ($grup = 'kuliah') {
+        if ($grup == 'kuliah') {
             $jenis = 1;
-        } elseif ($grup = 'praktikum') {
+        } elseif ($grup == 'praktikum') {
             $jenis = 2;
-        } elseif ($grup = 'ujian') {
+        } elseif ($grup == 'ujian') {
             $jenis = 3;
-        } elseif ($grup = 'sgd') {
+        } elseif ($grup == 'sgd') {
             $jenis = 4;
-        } elseif ($grup = 'kkd') {
+        } elseif ($grup == 'kkd') {
             $jenis = 5;
         } else {
             $jenis = '';
