@@ -452,5 +452,4 @@
 
 <?= view('layout/templateFooter'); ?>
 
-
 <?= $this->endSection(); ?>
