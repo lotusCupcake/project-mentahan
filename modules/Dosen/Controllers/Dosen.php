@@ -195,7 +195,7 @@ class Dosen extends BaseController
                     'dosenEmailCorporate' => ($value['dosenEmailCorporate'] == null) ? null : $value['dosenEmailCorporate'],
                     'dosenEmailGeneral' => $value['dosenEmailGeneral'],
                     'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
-                    'dosenStatus' => $value['dosenStatus'],
+                    'dosenStatus' => ($value['dosenStatus'] == 'Internal') ? 1 : 0,
                 ];
                 if ($this->dosenModel->insert($data)) {
                     $counts['inserted']++;
@@ -210,7 +210,7 @@ class Dosen extends BaseController
                     'dosenEmailCorporate' => ($value['dosenEmailCorporate'] == null) ? null : $value['dosenEmailCorporate'],
                     'dosenEmailGeneral' => $value['dosenEmailGeneral'],
                     'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
-                    'dosenStatus' => $value['dosenStatus'],
+                    'dosenStatus' => ($value['dosenStatus'] == 'Internal') ? 1 : 0,
                 ];
                 if ($this->dosenModel->update($value['dosenId'], $data)) {
                     $counts['updated']++;

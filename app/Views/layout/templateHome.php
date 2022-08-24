@@ -57,7 +57,7 @@
 </head>
 
 
-<body>
+<body onload="announcement('<?= getSpecificUser(['user_id' => user()->id])->name ?>')">
 
   <div id="app">
     <div class="main-wrapper">
@@ -98,6 +98,14 @@
 
   <?= script_tag('js/calendar.js') ?>
   <?= script_tag('template/assets/js/scripts.js') ?>
+
+  <script>
+    function announcement(role) {
+      if (role == 'general') {
+        $('#announcement').modal('show');
+      }
+    }
+  </script>
 
 </body>
 

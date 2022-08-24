@@ -19,13 +19,30 @@
             <div class="card">
                 <div class="card-header">
                     <button class="btn btn-icon icon-left btn-primary" data-toggle="modal" data-target="#tambah"><i class="fas fa-plus"></i> Tambah Data</button>
+                    <h4></h4>
+                    <div class="card-header-form">
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" name="keyword" value="<?= isset($_GET['keyword']) ? $_GET['keyword'] : "" ?>">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body">
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
                     <?php endif; ?>
-                    <?php if ($validation->hasError('dataBlok')) : ?>
-                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataBlok')]]); ?>
+                    <?php if ($validation->hasError('absensiAngkatan')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('absensiAngkatan')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('absensiMatkulBlokId')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('absensiMatkulBlokId')]]); ?>
+                    <?php endif; ?>
+                    <?php if ($validation->hasError('absensiPeserta')) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('absensiPeserta')]]); ?>
                     <?php endif; ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -57,7 +74,7 @@
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 5]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 6]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
@@ -70,7 +87,7 @@
 </div>
 
 <!-- start modal tambah  -->
-<div class="modal fade" role="dialog" id="edit">
+<div class="modal fade" role="dialog" id="tambah">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -93,7 +110,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Nama Blok</label>
+                        <label>Blok</label>
                         <select class="form-control select2" name="absensiMatkulBlokId">
                             <option value="">Pilih Blok</option>
                             <?php foreach ($blok as $key => $option) : ?>
@@ -104,7 +121,6 @@
                     <div class="form-group">
                         <label>Dosen</label>
                         <select class="form-control select2" multiple="" name="absensiPeserta[]">
-                            <option value="">Pilih Dosen</option>
                             <?php foreach ($dosen as $key => $option) : ?>
                                 <option value="<?= $option->dosenEmailGeneral ?>"><?= $option->dosenFullname ?></option>
                             <?php endforeach ?>
@@ -147,7 +163,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Nama Blok</label>
+                            <label>Blok</label>
                             <select class="form-control select2" name="absensiMatkulBlokId">
                                 <option value="">Pilih Blok</option>
                                 <?php foreach ($blok as $key => $option) : ?>
@@ -158,7 +174,6 @@
                         <div class="form-group">
                             <label>Dosen</label>
                             <select class="form-control select2" multiple="" name="absensiPeserta[]">
-                                <option value="">Pilih Dosen</option>
                                 <?php foreach ($dosen as $key => $option) : ?>
                                     <option value="<?= $option->dosenEmailGeneral ?>" <?= (in_array($option->dosenEmailGeneral, decryptPeserta($edit->absensiPeserta))) ? 'selected' : ''; ?>><?= $option->dosenFullname ?></option>
                                 <?php endforeach ?>
@@ -179,10 +194,10 @@
 <!-- start modal hapus  -->
 <?php foreach ($absen as $hapus) : ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="hapus<?= $hapus->absensiId; ?>">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Hapus Data <strong><?= $title; ?></strong></h5>
+                    <h5 class="modal-title"><strong>Konfirmasi</strong></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -195,7 +210,7 @@
                     <?= csrf_field(); ?>
                     <input type="hidden" name="_method" value="DELETE">
                     <div class="modal-footer bg-whitesmoke br">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Yes</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>

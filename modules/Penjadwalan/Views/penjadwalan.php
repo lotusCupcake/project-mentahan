@@ -92,7 +92,7 @@
                                                 <td style="text-align:center">
                                                     <button class="btn btn-info" data-toggle="modal" data-target="#viewJadwal<?= $jadwal->penjadwalanId ?>"><i class="fas fa-eye"></i></button>
                                                     <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
-                                                    <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
+                                                    <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?<p class='text-warning'><small>This action cannot be undone</small></p>" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
@@ -116,12 +116,39 @@
                 <div class="form-group">
                     <label class="form-label">Jadwal</label>
                     <div class="selectgroup selectgroup-pills">
-                        <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                        <?php if (in_groups('kuliah')) : ?>
                             <label class="selectgroup-item">
-                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenis->jenisJadwalId . ',' . $jenis->jenisJadwalKode) ? 'checked' : '' ?>>
-                                <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[0]->jenisJadwalId ?>,<?= $jenisJadwal[0]->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenisJadwal[0]->jenisJadwalId . ',' . $jenisJadwal[0]->jenisJadwalKode) ? 'checked' : '' ?>>
+                                <span class="selectgroup-button"><?= $jenisJadwal[0]->jenisJadwalKode ?></span>
                             </label>
-                        <?php endforeach ?>
+                        <?php elseif (in_groups('praktikum')) : ?>
+                            <label class="selectgroup-item">
+                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[1]->jenisJadwalId ?>,<?= $jenisJadwal[1]->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenisJadwal[1]->jenisJadwalId . ',' . $jenisJadwal[1]->jenisJadwalKode) ? 'checked' : '' ?>>
+                                <span class="selectgroup-button"><?= $jenisJadwal[1]->jenisJadwalKode ?></span>
+                            </label>
+                        <?php elseif (in_groups('ujian')) : ?>
+                            <label class="selectgroup-item">
+                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[2]->jenisJadwalId ?>,<?= $jenisJadwal[2]->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenisJadwal[2]->jenisJadwalId . ',' . $jenisJadwal[2]->jenisJadwalKode) ? 'checked' : '' ?>>
+                                <span class="selectgroup-button"><?= $jenisJadwal[2]->jenisJadwalKode ?></span>
+                            </label>
+                        <?php elseif (in_groups('sgd')) : ?>
+                            <label class="selectgroup-item">
+                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[3]->jenisJadwalId ?>,<?= $jenisJadwal[3]->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenisJadwal[3]->jenisJadwalId . ',' . $jenisJadwal[3]->jenisJadwalKode) ? 'checked' : '' ?>>
+                                <span class="selectgroup-button"><?= $jenisJadwal[3]->jenisJadwalKode ?></span>
+                            </label>
+                        <?php elseif (in_groups('kkd')) : ?>
+                            <label class="selectgroup-item">
+                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[4]->jenisJadwalId ?>,<?= $jenisJadwal[4]->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenisJadwal[4]->jenisJadwalId . ',' . $jenisJadwal[4]->jenisJadwalKode) ? 'checked' : '' ?>>
+                                <span class="selectgroup-button"><?= $jenisJadwal[4]->jenisJadwalKode ?></span>
+                            </label>
+                        <?php else : ?>
+                            <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= (old('jenisJadwal') == $jenis->jenisJadwalId . ',' . $jenis->jenisJadwalKode) ? 'checked' : '' ?>>
+                                    <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                </label>
+                            <?php endforeach ?>
+                        <?php endif ?>
                     </div>
                 </div>
                 <div class="row">
@@ -233,12 +260,39 @@
                                 <div class="form-group">
                                     <label class="form-label">Jadwal</label>
                                     <div class="selectgroup selectgroup-pills">
-                                        <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                        <?php if (in_groups('kuliah')) : ?>
                                             <label class="selectgroup-item">
-                                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenis->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? "checked" : "" ?>>
-                                                <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[0]->jenisJadwalId ?>,<?= $jenisJadwal[0]->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenisJadwal[0]->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? 'checked' : '' ?>>
+                                                <span class="selectgroup-button"><?= $jenisJadwal[0]->jenisJadwalKode ?></span>
                                             </label>
-                                        <?php endforeach ?>
+                                        <?php elseif (in_groups('praktikum')) : ?>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[1]->jenisJadwalId ?>,<?= $jenisJadwal[1]->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenisJadwal[1]->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? 'checked' : '' ?>>
+                                                <span class="selectgroup-button"><?= $jenisJadwal[1]->jenisJadwalKode ?></span>
+                                            </label>
+                                        <?php elseif (in_groups('ujian')) : ?>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[2]->jenisJadwalId ?>,<?= $jenisJadwal[2]->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenisJadwal[2]->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? 'checked' : '' ?>>
+                                                <span class="selectgroup-button"><?= $jenisJadwal[2]->jenisJadwalKode ?></span>
+                                            </label>
+                                        <?php elseif (in_groups('sgd')) : ?>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[3]->jenisJadwalId ?>,<?= $jenisJadwal[3]->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenisJadwal[3]->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? 'checked' : '' ?>>
+                                                <span class="selectgroup-button"><?= $jenisJadwal[3]->jenisJadwalKode ?></span>
+                                            </label>
+                                        <?php elseif (in_groups('kkd')) : ?>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenisJadwal[4]->jenisJadwalId ?>,<?= $jenisJadwal[4]->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenisJadwal[4]->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? 'checked' : '' ?>>
+                                                <span class="selectgroup-button"><?= $jenisJadwal[4]->jenisJadwalKode ?></span>
+                                            </label>
+                                        <?php else : ?>
+                                            <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenis->jenisJadwalId == $jadwalEdit->penjadwalanJenisJadwalId) ? "checked" : "" ?>>
+                                                    <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                                </label>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -397,6 +451,5 @@
 <?php endforeach ?>
 
 <?= view('layout/templateFooter'); ?>
-
 
 <?= $this->endSection(); ?>
