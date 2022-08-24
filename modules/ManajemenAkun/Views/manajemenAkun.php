@@ -65,7 +65,7 @@
                                             <td><?= $user->description; ?></td>
                                             <td style="text-align:center"><span class="badge <?= $user->active == 1 ? "badge-success" : "badge-danger"; ?>"><?= $user->active == 1 ? "Aktif" : "Tidak Aktif"; ?></span></td>
                                             <td style="text-align:center">
-                                                <button class="btn btn-icon icon-left btn-info" data-toggle="modal" data-target="#editAkun<?= $user->user_id; ?>"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-icon icon-left btn-info" data-toggle="modal" data-target="#editAkun<?= $user->user_id; ?>" <?= ($user->user_id == user()->id) ? 'disabled' : ''; ?>><i class="fas fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
@@ -84,51 +84,53 @@
 
 <!-- start modal edit  -->
 <?php foreach ($manajemenAkun as $edit) : ?>
-    <div class="modal fade" tabindex="-1" role="dialog" id="editAkun<?= $edit->user_id; ?>">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Data<strong> <?= $title; ?></strong></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/manajemenAkun/ubah/<?= $edit->user_id; ?>" method="POST">
-                    <?= csrf_field() ?>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input name="userEmail" type="text" class="form-control" value="<?= $edit->email; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input name="userName" type="text" class="form-control" value="<?= $edit->username; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Role</label>
-                            <select name="userRole" class="form-control select2">
-                                <?php foreach ($authGroups as $groups) : ?>
-                                    <option value="<?= $groups->id; ?>" <?php if ($groups->id == $edit->id) echo "selected" ?>><?= $groups->description; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <div class="control-label">Status</div>
-                            <label style="display: inline-block; padding-left: 0 !important;" class="custom-switch mt-2">
-                                <input type="checkbox" name="userActive" <?= ($edit->active == 1) ? "checked" : ""; ?> value="<?= $edit->active; ?>" class=" custom-switch-input">
-                                <span class="custom-switch-indicator"></span>
-                            </label>
-                            <span style="display: inline-block; margin-top: 0 !important;" class="custom-switch-description">(Aktif/Tidak Aktif)</span>
-                        </div>
-                        <div class="modal-footer bg-whitesmoke br">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
+    <?php if ($edit->user_id != user()->id) : ?>
+        <div class="modal fade" tabindex="-1" role="dialog" id="editAkun<?= $edit->user_id; ?>">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Data<strong> <?= $title; ?></strong></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </form>
+                    <form action="/manajemenAkun/ubah/<?= $edit->user_id; ?>" method="POST">
+                        <?= csrf_field() ?>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input name="userEmail" type="text" class="form-control" value="<?= $edit->email; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input name="userName" type="text" class="form-control" value="<?= $edit->username; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select name="userRole" class="form-control select2">
+                                    <?php foreach ($authGroups as $groups) : ?>
+                                        <option value="<?= $groups->id; ?>" <?php if ($groups->id == $edit->id) echo "selected" ?>><?= $groups->description; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="control-label">Status</div>
+                                <label style="display: inline-block; padding-left: 0 !important;" class="custom-switch mt-2">
+                                    <input type="checkbox" name="userActive" <?= ($edit->active == 1) ? "checked" : ""; ?> value="<?= $edit->active; ?>" class=" custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                </label>
+                                <span style="display: inline-block; margin-top: 0 !important;" class="custom-switch-description">(Aktif/Tidak Aktif)</span>
+                            </div>
+                            <div class="modal-footer bg-whitesmoke br">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif ?>
 <?php endforeach ?>
 <!-- end modal Edit -->
 
