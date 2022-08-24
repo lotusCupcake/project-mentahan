@@ -213,8 +213,18 @@ function editJadwal(id) {
     startDate = $("#editPenjadwalan" + id)
         .find("[name=startDate]")
         .val();
+    jenis = $("#editPenjadwalan" + id)
+        .find("[name=jenisJadwal]")
+        .val();
+    blok = $("#editPenjadwalan" + id)
+        .find("[name=blok]")
+        .val();
+    angkatan = $("#editPenjadwalan" + id)
+        .find("[name=angkatan]")
+        .val();
     cekAvailDosen({
         id: id
+
     });
 }
 
@@ -336,5 +346,4 @@ function displayMessageError(message) {
         position: "topRight",
         progressBarColor: "rgb(255, 0, 72)",
     });
->>>>>>> bd09a8323537f76477813a3c7f9882e7a4414a82
 }
