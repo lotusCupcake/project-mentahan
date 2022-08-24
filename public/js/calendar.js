@@ -213,8 +213,18 @@ function editJadwal(id) {
     startDate = $("#editPenjadwalan" + id)
         .find("[name=startDate]")
         .val();
+    jenis = $("#editPenjadwalan" + id)
+        .find("[name=jenisJadwal]")
+        .val();
+    blok = $("#editPenjadwalan" + id)
+        .find("[name=blok]")
+        .val();
+    angkatan = $("#editPenjadwalan" + id)
+        .find("[name=angkatan]")
+        .val();
     cekAvailDosen({
         id: id
+
     });
 }
 
