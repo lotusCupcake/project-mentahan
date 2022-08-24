@@ -27,9 +27,11 @@ var calendar = $("#calendar").fullCalendar({
                 if (element.data('alreadyclickedTimeout')) {
                     clearTimeout(element.data('alreadyclickedTimeout'));
                 }
-                var deleteMsg = confirm("Do you really want to delete?");
-                if (deleteMsg) {
-                    hapusEvent(event.id, event);
+                if ($('[name=role]').val() != 'biasa') {
+                    var deleteMsg = confirm("Do you really want to delete?");
+                    if (deleteMsg) {
+                        hapusEvent(event.id, event);
+                    }
                 }
             } else {
                 element.data('alreadyclicked', true);
