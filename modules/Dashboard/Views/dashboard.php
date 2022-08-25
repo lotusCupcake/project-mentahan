@@ -30,7 +30,8 @@
                                 </div>
                             <?php else : ?>
                                 <div class="fc-overflow">
-                                    <div id="calendar" role="<?= getSpecificUser(['user_id' => user()->id])->name ?>"></div>
+                                    <input type="hidden" name="role" value="<?= getSpecificUser(['user_id' => user()->id])->name ?>">
+                                    <div id="calendar"></div>
                                 </div>
                             <?php endif ?>
                         </div>
