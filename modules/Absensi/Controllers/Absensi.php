@@ -34,7 +34,7 @@ class Absensi extends BaseController
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Absensi Workshop",
-            'breadcrumb' => ['Home', 'Data', 'Absensi Workshop'],
+            'breadcrumb' => ['Data', 'Absensi Workshop'],
             'absen' => $absen->paginate($this->numberPage, 'absen'),
             'blok' => $this->blokModel->getMatkulBlok()->findAll(),
             'dosen' => $this->dosenModel->getDataDosen()->findAll(),
