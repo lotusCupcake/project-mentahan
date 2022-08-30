@@ -53,7 +53,7 @@ class Penjadwalan extends BaseController
             'penjadwalanJudul' => "Penjadwalan",
             'title' => 'Penjadwalan',
             'icon' => 'fas fa-calendar',
-            'breadcrumb' => ['Home', 'Penjadwalan'],
+            'breadcrumb' => ['Proses', 'Penjadwalan'],
             'penjadwalan' =>  $jadwal->paginate($this->numberPage, 'penjadwalan'),
             'currentPage' => $currentPage,
             'numberPage' => $this->numberPage,

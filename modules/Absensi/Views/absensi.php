@@ -11,8 +11,7 @@
             <h1><?= $title; ?></h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item"><a href="/dashboard"><?= $breadcrumb[0]; ?></a></div>
-                <div class="breadcrumb-item"><a href="/absensi"><?= $breadcrumb[1]; ?></a></div>
-                <div class="breadcrumb-item active"><?= $breadcrumb[2]; ?></div>
+                <div class="breadcrumb-item active"><?= $breadcrumb[1]; ?></div>
             </div>
         </div>
         <div class="section-body">
