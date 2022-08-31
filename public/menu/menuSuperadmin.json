@@ -31,7 +31,7 @@
         "parent": "3",
         "level": "child",
         "status": true,
-        "icon": "fas fa-book-medical",
+        "icon": "fas fa-clock",
         "pages": "/sesi"
     },
     {
@@ -76,7 +76,7 @@
         "parent": "6",
         "level": "child",
         "status": true,
-        "icon": "fas fa-calendar-check",
+        "icon": "fas fa-users",
         "pages": "/tentatif"
     },
     {
@@ -85,7 +85,7 @@
         "parent": "6",
         "level": "child",
         "status": true,
-        "icon": "fas fa-calendar-check",
+        "icon": "fas fa-calendar-plus",
         "pages": "/pemetaanJadwal"
     },
     {
