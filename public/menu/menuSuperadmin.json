@@ -71,6 +71,15 @@
         "pages": "/penjadwalan"
     },
     {
+        "id": "10",
+        "nama": "Report Jadwal",
+        "parent": "6",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-file-export",
+        "pages": "/reportJadwal"
+    },
+    {
         "id": "8",
         "nama": "User",
         "parent": "0",
