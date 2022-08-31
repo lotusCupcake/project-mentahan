@@ -26,8 +26,17 @@
         "pages": ""
     },
     {
+        "id": "11",
+        "nama": "Sesi",
+        "parent": "3",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-book-medical",
+        "pages": "/sesi"
+    },
+    {
         "id": "4",
-        "nama": "Blok",
+        "nama": "Mata Kuliah",
         "parent": "3",
         "level": "child",
         "status": true,
@@ -60,6 +69,24 @@
         "status": true,
         "icon": "",
         "pages": ""
+    },
+    {
+        "id": "12",
+        "nama": "Jadwal Tentatif",
+        "parent": "6",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-calendar-check",
+        "pages": "/tentatif"
+    },
+    {
+        "id": "13",
+        "nama": "Pemetaan Jadwal",
+        "parent": "6",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-calendar-check",
+        "pages": "/pemetaanJadwal"
     },
     {
         "id": "7",

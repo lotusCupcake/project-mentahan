@@ -8,6 +8,6 @@ class SesiModel extends Model
 {
     protected $table = 'sesi';
     protected $primaryKey = 'sesiId';
-    protected $allowedFields = ['sesiNama', 'sesiStart', 'sesiEnd'];
+    protected $allowedFields = ['sesiJenisJadwalId', 'sesiDetail'];
     protected $returnType = 'object';
 }
