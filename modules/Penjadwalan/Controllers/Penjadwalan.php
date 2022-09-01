@@ -60,7 +60,7 @@ class Penjadwalan extends BaseController
             'pager' => $jadwal->pager,
             'validation' => $this->validation,
             'color' => colorEvent(),
-            'sesi' => $this->sesi->findAll(),
+            // 'sesi' => $this->sesi->findAll(),
             'jenisJadwal' => $this->jenisJadwal->where('jenisJadwalIsAktif', '1')->findAll(),
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
             'dosen' => [],
@@ -72,11 +72,21 @@ class Penjadwalan extends BaseController
     public function penjadwalanAdd()
     {
         ($this->request->getVar('from') != null) ? $from = $this->request->getVar('from') : $from = null;
+        if (explode(',', $this->request->getVar('jenisJadwal'))[0] != 3) {
+            $rules['sesi'] = rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']);
+            $rules['startDate'] = rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']);
+            $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
+            $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
+        } else {
+            $rules['waktuStart'] = rv('required', ['required' => 'Waktu Selesai Acara Harus Ditetapkan']);
+            $rules['waktuEnd'] = rv('required', ['required' => 'Waktu Mulai Acara Harus Ditetapkan']);
+            $eventStart = $this->request->getVar('waktuStart');
+            $eventEnd = $this->request->getVar('waktuEnd');
+        }
+
         $rules = [
             'blok' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
             'jenisJadwal' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
-            'startDate' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
-            'sesi' => rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']),
             'dosen' => rv('required', ['required' => 'Dosen Harus Dipilih']),
             'namaAcara' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
             'lokasi' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
@@ -92,13 +102,12 @@ class Penjadwalan extends BaseController
             }
         };
 
-        $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
-        $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
+
         $dosen = [];
         foreach ($this->request->getVar('dosen') as $key => $value) {
             $dosen[] = ['id' => explode(',', $value)[0], 'email' => explode(',', $value)[1]];
         }
-        $angkatan  = '2020';
+        $angkatan  = $this->request->getVar('angkatan');
         $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
         $noteEktra = ($this->request->getVar('noteAcara') != null) ? "(" . $this->request->getVar('noteAcara') . ")" : "";
         $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1] . " " . $noteEktra;
@@ -119,14 +128,13 @@ class Penjadwalan extends BaseController
             'guestsCanModify' => false,
             'guestsCanSeeOtherGuests' => false,
         );
-        // dd($event);
         $resultCalendar = addEvent($event);
 
         if ($resultCalendar[0]['status'] == 'confirmed') {
             $data = [
                 'penjadwalanJenisJadwalId' => explode(',', $this->request->getVar('jenisJadwal'))[0],
                 'penjadwalanMatkulBlokId' => explode(',', $this->request->getVar('blok'))[0],
-                'penjadwalanSesiId' => $this->request->getVar('sesi'),
+                'penjadwalanSesiId' => (explode(',', $this->request->getVar('jenisJadwal'))[0] != 3) ? $this->request->getVar('sesi') : 19,
                 'penjadwalanCalenderId' => $resultCalendar[0]['id'],
                 'penjadwalanJudulShow' => $judul,
                 'penjadwalanJudul' => $this->request->getVar('namaAcara'),
@@ -141,6 +149,7 @@ class Penjadwalan extends BaseController
                 'penjadwalanTahunAjaran' => getTahunAjaran(),
                 'penjadwalanCreatedBy' => user()->email,
             ];
+
             if ($this->penjadwalan->insert($data)) {
                 session()->setFlashdata('success', 'Data berhasil ditambahkan');
                 if ($from == null) {
@@ -199,11 +208,21 @@ class Penjadwalan extends BaseController
 
     public function penjadwalanEdit($id)
     {
+        if (explode(',', $this->request->getVar('jenisJadwal'))[0] != 3) {
+            $rules['sesi'] = rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']);
+            $rules['startDate'] = rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']);
+            $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
+            $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
+        } else {
+            $rules['waktuStart'] = rv('required', ['required' => 'Waktu Selesai Acara Harus Ditetapkan']);
+            $rules['waktuEnd'] = rv('required', ['required' => 'Waktu Mulai Acara Harus Ditetapkan']);
+            $eventStart = $this->request->getVar('waktuStart');
+            $eventEnd = $this->request->getVar('waktuEnd');
+        }
+
         $rules = [
             'blok' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
             'jenisJadwal' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
-            'startDate' => rv('required', ['required' => 'Tanggal Acara Harus Ditetapkan']),
-            'sesi' => rv('required', ['required' => 'Sesi Jadwal Harus Dipilih']),
             'dosen' => rv('required', ['required' => 'Dosen Harus Dipilih']),
             'namaAcara' => rv('required', ['required' => 'Data Mata Kuliah Harus Dipilih']),
             'lokasi' => rv('required', ['required' => 'Data Jenis Jadwal Harus Dipilih']),
@@ -215,13 +234,12 @@ class Penjadwalan extends BaseController
         };
         $jadwalExists = $this->penjadwalan->where(['penjadwalanId' => $id])->findAll();
 
-        $eventStart = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[1];
-        $eventEnd = $this->request->getVar('startDate') . ' ' . explode(',', $this->request->getVar('sesi'))[2];
+
         $dosen = [];
         foreach ($this->request->getVar('dosen') as $key => $value) {
             $dosen[] = ['id' => explode(',', $value)[0], 'email' => explode(',', $value)[1]];
         }
-        $angkatan  = '2020';
+        $angkatan  = $this->request->getVar('angkatan');
         $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
         $noteEktra = ($this->request->getVar('noteAcara') != null) ? "(" . $this->request->getVar('noteAcara') . ")" : "";
         $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1] . " " . $noteEktra;

@@ -175,23 +175,37 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Tanggal</label>
-                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value=<?= (old('startDate')) ? date('Y-m-d', strtotime(old('startDate'))) : "" ?>>
+                <div class="typeSesi">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tanggal</label>
+                                <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value=<?= (old('startDate')) ? date('Y-m-d', strtotime(old('startDate'))) : "" ?>>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Sesi</label>
+                                <select class="form-control select2" name="sesi">
+                                    <option value="">Pilih Sesi</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Sesi</label>
-                            <select class="form-control select2" name="sesi">
-                                <option value="">Pilih Sesi</option>
-                                <?php foreach ($sesi as $key => $ses) : ?>
-                                    <?php $valSesi = $ses->sesiId . ',' . $ses->sesiStart . ',' . $ses->sesiEnd ?>
-                                    <option value="<?= $valSesi ?>" <?= (old('sesi') == $valSesi) ? 'selected' : '' ?>><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
-                                <?php endforeach ?>
-                            </select>
+                </div>
+                <div class="typeManual">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Waktu Mulai</label>
+                                <input type="datetime-local" class="form-control" placeholder="Pilih Tanggal" name="waktuStart" value=<?= (old('waktuStart')) ? date('Y-m-d\Th:i', strtotime(old('waktuStart'))) : date('Y-m-d\Th:i') ?>>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Waktu Selesai</label>
+                                <input type="datetime-local" class="form-control" placeholder="Pilih Tanggal" name="waktuEnd" value=<?= (old('waktuEnd')) ? date('Y-m-d\Th:i', strtotime(old('waktuEnd'))) : date('Y-m-d\Th:i') ?>>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,19 +224,9 @@
                     <label>Lokasi Acara</label>
                     <input name="lokasi" type="text" class="form-control" value="<?= old('lokasi'); ?>">
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Kelas</label>
-                            <input type="text" name="deskripsiAcara" class="form-control" value="<?= old('deskripsiAcara'); ?>">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class=" form-group">
-                            <label>Catatan Ekstra</label>
-                            <input type="text" name="noteAcara" class="form-control" value="<?= old('noteAcara'); ?>">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Kelas</label>
+                    <input type="text" name="deskripsiAcara" class="form-control" value="<?= old('deskripsiAcara'); ?>">
                 </div>
                 <div class=" form-group">
                     <label class="form-label">Warna Acara</label>
@@ -239,11 +243,19 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class=" form-group">
+                    <label>Catatan Ekstra</label>
+                    <textarea name="noteAcara" class="summernote-simple"><?= old('noteAcara'); ?></textarea>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
 <?php foreach ($penjadwalan as $jadwalEdit) : ?>
-    <div class="modal fade" role="dialog" id="editPenjadwalan<?= $jadwalEdit->penjadwalanId; ?>">
+    <div class="modal fade" role="dialog" id="editPenjadwalan<?= $jadwalEdit->penjadwalanId; ?>" data-jenisjadwalid="<?= $jadwalEdit->penjadwalanJenisJadwalId ?>" data-sesi="<?= $jadwalEdit->penjadwalanSesiId ?>">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <form action="/penjadwalan/edit/<?= $jadwalEdit->penjadwalanId ?>" id="formEdit<?= $jadwalEdit->penjadwalanId ?>" method="post">
@@ -319,23 +331,38 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="typeSesi">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Tanggal</label>
+                                                <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value="<?= reformat($jadwalEdit->penjadwalanStartDate) ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Sesi</label>
+                                                <select class="form-control select2" name="sesi">
+                                                    <option value="">Pilih Sesi</option>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Tanggal</label>
-                                            <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value="<?= reformat($jadwalEdit->penjadwalanStartDate) ?>">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Sesi</label>
-                                            <select class="form-control select2" name="sesi">
-                                                <option value="">Pilih Sesi</option>
-                                                <?php foreach ($sesi as $key => $ses) : ?>
-                                                    <option value="<?= $ses->sesiId ?>,<?= $ses->sesiStart ?>,<?= $ses->sesiEnd ?>" <?= ($ses->sesiId == $jadwalEdit->penjadwalanSesiId) ? "selected" : "" ?>><?= $ses->sesiNama ?> (<?= $ses->sesiStart ?>-<?= $ses->sesiEnd ?>)</option>
-                                                <?php endforeach ?>
-                                            </select>
+                                </div>
+                                <div class="typeManual">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Waktu Mulai</label>
+                                                <input type="datetime-local" class="form-control" placeholder="Pilih Tanggal" name="waktuStart" value="<?= reformatManual($jadwalEdit->penjadwalanStartDate) ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Waktu Selesai</label>
+                                                <input type="datetime-local" class="form-control" placeholder="Pilih Tanggal" name="waktuEnd" value="<?= reformatManual($jadwalEdit->penjadwalanEndDate) ?>">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -354,19 +381,9 @@
                                     <label>Lokasi Acara</label>
                                     <input name="lokasi" type="text" class="form-control" value="<?= $jadwalEdit->penjadwalanLokasi; ?>">
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Kelas</label>
-                                            <input type="text" name="deskripsiAcara" class="form-control" value="<?= $jadwalEdit->penjadwalanDeskripsi ?>">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class=" form-group">
-                                            <label>Catatan Ekstra</label>
-                                            <input type="text" name="noteAcara" class="form-control" value="<?= $jadwalEdit->penjadwalanNotes ?>">
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label>Kelas</label>
+                                    <input type="text" name="deskripsiAcara" class="form-control" value="<?= $jadwalEdit->penjadwalanDeskripsi ?>">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Warna Acara</label>
@@ -383,7 +400,14 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class=" form-group">
+                                    <label>Catatan Ekstra</label>
+                                    <textarea name="noteAcara" class="summernote-simple"><?= $jadwalEdit->penjadwalanNotes ?></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -391,7 +415,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 <?php endforeach ?>

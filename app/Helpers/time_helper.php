@@ -31,3 +31,10 @@ function reformat($string)
     $date = date('Y-m-d', strtotime($time));
     return $date;
 }
+
+function reformatManual($string)
+{
+    $time = date($string);
+    $date = date('Y-m-d\Th:i', strtotime($time));
+    return $date;
+}
