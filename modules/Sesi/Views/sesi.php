@@ -69,7 +69,7 @@
                                                     <td><?= $data->jenisJadwalKode; ?></td>
                                                     <td><span data-toggle="modal" data-target="#sesi<?= $data->sesiJenisJadwalId; ?>" class="text-primary" style="cursor:pointer">Klik disini untuk liihat sesi</span></td>
                                                     <td style="text-align:center">
-                                                        <button class="btn btn-icon icon-left btn-warning" data-toggle="modal" data-target="#editData<?= $data->sesiId; ?>"><i class="fas fa-pen"></i></button>
+                                                        <button class="btn btn-icon icon-left btn-warning" data-toggle="modal" data-target="#editData<?= $data->sesiJenisJadwalId; ?>"><i class="fas fa-pen"></i></button>
                                                     </td>
                                                 </tr>
                                             <?php endforeach ?>
