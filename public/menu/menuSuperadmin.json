@@ -26,8 +26,17 @@
         "pages": ""
     },
     {
+        "id": "11",
+        "nama": "Sesi",
+        "parent": "3",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-clock",
+        "pages": "/sesi"
+    },
+    {
         "id": "4",
-        "nama": "Blok",
+        "nama": "Mata Kuliah",
         "parent": "3",
         "level": "child",
         "status": true,
@@ -62,6 +71,24 @@
         "pages": ""
     },
     {
+        "id": "12",
+        "nama": "Jadwal Tentatif",
+        "parent": "6",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-users",
+        "pages": "/tentatif"
+    },
+    {
+        "id": "13",
+        "nama": "Pemetaan Jadwal",
+        "parent": "6",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-calendar-plus",
+        "pages": "/pemetaanJadwal"
+    },
+    {
         "id": "7",
         "nama": "Penjadwalan",
         "parent": "6",
@@ -69,6 +96,15 @@
         "status": true,
         "icon": "fas fa-calendar-check",
         "pages": "/penjadwalan"
+    },
+    {
+        "id": "10",
+        "nama": "Report Jadwal",
+        "parent": "6",
+        "level": "child",
+        "status": true,
+        "icon": "fas fa-file-export",
+        "pages": "/reportJadwal"
     },
     {
         "id": "8",

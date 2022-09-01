@@ -464,6 +464,48 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Dosen</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="accordion">
+                                        <div class="accordion">
+                                            <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-1" aria-expanded="true">
+                                                <h4>5 Partisipan</h4>
+                                            </div>
+                                            <div class="accordion-body collapse" id="panel-body-1" data-parent="#accordion">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        A list item
+                                                        <span class="badge badge-success badge-pill"> </span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        A second list item
+                                                        <span class="badge badge-success badge-pill"> </span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        A third list item
+                                                        <span class="badge badge-warning badge-pill"> </span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        A second list item
+                                                        <span class="badge badge-danger badge-pill"> </span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        A third list item
+                                                        <span class="badge badge-success badge-pill"> </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

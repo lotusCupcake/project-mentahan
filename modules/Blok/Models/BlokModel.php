@@ -14,7 +14,6 @@ class BlokModel extends Model
     public function getMatkulBlok($keyword = null)
     {
         $builder = $this->table('matkul_blok');
-        $builder->where('matkulBlokType', 'BLOK');
         if ($keyword) {
             $builder->orlike('matkul_blok.matkulBlokNama', $keyword);
             $builder->orlike('matkul_blok.matkulBlokProdiNama', $keyword);
