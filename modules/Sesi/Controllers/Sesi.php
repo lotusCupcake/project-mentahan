@@ -7,10 +7,17 @@ This is Controller Krs
 namespace Modules\Sesi\Controllers;
 
 use App\Controllers\BaseController;
+use Modules\Sesi\Models\SesiModel;
 
 
 class Sesi extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->sesi = new SesiModel();
+    }
+
     public function index()
     {
         $data = [
@@ -18,5 +25,12 @@ class Sesi extends BaseController
             'breadcrumb' => ['Home', 'Sesi'],
         ];
         return view('Modules\Sesi\Views\sesi', $data);
+    }
+
+    public function getSesi()
+    {
+        $jenisJadwal = $this->request->getVar('id');
+        $where = ['sesiJenisJadwalId' => $jenisJadwal];
+        echo json_encode($this->sesi->getSesi($where)->findAll());
     }
 }

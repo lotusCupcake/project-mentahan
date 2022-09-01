@@ -34,7 +34,7 @@ class Dashboard extends BaseController
             'menu' => $this->fetchMenu(),
             'title' => "Dashboard",
             'breadcrumb' => ['Home', 'Dashboard'],
-            'sesi' => $this->sesi->findAll(),
+            // 'sesi' => $this->sesi->findAll(),
             'jenisJadwal' => $this->jenisJadwal->where('jenisJadwalIsAktif', '1')->findAll(),
             'penjadwalan' => $this->penjadwalan->getPenjadwalan()->get()->getResult(),
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),

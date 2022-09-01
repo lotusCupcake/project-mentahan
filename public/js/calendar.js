@@ -1,8 +1,11 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $(".tambah").hide();
     $(".edit").hide();
     cekAvailDosen();
     $('.fc-goToCalendar-button, .fc-prev-button, .fc-next-button, .fc-nextYear-button, .fc-prevYear-button, .fc-month-button, .fc-agendaWeek-button, .fc-agendaDay-button, .fc-listWeek-button').addClass('btn-primary');
+
+    $('.typeSesi').show();
+    $('.typeManual').hide();
 });
 
 var calendar = $("#calendar").fullCalendar({
@@ -14,13 +17,13 @@ var calendar = $("#calendar").fullCalendar({
     },
     editable: true,
     events: "/penjadwalan/event",
-    eventRender: function(event, element, view) {
+    eventRender: function (event, element, view) {
         if (event.allDay === "true") {
             event.allDay = true;
         } else {
             event.allDay = false;
         }
-        element.bind('click', function() {
+        element.bind('click', function () {
             if (element.data('alreadyclicked')) {
                 element.data('alreadyclicked', false);
 
@@ -35,7 +38,7 @@ var calendar = $("#calendar").fullCalendar({
                 }
             } else {
                 element.data('alreadyclicked', true);
-                var alreadyclickedTimeout = setTimeout(function() {
+                var alreadyclickedTimeout = setTimeout(function () {
                     element.data('alreadyclicked', false);
                     console.log('Was single clicked' + event.id);
                     $("#viewJadwal" + event.id).modal("show");
@@ -48,7 +51,7 @@ var calendar = $("#calendar").fullCalendar({
     customButtons: {
         goToCalendar: {
             text: 'Google Calendar',
-            click: function() {
+            click: function () {
                 window.open("http://calendar.google.com", '_blank');
             }
         },
@@ -56,25 +59,29 @@ var calendar = $("#calendar").fullCalendar({
     timeFormat: "h:mm",
     selectable: true,
     selectHelper: true,
-    select: function(start, end, allDay) {
+    select: function (start, end, allDay) {
         const [date, time] = formatDate(new Date(start)).split(" ");
+        // console.log(date+'T'+time);
         $('[name="startDate"]').val(date);
+        $('[name="waktuStart"]').val(date + 'T' + time);
+        $('[name="waktuEnd"]').val(date + 'T' + time);
         startDate = date;
         cekAvailDosen();
         $("#tambahJadwalDashboard").modal("show");
     },
-    eventDrop: function(event, delta) {
+    eventDrop: function (event, delta) {
         cekJadwalBentrok(event, delta, calendar);
     },
-    loading: function(bool) {
+    loading: function (bool) {
         console.log('loading');
     },
-    eventAfterAllRender: function(view) {
+    eventAfterAllRender: function (view) {
         console.log('loading dismiss');
     }
 });
 
 function cekJadwalBentrok(event, delta, calendar) {
+    console.log(event);
     $.ajax({
         url: "/penjadwalan/cekBentrok",
         data: {
@@ -82,7 +89,7 @@ function cekJadwalBentrok(event, delta, calendar) {
             id: event.id,
         },
         type: "POST",
-        success: function(response) {
+        success: function (response) {
             if (JSON.parse(response).status) {
                 ubahJdwl(event, delta);
             } else {
@@ -90,7 +97,7 @@ function cekJadwalBentrok(event, delta, calendar) {
                 displayMessageError(JSON.parse(response).message);
             }
         },
-        error: function(xhr, ajaxOptions, thrownError) {
+        error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
         },
     });
@@ -105,10 +112,10 @@ function ubahJdwl(event, delta) {
             type: "update",
         },
         type: "POST",
-        success: function(response) {
+        success: function (response) {
             displayMessage(event.title + " Updated Successfully");
         },
-        error: function(xhr, ajaxOptions, thrownError) {
+        error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
         },
     });
@@ -122,7 +129,7 @@ function hapusEvent(id, title, from) {
             id: id,
             type: "delete",
         },
-        success: function(response) {
+        success: function (response) {
             if (from == "penjadwalan") {
                 window.location.replace("/penjadwalan");
                 displayMessage(title + " Deleted Successfully");
@@ -131,7 +138,7 @@ function hapusEvent(id, title, from) {
                 displayMessage(title + " Deleted Successfully");
             }
         },
-        error: function(xhr, ajaxOptions, thrownError) {
+        error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
         },
     });
@@ -154,6 +161,7 @@ function padTo2Digits(num) {
 
 let sesi;
 let startDate;
+let waktuStart;
 let jenis;
 let angkatan;
 let blok;
@@ -167,7 +175,7 @@ $("#tambahPenjadwalan").fireModal({
     buttons: [{
             text: "Close",
             class: "btn btn-secondary btn-shadow",
-            handler: function(modal) {
+            handler: function (modal) {
                 modal.modal("hide");
             },
         },
@@ -175,49 +183,129 @@ $("#tambahPenjadwalan").fireModal({
             text: "Save",
             submit: true,
             class: "btn btn-primary btn-shadow",
-            handler: function(modal) {
+            handler: function (modal) {
                 modal.click();
             },
         },
     ],
 });
 
-$("[name=sesi]").change(function() {
+$("[name=sesi]").change(function () {
     sesi = $(this).val().split(",")[0];
     cekAvailDosen();
 });
 
-$("[name=startDate]").change(function() {
+$("[name=startDate]").change(function () {
     startDate = $(this).val();
     cekAvailDosen();
 });
 
-$("[name=jenisJadwal]").change(function() {
-    jenis = $(this).val();
+$("[name=waktuStart]").change(function () {
+    startDate = $(this).val();
     cekAvailDosen();
 });
 
-$("[name=blok]").change(function() {
+$("[name=waktuEnd]").change(function () {
+    startDate = $(this).val();
+    cekAvailDosen();
+});
+
+$("[name=jenisJadwal]").change(function () {
+    jenis = $(this).val();
+    sesi = 19;
+    getSesi(jenis);
+    cekAvailDosen();
+});
+
+$("[name=blok]").change(function () {
     blok = $(this).val();
     cekAvailDosen();
 });
 
-$("[name=angkatan]").change(function() {
+$("[name=angkatan]").change(function () {
     angkatan = $(this).val();
     cekAvailDosen();
 });
 
+function getSesi(jenis) {
+    let jenisJadwalId = jenis.split(',')[0];
+    if (jenisJadwalId != 3) {
+        $('.typeSesi').show();
+        $('.typeManual').hide();
+        collectSesi({
+            jenisJadwal: jenisJadwalId,
+            type: 'add',
+            obj: $('[name=sesi]'),
+            sesi: null
+        });
+    } else {
+        $('.typeSesi').hide();
+        $('.typeManual').show();
+    }
+}
+
+function collectSesi({
+    jenisJadwal = null,
+    type = null,
+    obj = null,
+    sesi = null
+} = {}) {
+    $.ajax({
+        type: "POST",
+        url: "/sesi/getSesi",
+        dataType: "json",
+        data: {
+            id: jenisJadwal,
+        },
+        beforeSend: function (e) {
+            if (e && e.overrideMimeType) {
+                e.overrideMimeType("application/json;charset=UTF-8");
+            }
+        },
+        success: function (response) {
+            let html = "";
+            html += '<option value="">Pilih Sesi</option>';
+
+            response.forEach((element) => {
+                let status = (element.sesiId == sesi) ? "selected" : ""
+                html += '<option value="' + element.sesiId + ',' + element.sesiStart + ',' + element.sesiEnd + '" ' + status + '>' + element.sesiNama + ' (' + element.sesiStart + '-' + element.sesiEnd + ')</option>';
+            });
+
+            if (type = 'add') {
+                obj.empty();
+                obj.append(html);
+            } else if (type = 'edit') {
+                obj.empty();
+                obj.append(html);
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+        },
+    });
+}
+
 function editJadwal(id) {
-    sesi = $("#editPenjadwalan" + id)
-        .find("[name=sesi]")
-        .val()
-        .split(",")[0];
+    let jenisJadwalId = $("#editPenjadwalan" + id).data('jenisjadwalid');
+    if (jenisJadwalId != 3) {
+        $(".typeManual").hide();
+        $(".typeSesi").show();
+        collectSesi({
+            jenisJadwal: jenisJadwalId,
+            type: 'edit',
+            obj: $("#editPenjadwalan" + id).find("[name=sesi]"),
+            sesi: $("#editPenjadwalan" + id).data('sesi')
+        });
+    } else {
+        $(".typeManual").show();
+        $(".typeSesi").hide();
+    }
+
+    sesi = $("#editPenjadwalan" + id).data('sesi');
     startDate = $("#editPenjadwalan" + id)
         .find("[name=startDate]")
         .val();
-    jenis = $("#editPenjadwalan" + id)
-        .find("[name=jenisJadwal]")
-        .val();
+    jenis = $("#editPenjadwalan" + id).data('jenisjadwalid');
     blok = $("#editPenjadwalan" + id)
         .find("[name=blok]")
         .val();
@@ -226,7 +314,6 @@ function editJadwal(id) {
         .val();
     cekAvailDosen({
         id: id
-
     });
 }
 
@@ -243,12 +330,12 @@ function cekDosenSelect(id, result) {
             data: {
                 id: id,
             },
-            beforeSend: function(e) {
+            beforeSend: function (e) {
                 if (e && e.overrideMimeType) {
                     e.overrideMimeType("application/json;charset=UTF-8");
                 }
             },
-            success: function(response) {
+            success: function (response) {
                 // console.log([result, response]);
                 let dosen = response;
                 let html = "";
@@ -273,7 +360,7 @@ function cekDosenSelect(id, result) {
                     .find('[name="dosen[]"]')
                     .append(html);
             },
-            error: function(xhr, ajaxOptions, thrownError) {
+            error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
             },
         });
@@ -283,7 +370,7 @@ function cekDosenSelect(id, result) {
 function cekAvailDosen({
     id = null
 } = {}) {
-    // console.log([sesi, startDate]);
+    console.log([sesi, startDate]);
 
     if (typeof sesi !== "undefined" && typeof startDate !== "undefined" && typeof jenis !== "undefined" && typeof angkatan !== "undefined" && typeof blok !== "undefined") {
         $.ajax({
@@ -297,12 +384,12 @@ function cekAvailDosen({
                 angkatan: angkatan,
                 blok: blok,
             },
-            beforeSend: function(e) {
+            beforeSend: function (e) {
                 if (e && e.overrideMimeType) {
                     e.overrideMimeType("application/json;charset=UTF-8");
                 }
             },
-            success: function(response) {
+            success: function (response) {
                 if (id == null) {
                     let html = "";
                     response.forEach((element) => {
@@ -321,7 +408,7 @@ function cekAvailDosen({
                     cekDosenSelect(id, response);
                 }
             },
-            error: function(xhr, ajaxOptions, thrownError) {
+            error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
             },
         });

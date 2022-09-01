@@ -32,9 +32,9 @@ class Home extends BaseController
             ),
             'end' => array(
                 'dateTime' => date('Y-m-d\TH:i:sP', +strtotime('+1 hour'))
-                // ),
-                // 'attendees' => array(
-                //     array('email' => 'fikriansari.mfa@gmail.com'),
+            ),
+            'attendees' => array(
+                array('email' => 'fikriansari.mfa@gmail.com'),
             ),
             'guestsCanInviteOthers' => false,
             'guestsCanModify' => false,
