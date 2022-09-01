@@ -66,6 +66,8 @@ class Blok extends BaseController
                 ];
                 $this->blokModel->insert($data);
                 session()->setFlashdata('success', 'Data Mata Kuliah Berhasil Ditambahkan');
+            } else {
+                session()->setFlashdata('failed', 'Data Mata Kuliah Sudah Ada');
             }
         };
         return redirect()->to($url);

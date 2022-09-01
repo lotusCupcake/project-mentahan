@@ -34,6 +34,9 @@
                     <?php if (!empty(session()->getFlashdata('success'))) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['success', 'fas fa-check', 'Sukses!', session()->getFlashdata('success')]]); ?>
                     <?php endif; ?>
+                    <?php if (!empty(session()->getFlashdata('failed'))) : ?>
+                        <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', session()->getFlashdata('failed')]]); ?>
+                    <?php endif; ?>
                     <?php if ($validation->hasError('dataBlok')) : ?>
                         <?= view('layout/templateAlertIcon', ['msg' => ['danger', 'fas fa-exclamation', 'Gagal!', $validation->getError('dataBlok')]]); ?>
                     <?php endif; ?>
