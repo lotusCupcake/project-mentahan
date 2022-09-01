@@ -8,6 +8,7 @@ namespace Modules\Sesi\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\Sesi\Models\SesiModel;
+use Modules\JenisJadwal\Models\JenisJadwalModel;
 
 
 
