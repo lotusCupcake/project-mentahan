@@ -31,7 +31,6 @@ class GoogleCalendar
 
         $this->calId = 'oc9jbs14jprou74o5im5isjq3s@group.calendar.google.com';
         // $this->calId = 'digisched@umsu.ac.id';
-
     }
 
     public function calendar()
