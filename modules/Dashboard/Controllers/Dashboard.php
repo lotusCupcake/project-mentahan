@@ -30,18 +30,26 @@ class Dashboard extends BaseController
 
     public function index()
     {
+        $grup = getSpecificUser(['users.id' => user()->id])->name;
+        if ($grup == 'operatorX') {
+            $jenis = [3, 4, 5];
+        } elseif ($grup == 'operatorY') {
+            $jenis = [1, 2];
+        } elseif ($grup == 'superoperator') {
+            $jenis = [4, 5];
+        } else {
+            $jenis = [];
+        }
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Dashboard",
             'breadcrumb' => ['Home', 'Dashboard'],
-            // 'sesi' => $this->sesi->findAll(),
-            'jenisJadwal' => $this->jenisJadwal->where('jenisJadwalIsAktif', '1')->findAll(),
-            'penjadwalan' => $this->penjadwalan->getPenjadwalan()->get()->getResult(),
+            'jenisJadwal' => $this->jenisJadwal->getJenisJadwal($jenis)->findAll(),
+            'penjadwalan' => $this->penjadwalan->getPenjadwalan($keyword = null, $jenis)->get()->getResult(),
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
             'color' => colorEvent(),
             'calendar' => calendar(),
         ];
-        // dd($data['blok']);
         return view('Modules\Dashboard\Views\dashboard', $data);
     }
 }
