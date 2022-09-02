@@ -10,4 +10,18 @@ class JenisJadwalModel extends Model
     protected $primaryKey = 'jenisJadwalId';
     protected $allowedFields = ['jenisJadwalKode', 'jenisJadwalNama', 'jenisJadwalIsAktif'];
     protected $returnType = 'object';
+
+    // public function getJadwalWhere($where)
+    // {
+    //     $builder = $this->table($this->table);
+    //     $builder->where($where);
+    //     return $builder;
+    // }
+
+    public function getTentatif()
+    {
+        $union = $this->db->table($this->table)->select("CONCAT (jenisJadwalKode, ' Offline') AS jenisJadwalKode")->where('jenisJadwalIsTentatif', 1);
+        $builder = $this->db->table($this->table)->select("CONCAT (jenisJadwalKode, ' Online') AS jenisJadwalKode")->where('jenisJadwalIsTentatif', 1)->where('jenisJadwalAvailOl', 1);
+        return $builder->union($union);
+    }
 }

@@ -43,3 +43,17 @@ function getSpecificUser($where)
     $result = $manajemen->getSpecificUser($where)->getResult()[0];
     return $result;
 }
+
+// function getJadwalWhere($where)
+// {
+//     $jadwal = new \Modules\JenisJadwal\Models\JenisJadwalModel;
+//     $result = $jadwal->getJadwalWhere($where)->findAll();
+//     return $result;
+// }
+
+function getSesiWhere($where)
+{
+    $sesi = new \Modules\Sesi\Models\SesiModel;
+    $result = $sesi->getSesiWhere($where)->findAll();
+    return $result;
+}

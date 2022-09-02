@@ -30,4 +30,11 @@ class SesiModel extends Model
         $builder->join('jenis_jadwal', 'jenis_jadwal.jenisJadwalId = sesi.sesiJenisJadwalId', 'LEFT');
         return $builder;
     }
+
+    public function getSesiWhere($where)
+    {
+        $builder = $this->table($this->table);
+        $builder->where($where);
+        return $builder;
+    }
 }

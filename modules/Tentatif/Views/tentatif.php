@@ -18,33 +18,77 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h4></h4>
+                            <div class="card-header-form">
+                                <form action="">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search" name="keyword" value="<?= isset($_GET['keyword']) ? $_GET['keyword'] : "" ?>">
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <ul class="nav nav-tabs" id="myTab2" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home2" role="tab" aria-controls="home" aria-selected="true">SGD OFFLINE</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile" aria-selected="false">SGD ONLINE</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="contact-tab2" data-toggle="tab" href="#contact2" role="tab" aria-controls="contact" aria-selected="false">KKD</a>
-                                </li>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <?php foreach ($jadwal as $key => $jdwl) : ?>
+                                    <li class="nav-item">
+                                        <a class="nav-link <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'active' : '' ?>" id="<?= $key ?>" data-toggle="tab" href="#<?= $jdwl->jenisJadwalKode ?>" role="tab" aria-controls="<?= $jdwl->jenisJadwalKode ?>" aria-selected="<?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'true' : 'false' ?>"><?= $jdwl->jenisJadwalKode ?></a>
+                                    </li>
+                                <?php endforeach ?>
                             </ul>
-                            <div class="tab-content tab-bordered" id="myTab3Content">
-                                <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home-tab2">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </div>
-                                <div class="tab-pane fade" id="profile2" role="tabpanel" aria-labelledby="profile-tab2">
-                                    Sed sed metus vel lacus hendrerit tempus. Sed efficitur velit tortor, ac efficitur est lobortis quis. Nullam lacinia metus erat, sed fermentum justo rutrum ultrices. Proin quis iaculis tellus. Etiam ac vehicula eros, pharetra consectetur dui. Aliquam convallis neque eget tellus efficitur, eget maximus massa imperdiet. Morbi a mattis velit. Donec hendrerit venenatis justo, eget scelerisque tellus pharetra a.
-                                </div>
-                                <div class="tab-pane fade" id="contact2" role="tabpanel" aria-labelledby="contact-tab2">
-                                    Vestibulum imperdiet odio sed neque ultricies, ut dapibus mi maximus. Proin ligula massa, gravida in lacinia efficitur, hendrerit eget mauris. Pellentesque fermentum, sem interdum molestie finibus, nulla diam varius leo, nec varius lectus elit id dolor. Nam malesuada orci non ornare vulputate. Ut ut sollicitudin magna. Vestibulum eget ligula ut ipsum venenatis ultrices. Proin bibendum bibendum augue ut luctus.
-                                </div>
+                            <div class="tab-content" id="myTabContent">
+                                <?php foreach ($jadwal as $key => $jdwl) : ?>
+                                    <div class="tab-pane fade <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'show active' : '' ?>" id="<?= $jdwl->jenisJadwalKode ?>" role="tabpanel" aria-labelledby="<?= $key ?>">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <thead>
+                                                    <?php $jlhHari = count($hari);
+                                                    ?>
+                                                    <tr>
+                                                        <th rowspan="2" width="2%" style="text-align:center" scope="col">No.</th>
+                                                        <th rowspan="2" scope="col">Nama Lengkap</th>
+                                                        <th rowspan="2" scope="col">Nama</th>
+                                                        <th rowspan="2" scope="col">Email General</th>
+                                                        <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col">08:00-10:00</th>
+                                                        <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col">08:00-10:00</th>
+                                                        <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col">08:00-10:00</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <?php foreach ($hari as $key => $value) : ?>
+                                                            <th style="text-align:center" scope="col"><?= $value; ?></th>
+                                                        <?php endforeach ?>
+                                                        <?php foreach ($hari as $key => $value) : ?>
+                                                            <th style="text-align:center" scope="col"><?= $value; ?></th>
+                                                        <?php endforeach ?>
+                                                        <?php foreach ($hari as $key => $value) : ?>
+                                                            <th style="text-align:center" scope="col"><?= $value; ?></th>
+                                                        <?php endforeach ?>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if (!empty($dosen)) : ?>
+                                                        <?php
+                                                        $no = 1 + ($numberPage * ($currentPage - 1));
+                                                        foreach ($dosen as $data) : ?>
+                                                            <tr>
+                                                                <td style="text-align:center" scope="row"><?= $no++; ?></td>
+                                                                <td><?= $data->dosenFullname; ?></td>
+                                                                <td><?= $data->dosenShortname; ?></td>
+                                                                <td><?= ($data->dosenEmailGeneral == null) ? '-' : $data->dosenEmailGeneral; ?></td>
+                                                            </tr>
+                                                        <?php endforeach ?>
+                                                    <?php else : ?>
+                                                        <?= view('layout/templateEmpty', ['jumlahSpan' => 4]); ?>
+                                                    <?php endif ?>
+                                                </tbody>
+                                            </table>
+                                            <?= $pager->links('dosen', 'pager') ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach ?>
                             </div>
                         </div>
                     </div>
