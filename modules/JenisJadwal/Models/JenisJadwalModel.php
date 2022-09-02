@@ -11,12 +11,15 @@ class JenisJadwalModel extends Model
     protected $allowedFields = ['jenisJadwalKode', 'jenisJadwalNama', 'jenisJadwalIsAktif'];
     protected $returnType = 'object';
 
-    // public function getJadwalWhere($where)
-    // {
-    //     $builder = $this->table($this->table);
-    //     $builder->where($where);
-    //     return $builder;
-    // }
+    public function getJenisJadwal($jenis = null)
+    {
+        $builder = $this->table($this->table);
+        if ($jenis) {
+            $builder->whereIn('jenis_jadwal.jenisJadwalId', $jenis);
+        }
+        $builder->where('jenis_jadwal.jenisJadwalIsAktif', 1);
+        return $builder;
+    }
 
     public function getTentatif()
     {

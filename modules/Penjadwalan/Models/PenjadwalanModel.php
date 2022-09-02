@@ -24,7 +24,7 @@ class PenjadwalanModel extends Model
         $builder->join('matkul_blok', 'matkul_blok.matkulBlokId = ' . $this->table . '.penjadwalanMatkulBlokId', 'LEFT');
         $builder->join('sesi', 'sesi.sesiId = ' . $this->table . '.penjadwalanSesiId', 'LEFT');
         if ($jenis) {
-            $builder->where('jenis_jadwal.jenisJadwalId', $jenis);
+            $builder->whereIn('jenis_jadwal.jenisJadwalId', $jenis);
         }
         if ($keyword) {
             $builder->like($this->table . '.penjadwalanJudul', $keyword);

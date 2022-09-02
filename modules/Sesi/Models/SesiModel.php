@@ -11,10 +11,13 @@ class SesiModel extends Model
     protected $allowedFields = ['sesiJenisJadwalId', 'sesiNama', 'sesiStart', 'sesiEnd'];
     protected $returnType = 'object';
 
-    public function getSesiJadwal($keyword = null)
+    public function getSesiJadwal($keyword = null, $jenis = null)
     {
         $builder = $this->table('sesi');
         $builder->join('jenis_jadwal', 'jenis_jadwal.jenisJadwalId = sesi.sesiJenisJadwalId', 'LEFT');
+        if ($jenis) {
+            $builder->whereIn('jenis_jadwal.jenisJadwalId', $jenis);
+        }
         $builder->whereNotIn('jenis_jadwal.jenisJadwalId', ['3']);
         if ($keyword) {
             $builder->like('jenis_jadwal.jenisJadwalNama', $keyword);

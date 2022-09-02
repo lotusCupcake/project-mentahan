@@ -25,9 +25,20 @@ class Sesi extends BaseController
 
     public function index()
     {
+
         $currentPage = $this->request->getVar('page_sesi') ? $this->request->getVar('page_sesi') : 1;
         $keyword = $this->request->getVar('keyword');
-        $sesi = $this->sesiModel->getSesiJadwal($keyword);
+        $grup = getSpecificUser(['users.id' => user()->id])->name;
+        if ($grup == 'operatorX') {
+            $jenis = [3, 4, 5];
+        } elseif ($grup == 'operatorY') {
+            $jenis = [1, 2];
+        } elseif ($grup == 'superoperator') {
+            $jenis = [4, 5];
+        } else {
+            $jenis = [];
+        }
+        $sesi = $this->sesiModel->getSesiJadwal($keyword, $jenis);
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Sesi",
@@ -47,7 +58,7 @@ class Sesi extends BaseController
     {
         $jenisJadwal = $this->request->getVar('id');
         $where = ['sesiJenisJadwalId' => $jenisJadwal];
-        echo json_encode($this->sesi->getSesi($where)->findAll());
+        echo json_encode($this->sesiModel->getSesi($where)->findAll());
     }
 
     public function add()

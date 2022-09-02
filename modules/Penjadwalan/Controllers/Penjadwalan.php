@@ -33,18 +33,14 @@ class Penjadwalan extends BaseController
     {
         $currentPage = $this->request->getVar('page_penjadwalan') ? $this->request->getVar('page_penjadwalan') : 1;
         $grup = getSpecificUser(['users.id' => user()->id])->name;
-        if ($grup == 'kuliah') {
-            $jenis = 1;
-        } elseif ($grup == 'praktikum') {
-            $jenis = 2;
-        } elseif ($grup == 'ujian') {
-            $jenis = 3;
-        } elseif ($grup == 'sgd') {
-            $jenis = 4;
-        } elseif ($grup == 'kkd') {
-            $jenis = 5;
+        if ($grup == 'operatorX') {
+            $jenis = [3, 4, 5];
+        } elseif ($grup == 'operatorY') {
+            $jenis = [1, 2];
+        } elseif ($grup == 'superoperator') {
+            $jenis = [4, 5];
         } else {
-            $jenis = '';
+            $jenis = [];
         }
         $keyword = $this->request->getVar('keyword');
         $jadwal = $this->penjadwalan->getPenjadwalan($keyword, $jenis);
@@ -60,12 +56,10 @@ class Penjadwalan extends BaseController
             'pager' => $jadwal->pager,
             'validation' => $this->validation,
             'color' => colorEvent(),
-            // 'sesi' => $this->sesi->findAll(),
-            'jenisJadwal' => $this->jenisJadwal->where('jenisJadwalIsAktif', '1')->findAll(),
+            'jenisJadwal' => $this->jenisJadwal->getJenisJadwal($jenis)->findAll(),
             'blok' => $this->matkulBlok->getMatkulBlok()->findAll(),
             'dosen' => [],
         ];
-        // dd($data['blok']);
         return view('Modules\Penjadwalan\Views\penjadwalan', $data);
     }
 
@@ -178,8 +172,18 @@ class Penjadwalan extends BaseController
 
     public function loadData()
     {
+        $grup = getSpecificUser(['users.id' => user()->id])->name;
+        if ($grup == 'operatorX') {
+            $jenis = [3, 4, 5];
+        } elseif ($grup == 'operatorY') {
+            $jenis = [1, 2];
+        } elseif ($grup == 'superoperator') {
+            $jenis = [4, 5];
+        } else {
+            $jenis = [];
+        }
         $warna = konversiColor();
-        $data = $this->penjadwalan->findAll();
+        $data = $this->penjadwalan->getPenjadwalan($keyword = null, $jenis)->findAll();
         $events = [];
         foreach ($data as $key => $cal) {
             $events[] = [
