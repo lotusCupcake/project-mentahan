@@ -20,8 +20,8 @@ class JenisJadwalModel extends Model
 
     public function getTentatif()
     {
-        $union = $this->db->table($this->table)->select("CONCAT (jenisJadwalKode, ' Offline') AS jenisJadwalKode")->where('jenisJadwalIsTentatif', 1);
-        $builder = $this->db->table($this->table)->select("CONCAT (jenisJadwalKode, ' Online') AS jenisJadwalKode")->where('jenisJadwalIsTentatif', 1)->where('jenisJadwalAvailOl', 1);
+        $union = $this->db->table($this->table)->select(["jenisJadwalId", "CONCAT (jenisJadwalKode, '1') AS unic", "CONCAT (jenisJadwalKode, ' Offline') AS jenisJadwalKode"])->where('jenisJadwalIsTentatif', 1);
+        $builder = $this->db->table($this->table)->select(["jenisJadwalId", "CONCAT (jenisJadwalKode, '0') AS unic", "CONCAT (jenisJadwalKode, ' Online') AS jenisJadwalKode"])->where('jenisJadwalIsTentatif', 1)->where('jenisJadwalAvailOl', 1);
         return $builder->union($union);
     }
 }

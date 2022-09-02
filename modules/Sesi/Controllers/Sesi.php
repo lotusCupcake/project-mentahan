@@ -47,7 +47,7 @@ class Sesi extends BaseController
     {
         $jenisJadwal = $this->request->getVar('id');
         $where = ['sesiJenisJadwalId' => $jenisJadwal];
-        echo json_encode($this->sesi->getSesi($where)->findAll());
+        echo json_encode($this->sesiModel->getSesi($where)->findAll());
     }
 
     public function add()
