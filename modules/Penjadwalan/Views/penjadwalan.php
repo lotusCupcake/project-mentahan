@@ -68,8 +68,8 @@
                                         <th>No</th>
                                         <th>Nama Acara</th>
                                         <th>Lokasi</th>
-                                        <th>Dosen</th>
                                         <th>Jadwal</th>
+                                        <th>Detail</th>
                                         <th style="text-align:center">Action</th>
                                     </tr>
                                     <?php if (!empty($penjadwalan)) : ?>
@@ -81,16 +81,10 @@
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
                                                 <td class="align-middle"><i class="fas fa-location-arrow text-info"></i> <?= $jadwal->penjadwalanLokasi ?></td>
-                                                <td>
-                                                    <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
-                                                        <?php if ($key < 5) : ?>
-                                                            <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-3.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>
-                                                </td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
+                                                <td><span data-calid="calendarId" data-toggle="modal" data-target="#viewJadwal<?= $jadwal->penjadwalanId ?>" class="text-primary" style="cursor:pointer">Klik untuk lihat detail</span></td>
                                                 <td style="text-align:center">
-                                                    <button class="btn btn-info" data-toggle="modal" data-target="#viewJadwal<?= $jadwal->penjadwalanId ?>"><i class="fas fa-eye"></i></button>
+                                                    <button class="btn btn-info"><i class="fas fa-clone"></i></button>
                                                     <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
                                                     <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?<p class='text-warning'><small>This action cannot be undone</small></p>" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
