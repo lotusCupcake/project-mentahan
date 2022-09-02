@@ -37,6 +37,7 @@ class SesiModel extends Model
     public function getSesiWhere($where)
     {
         $builder = $this->table($this->table);
+        $builder->join('jenis_jadwal', 'jenis_jadwal.jenisJadwalId =' . $this->table . '.sesiJenisJadwalId', 'LEFT');
         $builder->where($where);
         return $builder;
     }
