@@ -26,11 +26,19 @@ class Blok extends BaseController
     {
         $currentPage = $this->request->getVar('page_blok') ? $this->request->getVar('page_blok') : 1;
         $keyword = $this->request->getVar('keyword');
-        $blok = $this->blokModel->getMatkulBlok($keyword);
+        $grup = getSpecificUser(['users.id' => user()->id])->name;
+        if ($grup == 'operatorY') {
+            $tipe = 'NON BLOK';
+        } elseif ($grup == 'superoperator') {
+            $tipe = 'BLOK';
+        } else {
+            $tipe = '';
+        }
+        $blok = $this->blokModel->getMatkulBlok($keyword, $tipe);
         $data = [
             'menu' => $this->fetchMenu(),
-            'title' => "Blok",
-            'breadcrumb' => ['Data', 'Blok'],
+            'title' => "Mata Kuliah",
+            'breadcrumb' => ['Data', 'Mata Kuliah'],
             'matkulBlok' =>  $blok->paginate($this->numberPage, 'blok'),
             'apiBlok' => $this->apiModel->getBlok(),
             'currentPage' => $currentPage,

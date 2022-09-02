@@ -45,10 +45,10 @@
                             <thead>
                                 <tr>
                                     <th width="2%" style="text-align:center" scope="col">No.</th>
-                                    <th scope="col">Nama Blok</th>
+                                    <th scope="col">Mata Kuliah</th>
+                                    <th scope="col">Tipe</th>
                                     <th width="18%" scope="col">Prodi</th>
                                     <th width="10%" style="text-align:center" scope="col">Action</th>
-                                </tr>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,6 +59,7 @@
                                         <tr>
                                             <td style="text-align:center" scope="row"><?= $no++; ?></td>
                                             <td><?= $data->matkulBlokNama; ?></td>
+                                            <td><?= $data->matkulBlokType; ?></td>
                                             <td><?= $data->matkulBlokProdiNama; ?></td>
                                             <td style="text-align:center">
                                                 <button class="btn btn-icon icon-left btn-danger" data-toggle="modal" data-target="#hapus<?= $data->matkulBlokId; ?>"><i class="fas fa-trash"></i></button>
@@ -66,7 +67,7 @@
                                         </tr>
                                     <?php endforeach ?>
                                 <?php else : ?>
-                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 4]); ?>
+                                    <?= view('layout/templateEmpty', ['jumlahSpan' => 5]); ?>
                                 <?php endif ?>
                             </tbody>
                         </table>
