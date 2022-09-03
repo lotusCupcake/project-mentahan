@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
     $(".tambah").hide();
     $(".edit").hide();
     cekAvailDosen();
@@ -17,13 +17,13 @@ var calendar = $("#calendar").fullCalendar({
     },
     editable: true,
     events: "/penjadwalan/event",
-    eventRender: function (event, element, view) {
+    eventRender: function(event, element, view) {
         if (event.allDay === "true") {
             event.allDay = true;
         } else {
             event.allDay = false;
         }
-        element.bind('click', function () {
+        element.bind('click', function() {
             if (element.data('alreadyclicked')) {
                 element.data('alreadyclicked', false);
 
@@ -38,7 +38,7 @@ var calendar = $("#calendar").fullCalendar({
                 }
             } else {
                 element.data('alreadyclicked', true);
-                var alreadyclickedTimeout = setTimeout(function () {
+                var alreadyclickedTimeout = setTimeout(function() {
                     element.data('alreadyclicked', false);
                     console.log('Was single clicked' + event.id);
                     $("#viewJadwal" + event.id).modal("show");
@@ -51,7 +51,7 @@ var calendar = $("#calendar").fullCalendar({
     customButtons: {
         goToCalendar: {
             text: 'Google Calendar',
-            click: function () {
+            click: function() {
                 window.open("http://calendar.google.com", '_blank');
             }
         },
@@ -59,7 +59,7 @@ var calendar = $("#calendar").fullCalendar({
     timeFormat: "h:mm",
     selectable: true,
     selectHelper: true,
-    select: function (start, end, allDay) {
+    select: function(start, end, allDay) {
         const [date, time] = formatDate(new Date(start)).split(" ");
         // console.log(date+'T'+time);
         $('[name="startDate"]').val(date);
@@ -69,13 +69,13 @@ var calendar = $("#calendar").fullCalendar({
         cekAvailDosen();
         $("#tambahJadwalDashboard").modal("show");
     },
-    eventDrop: function (event, delta) {
+    eventDrop: function(event, delta) {
         cekJadwalBentrok(event, delta, calendar);
     },
-    loading: function (bool) {
+    loading: function(bool) {
         console.log('loading');
     },
-    eventAfterAllRender: function (view) {
+    eventAfterAllRender: function(view) {
         console.log('loading dismiss');
     }
 });
@@ -89,7 +89,7 @@ function cekJadwalBentrok(event, delta, calendar) {
             id: event.id,
         },
         type: "POST",
-        success: function (response) {
+        success: function(response) {
             if (JSON.parse(response).status) {
                 ubahJdwl(event, delta);
             } else {
@@ -97,7 +97,7 @@ function cekJadwalBentrok(event, delta, calendar) {
                 displayMessageError(JSON.parse(response).message);
             }
         },
-        error: function (xhr, ajaxOptions, thrownError) {
+        error: function(xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
         },
     });
@@ -112,10 +112,10 @@ function ubahJdwl(event, delta) {
             type: "update",
         },
         type: "POST",
-        success: function (response) {
+        success: function(response) {
             displayMessage(event.title + " Updated Successfully");
         },
-        error: function (xhr, ajaxOptions, thrownError) {
+        error: function(xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
         },
     });
@@ -129,7 +129,7 @@ function hapusEvent(id, title, from) {
             id: id,
             type: "delete",
         },
-        success: function (response) {
+        success: function(response) {
             if (from == "penjadwalan") {
                 window.location.replace("/penjadwalan");
                 displayMessage(title + " Deleted Successfully");
@@ -138,7 +138,7 @@ function hapusEvent(id, title, from) {
                 displayMessage(title + " Deleted Successfully");
             }
         },
-        error: function (xhr, ajaxOptions, thrownError) {
+        error: function(xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
         },
     });
@@ -175,7 +175,7 @@ $("#tambahPenjadwalan").fireModal({
     buttons: [{
             text: "Close",
             class: "btn btn-secondary btn-shadow",
-            handler: function (modal) {
+            handler: function(modal) {
                 modal.modal("hide");
             },
         },
@@ -183,46 +183,46 @@ $("#tambahPenjadwalan").fireModal({
             text: "Save",
             submit: true,
             class: "btn btn-primary btn-shadow",
-            handler: function (modal) {
+            handler: function(modal) {
                 modal.click();
             },
         },
     ],
 });
 
-$("[name=sesi]").change(function () {
+$("[name=sesi]").change(function() {
     sesi = $(this).val().split(",")[0];
     cekAvailDosen();
 });
 
-$("[name=startDate]").change(function () {
+$("[name=startDate]").change(function() {
     startDate = $(this).val();
     cekAvailDosen();
 });
 
-$("[name=waktuStart]").change(function () {
+$("[name=waktuStart]").change(function() {
     startDate = $(this).val();
     cekAvailDosen();
 });
 
-$("[name=waktuEnd]").change(function () {
+$("[name=waktuEnd]").change(function() {
     startDate = $(this).val();
     cekAvailDosen();
 });
 
-$("[name=jenisJadwal]").change(function () {
+$("[name=jenisJadwal]").change(function() {
     jenis = $(this).val();
     sesi = 19;
     getSesi(jenis);
     cekAvailDosen();
 });
 
-$("[name=blok]").change(function () {
+$("[name=blok]").change(function() {
     blok = $(this).val();
     cekAvailDosen();
 });
 
-$("[name=angkatan]").change(function () {
+$("[name=angkatan]").change(function() {
     angkatan = $(this).val();
     cekAvailDosen();
 });
@@ -257,12 +257,12 @@ function collectSesi({
         data: {
             id: jenisJadwal,
         },
-        beforeSend: function (e) {
+        beforeSend: function(e) {
             if (e && e.overrideMimeType) {
                 e.overrideMimeType("application/json;charset=UTF-8");
             }
         },
-        success: function (response) {
+        success: function(response) {
             let html = "";
             html += '<option value="">Pilih Sesi</option>';
 
@@ -279,7 +279,7 @@ function collectSesi({
                 obj.append(html);
             }
         },
-        error: function (xhr, ajaxOptions, thrownError) {
+        error: function(xhr, ajaxOptions, thrownError) {
             alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
         },
     });
@@ -330,12 +330,12 @@ function cekDosenSelect(id, result) {
             data: {
                 id: id,
             },
-            beforeSend: function (e) {
+            beforeSend: function(e) {
                 if (e && e.overrideMimeType) {
                     e.overrideMimeType("application/json;charset=UTF-8");
                 }
             },
-            success: function (response) {
+            success: function(response) {
                 // console.log([result, response]);
                 let dosen = response;
                 let html = "";
@@ -360,7 +360,7 @@ function cekDosenSelect(id, result) {
                     .find('[name="dosen[]"]')
                     .append(html);
             },
-            error: function (xhr, ajaxOptions, thrownError) {
+            error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
             },
         });
@@ -384,12 +384,12 @@ function cekAvailDosen({
                 angkatan: angkatan,
                 blok: blok,
             },
-            beforeSend: function (e) {
+            beforeSend: function(e) {
                 if (e && e.overrideMimeType) {
                     e.overrideMimeType("application/json;charset=UTF-8");
                 }
             },
-            success: function (response) {
+            success: function(response) {
                 if (id == null) {
                     let html = "";
                     response.forEach((element) => {
@@ -408,7 +408,7 @@ function cekAvailDosen({
                     cekDosenSelect(id, response);
                 }
             },
-            error: function (xhr, ajaxOptions, thrownError) {
+            error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
             },
         });
@@ -431,7 +431,7 @@ function displayMessageError(message) {
         theme: "dark",
         icon: "fas fa-times",
         title: "Error",
-        message: message + " Update Failure",
+        message: message,
         position: "topRight",
         progressBarColor: "rgb(255, 0, 72)",
     });

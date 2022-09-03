@@ -44,4 +44,16 @@ class ApiModel extends Model
 
         return json_decode($response->getBody())->data;
     }
+
+    public function getListTahunAjaran()
+    {
+        $response = $this->curl->request("GET", "https://api.umsu.ac.id/digiSched/getTahunAjaran", [
+            "headers" => [
+                "Accept" => "application/json"
+            ],
+
+        ]);
+
+        return json_decode($response->getBody())->data;
+    }
 }

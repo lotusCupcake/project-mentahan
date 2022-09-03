@@ -30,6 +30,13 @@ function getTahunAjaran()
     return $response;
 }
 
+function getListTahunAjaran()
+{
+    $tahunAjaran = new \App\Models\ApiModel;
+    $response = $tahunAjaran->getListTahunAjaran();
+    return $response;
+}
+
 function getDosenName($email)
 {
     $dosen = new \Modules\Dosen\Models\DosenModel;

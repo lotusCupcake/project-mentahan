@@ -26,22 +26,52 @@ class Tentatif extends BaseController
 
     public function index()
     {
-        $currentPage = $this->request->getVar('page_dosen') ? $this->request->getVar('page_dosen') : 1;
         $keyword = $this->request->getVar('keyword');
-        $dosen = $this->dosenModel->getDataDosen($keyword);
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Jadwal Tentatif",
             'breadcrumb' => ['Proses', 'Jadwal Tentatif'],
-            'dosen' =>  $dosen->paginate($this->numberPage, 'dosen'),
+            'dosen' =>  $this->dosenModel->getDataDosen($keyword)->findAll(),
+            'tahunAjaran' => getListTahunAjaran(),
             'hari' => ['S', 'S', 'R', 'K', 'J'],
             'jadwal' => $this->jenisJadwalModel->getTentatif()->get()->getResult(),
-            'currentPage' => $currentPage,
-            'numberPage' => $this->numberPage,
-            'pager' => $dosen->pager,
             'validation' => \Config\Services::validation(),
         ];
-        // dd($data['jadwal']);
+        // dd($data['tahunAjaran']);
         return view('Modules\Tentatif\Views\tentatif', $data);
+    }
+
+    public function add()
+    {
+        $dataExist = $this->tentatifModel->dataExist(
+            [
+                'jadwalTentatifTahunAjaran' => trim($this->request->getvar('ta')),
+                'jadwalTentatifDosenId' => trim($this->request->getvar('dosen')),
+            ]
+        )->findAll();
+        if (count($dataExist) == 0) {
+            $data = [
+                'jadwalTentatifTahunAjaran' => trim($this->request->getvar('ta')),
+                'jadwalTentatifDosenId' => trim($this->request->getvar('dosen')),
+                'jadwalTentatifDetail' => trim($this->request->getvar('jadwal')),
+            ];
+            if ($this->tentatifModel->insert($data)) {
+                $response = ['status' => true, 'message' => 'Berhasil Tambah'];
+            } else {
+                $response = ['status' => false, 'message' => 'Tidak Berhasil Tambah'];
+            }
+            echo json_encode($response);
+        } else {
+            $id = $dataExist[0]->jadwalTentatifId;
+            $data = [
+                'jadwalTentatifDetail' => trim($this->request->getvar('jadwal')),
+            ];
+            if ($this->tentatifModel->update($id, $data)) {
+                $response = ['status' => true, 'message' => 'Berhasil Update'];
+            } else {
+                $response = ['status' => false, 'message' => 'Tidak Berhasil Update'];
+            }
+            echo json_encode($response);
+        }
     }
 }

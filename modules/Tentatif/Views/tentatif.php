@@ -32,6 +32,16 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <select class="form-control" name="jadwalTentatifTahunAjaran">
+                                        <option value="">Pilih Tahun Ajaran</option>
+                                        <?php foreach ($tahunAjaran as $thn) : ?>
+                                            <option value="<?= $thn->Term_Year_Name ?>" <?= (date('Y-m-d H:i:s', strtotime($thn->Start_Date)) <= date('Y-m-d H:i:s') && date('Y-m-d H:i:s', strtotime($thn->End_Date))  >= date('Y-m-d H:i:s')) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <?php foreach ($jadwal as $key => $jdwl) : ?>
                                     <li class="nav-item">
@@ -42,16 +52,14 @@
                             <div class="tab-content" id="myTabContent">
                                 <?php foreach ($jadwal as $key => $jdwl) : ?>
                                     <div class="tab-pane fade <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'show active' : '' ?>" id="<?= $jdwl->unic ?>" role="tabpanel" aria-labelledby="<?= $jdwl->unic ?>-tab">
-                                        <?= $jdwl->jenisJadwalKode; ?>
+
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered">
+                                            <table class="table table-bordered">
                                                 <thead>
                                                     <?php $jlhHari = count($hari); ?>
                                                     <tr>
-                                                        <th rowspan="2" width="2%" style="text-align:center" scope="col">No.</th>
-                                                        <th rowspan="2" width="30%" scope="col">Nama Lengkap</th>
-                                                        <th rowspan="2" scope="col">Nama</th>
-                                                        <th rowspan="2" scope="col">Email General</th>
+                                                        <th rowspan="2" width="2%" style="text-align:center" scope="col" class="frezz">No.</th>
+                                                        <th rowspan="2" width="30%" scope="col" class="frezz">Nama Lengkap</th>
                                                         <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
                                                             <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col"><?= $sesi->sesiStart ?>-<?= $sesi->sesiEnd ?></th>
                                                         <?php endforeach ?>
@@ -67,17 +75,17 @@
                                                 <tbody>
                                                     <?php if (!empty($dosen)) : ?>
                                                         <?php
-                                                        $no = 1 + ($numberPage * ($currentPage - 1));
+                                                        $no = 1;
                                                         foreach ($dosen as $data) : ?>
                                                             <tr>
-                                                                <td style="text-align:center" scope="row"><?= $no++; ?></td>
-                                                                <td><?= $data->dosenFullname; ?></td>
-                                                                <td><?= $data->dosenShortname; ?></td>
-                                                                <td><?= ($data->dosenEmailGeneral == null) ? '-' : $data->dosenEmailGeneral; ?></td>
+                                                                <td style="text-align:center" scope="row" class="frezz"><?= $no++; ?></td>
+                                                                <td class="frezz">
+                                                                    <p class="ft12"><?= $data->dosenFullname; ?></p>
+                                                                </td>
                                                                 <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
                                                                     <?php foreach ($hari as $key => $value) : ?>
                                                                         <td style="text-align:center" scope="col">
-                                                                            <input type="checkbox" name="<?= $data->dosenId . $jdwl->jenisJadwalKode ?>">
+                                                                            <input type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $key ?>')" data-dosen="<?= $data->dosenId ?>" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
                                                                         </td>
                                                                     <?php endforeach ?>
                                                                 <?php endforeach ?>
@@ -88,7 +96,6 @@
                                                     <?php endif ?>
                                                 </tbody>
                                             </table>
-                                            <?= $pager->links('dosen', 'pager') ?>
                                         </div>
                                     </div>
                                 <?php endforeach ?>
