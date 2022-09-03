@@ -9,7 +9,7 @@ function checklistTentatif(value) {
     ta = $('[name=jadwalTentatifTahunAjaran]').val();
 
     let arrayhari = [];
-    $("input:checkbox[data-dosen=" + dosen + "]:checked").each(function () {
+    $("input:checkbox[data-dosen=" + dosen + "]:checked").each(function() {
         arrayhari.push({
             "sesi": $(this).val().split(',')[0],
             "hari": $(this).val().split(',')[1]
@@ -29,9 +29,28 @@ function checklistTentatif(value) {
 
     const resultArray = Object.values(mapById);
     let jadwal = JSON.stringify({ "data": resultArray });
-    console.log([dosen, ta, jadwal]);
+    let data = { dosen: dosen, ta: ta, jadwal: jadwal }
+    saveTentatif(data);
 }
 
 function saveTentatif(params) {
-    
-}
+    $.ajax({
+        type: "POST",
+        url: "/tentatif/tambah",
+        data: {
+            dosen: params['dosen'],
+            ta: params['ta'],
+            jadwal: params['jadwal']
+        },
+        success: function(response) {
+            if (JSON.parse(response).status) {
+                displayMessage(JSON.parse(response).message);
+            } else {
+                displayMessageError(JSON.parse(response).message);
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+        }
+    })
+};

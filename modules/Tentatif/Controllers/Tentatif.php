@@ -40,4 +40,38 @@ class Tentatif extends BaseController
         // dd($data['tahunAjaran']);
         return view('Modules\Tentatif\Views\tentatif', $data);
     }
+
+    public function add()
+    {
+        $dataExist = $this->tentatifModel->dataExist(
+            [
+                'jadwalTentatifTahunAjaran' => trim($this->request->getvar('ta')),
+                'jadwalTentatifDosenId' => trim($this->request->getvar('dosen')),
+            ]
+        )->findAll();
+        if (count($dataExist) == 0) {
+            $data = [
+                'jadwalTentatifTahunAjaran' => trim($this->request->getvar('ta')),
+                'jadwalTentatifDosenId' => trim($this->request->getvar('dosen')),
+                'jadwalTentatifDetail' => trim($this->request->getvar('jadwal')),
+            ];
+            if ($this->tentatifModel->insert($data)) {
+                $response = ['status' => true, 'message' => 'Berhasil Tambah'];
+            } else {
+                $response = ['status' => false, 'message' => 'Tidak Berhasil Tambah'];
+            }
+            echo json_encode($response);
+        } else {
+            $id = $dataExist[0]->jadwalTentatifId;
+            $data = [
+                'jadwalTentatifDetail' => trim($this->request->getvar('jadwal')),
+            ];
+            if ($this->tentatifModel->update($id, $data)) {
+                $response = ['status' => true, 'message' => 'Berhasil Update'];
+            } else {
+                $response = ['status' => false, 'message' => 'Tidak Berhasil Update'];
+            }
+            echo json_encode($response);
+        }
+    }
 }
