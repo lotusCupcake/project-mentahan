@@ -15,6 +15,16 @@
             </div>
         </div>
         <div class="section-body">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <select class="form-control" name="jadwalTentatifTahunAjaran">
+                        <option value="">Pilih Tahun Ajaran</option>
+                        <?php foreach ($tahunAjaran as $thn) : ?>
+                            <option value="<?= $thn->Term_Year_Name ?>"><?= $thn->Term_Year_Name ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">

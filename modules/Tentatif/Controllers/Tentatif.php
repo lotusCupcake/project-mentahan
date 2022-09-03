@@ -32,10 +32,12 @@ class Tentatif extends BaseController
             'title' => "Jadwal Tentatif",
             'breadcrumb' => ['Proses', 'Jadwal Tentatif'],
             'dosen' =>  $this->dosenModel->getDataDosen($keyword)->findAll(),
+            'tahunAjaran' => getListTahunAjaran(),
             'hari' => ['S', 'S', 'R', 'K', 'J'],
             'jadwal' => $this->jenisJadwalModel->getTentatif()->get()->getResult(),
             'validation' => \Config\Services::validation(),
         ];
+        // dd($data['tahunAjaran']);
         return view('Modules\Tentatif\Views\tentatif', $data);
     }
 }
