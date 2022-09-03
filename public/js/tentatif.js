@@ -28,5 +28,10 @@ function checklistTentatif(value) {
     }, {})
 
     const resultArray = Object.values(mapById);
-    console.log([dosen, ta, JSON.stringify({ "data": resultArray })]);
+    let jadwal = JSON.stringify({ "data": resultArray });
+    console.log([dosen, ta, jadwal]);
+}
+
+function saveTentatif(params) {
+    
 }
