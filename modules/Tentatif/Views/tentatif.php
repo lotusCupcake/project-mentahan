@@ -37,7 +37,7 @@
                                     <select class="form-control" name="jadwalTentatifTahunAjaran">
                                         <option value="">Pilih Tahun Ajaran</option>
                                         <?php foreach ($tahunAjaran as $thn) : ?>
-                                            <option value="<?= $thn->Term_Year_Name ?>" <?= ($thn->Start_Date <= date('Y-m-d H:i:s') && $thn->End_Date  >= date('Y-m-d H:i:s')) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
+                                            <option value="<?= $thn->Term_Year_Name ?>" <?= (date('Y-m-d H:i:s', strtotime($thn->Start_Date)) <= date('Y-m-d H:i:s') && date('Y-m-d H:i:s', strtotime($thn->End_Date))  >= date('Y-m-d H:i:s')) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
                                         <?php endforeach ?>
                                     </select>
                                 </div>
@@ -85,7 +85,7 @@
                                                                 <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
                                                                     <?php foreach ($hari as $key => $value) : ?>
                                                                         <td style="text-align:center" scope="col">
-                                                                            <input type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $key ?>')" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
+                                                                            <input type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $key ?>')" data-dosen="<?= $data->dosenId ?>" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
                                                                         </td>
                                                                     <?php endforeach ?>
                                                                 <?php endforeach ?>
