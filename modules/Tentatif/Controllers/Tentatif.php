@@ -26,22 +26,16 @@ class Tentatif extends BaseController
 
     public function index()
     {
-        $currentPage = $this->request->getVar('page_dosen') ? $this->request->getVar('page_dosen') : 1;
         $keyword = $this->request->getVar('keyword');
-        $dosen = $this->dosenModel->getDataDosen($keyword);
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Jadwal Tentatif",
             'breadcrumb' => ['Proses', 'Jadwal Tentatif'],
-            'dosen' =>  $dosen->paginate($this->numberPage, 'dosen'),
+            'dosen' =>  $this->dosenModel->getDataDosen($keyword)->findAll(),
             'hari' => ['S', 'S', 'R', 'K', 'J'],
             'jadwal' => $this->jenisJadwalModel->getTentatif()->get()->getResult(),
-            'currentPage' => $currentPage,
-            'numberPage' => $this->numberPage,
-            'pager' => $dosen->pager,
             'validation' => \Config\Services::validation(),
         ];
-        // dd($data['jadwal']);
         return view('Modules\Tentatif\Views\tentatif', $data);
     }
 }
