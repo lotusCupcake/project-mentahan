@@ -77,7 +77,7 @@
                                                                 <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
                                                                     <?php foreach ($hari as $key => $value) : ?>
                                                                         <td style="text-align:center" scope="col">
-                                                                            <input type="checkbox" name="<?= $data->dosenId . $jdwl->jenisJadwalKode ?>" value="<?= $sesi->sesiId . ',' . $value ?>">
+                                                                            <input type="checkbox" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
                                                                         </td>
                                                                     <?php endforeach ?>
                                                                 <?php endforeach ?>
