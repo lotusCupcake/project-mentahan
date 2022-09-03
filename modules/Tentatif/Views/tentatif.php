@@ -35,36 +35,32 @@
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <?php foreach ($jadwal as $key => $jdwl) : ?>
                                     <li class="nav-item">
-                                        <a class="nav-link <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'active' : '' ?>" id="<?= $key ?>" data-toggle="tab" href="#<?= $jdwl->jenisJadwalKode ?>" role="tab" aria-controls="<?= $jdwl->jenisJadwalKode ?>" aria-selected="<?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'true' : 'false' ?>"><?= $jdwl->jenisJadwalKode ?></a>
+                                        <a class="nav-link <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'active' : '' ?>" id="<?= $jdwl->unic ?>-tab" data-toggle="tab" href="#<?= $jdwl->unic ?>" role="tab" aria-controls="<?= $jdwl->unic ?>" aria-selected="<?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'true' : 'false' ?>"><?= $jdwl->jenisJadwalKode ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <?php foreach ($jadwal as $key => $jdwl) : ?>
-                                    <div class="tab-pane fade <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'show active' : '' ?>" id="<?= $jdwl->jenisJadwalKode ?>" role="tabpanel" aria-labelledby="<?= $key ?>">
+                                    <div class="tab-pane fade <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'show active' : '' ?>" id="<?= $jdwl->unic ?>" role="tabpanel" aria-labelledby="<?= $jdwl->unic ?>-tab">
+
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered">
                                                 <thead>
-                                                    <?php $jlhHari = count($hari);
-                                                    ?>
+                                                    <?php $jlhHari = count($hari); ?>
                                                     <tr>
                                                         <th rowspan="2" width="2%" style="text-align:center" scope="col">No.</th>
-                                                        <th rowspan="2" scope="col">Nama Lengkap</th>
+                                                        <th rowspan="2" width="30%" scope="col">Nama Lengkap</th>
                                                         <th rowspan="2" scope="col">Nama</th>
                                                         <th rowspan="2" scope="col">Email General</th>
-                                                        <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col">08:00-10:00</th>
-                                                        <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col">08:00-10:00</th>
-                                                        <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col">08:00-10:00</th>
+                                                        <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
+                                                            <th colspan="<?= $jlhHari ?>" style="text-align:center" scope="col"><?= $sesi->sesiStart ?>-<?= $sesi->sesiEnd ?></th>
+                                                        <?php endforeach ?>
                                                     </tr>
                                                     <tr>
-                                                        <?php foreach ($hari as $key => $value) : ?>
-                                                            <th style="text-align:center" scope="col"><?= $value; ?></th>
-                                                        <?php endforeach ?>
-                                                        <?php foreach ($hari as $key => $value) : ?>
-                                                            <th style="text-align:center" scope="col"><?= $value; ?></th>
-                                                        <?php endforeach ?>
-                                                        <?php foreach ($hari as $key => $value) : ?>
-                                                            <th style="text-align:center" scope="col"><?= $value; ?></th>
+                                                        <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
+                                                            <?php foreach ($hari as $key => $value) : ?>
+                                                                <th style="text-align:center" scope="col"><?= $value; ?></th>
+                                                            <?php endforeach ?>
                                                         <?php endforeach ?>
                                                     </tr>
                                                 </thead>
@@ -78,6 +74,13 @@
                                                                 <td><?= $data->dosenFullname; ?></td>
                                                                 <td><?= $data->dosenShortname; ?></td>
                                                                 <td><?= ($data->dosenEmailGeneral == null) ? '-' : $data->dosenEmailGeneral; ?></td>
+                                                                <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
+                                                                    <?php foreach ($hari as $key => $value) : ?>
+                                                                        <td style="text-align:center" scope="col">
+                                                                            <input type="checkbox" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
+                                                                        </td>
+                                                                    <?php endforeach ?>
+                                                                <?php endforeach ?>
                                                             </tr>
                                                         <?php endforeach ?>
                                                     <?php else : ?>
