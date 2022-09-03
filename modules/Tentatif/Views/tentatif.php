@@ -42,7 +42,7 @@
                             <div class="tab-content" id="myTabContent">
                                 <?php foreach ($jadwal as $key => $jdwl) : ?>
                                     <div class="tab-pane fade <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'show active' : '' ?>" id="<?= $jdwl->unic ?>" role="tabpanel" aria-labelledby="<?= $jdwl->unic ?>-tab">
-                                        <?= $jdwl->jenisJadwalKode; ?>
+
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered">
                                                 <thead>
@@ -77,7 +77,7 @@
                                                                 <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
                                                                     <?php foreach ($hari as $key => $value) : ?>
                                                                         <td style="text-align:center" scope="col">
-                                                                            <input type="checkbox" name="<?= $data->dosenId . $jdwl->jenisJadwalKode ?>">
+                                                                            <input type="checkbox" name="<?= $data->dosenId . $jdwl->jenisJadwalKode ?>" value="<?= $sesi->sesiId . ',' . $value ?>">
                                                                         </td>
                                                                     <?php endforeach ?>
                                                                 <?php endforeach ?>
