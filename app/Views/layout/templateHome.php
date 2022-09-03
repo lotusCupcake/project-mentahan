@@ -53,6 +53,24 @@
       left: 240px;*/
       z-index: 100;
     }
+
+    .ft12 {
+      font-size: 12px;
+    }
+
+    .ft10 {
+      font-size: 10px;
+    }
+
+    .ft8 {
+      font-size: 8px;
+    }
+
+    .frezz {
+      position: sticky;
+      left: 0px;
+      background-color: white;
+    }
   </style>
 </head>
 
@@ -97,6 +115,7 @@
   <?= script_tag('template/assets/js/page/modules-datatables.js') ?>
 
   <?= script_tag('js/calendar.js') ?>
+  <?= script_tag('js/tentatif.js') ?>
   <?= script_tag('template/assets/js/scripts.js') ?>
 
   <script>
