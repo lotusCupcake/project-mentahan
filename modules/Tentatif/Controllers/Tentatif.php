@@ -27,6 +27,8 @@ class Tentatif extends BaseController
     public function index()
     {
         $keyword = $this->request->getVar('keyword');
+        $tahunAjaran = $this->request->getVar('tahun_ajaran') ? $this->request->getVar('tahun_ajaran') : getTahunAjaran();
+        $jadwalTentatifSemester = $this->tentatifModel->dataExist(['jadwalTentatifTahunAjaran' => $tahunAjaran])->findAll();
         $data = [
             'menu' => $this->fetchMenu(),
             'title' => "Jadwal Tentatif",
@@ -36,8 +38,10 @@ class Tentatif extends BaseController
             'hari' => ['S', 'S', 'R', 'K', 'J'],
             'jadwal' => $this->jenisJadwalModel->getTentatif()->get()->getResult(),
             'validation' => \Config\Services::validation(),
+            'tahunAjaranAktif' => $tahunAjaran,
+            'jadwalTentatifSemester' => $jadwalTentatifSemester
         ];
-        // dd($data['tahunAjaran']);
+        // dd($data['jadwalTentatifSemester']);
         return view('Modules\Tentatif\Views\tentatif', $data);
     }
 

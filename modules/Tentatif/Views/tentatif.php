@@ -37,7 +37,7 @@
                                     <select class="form-control" name="jadwalTentatifTahunAjaran">
                                         <option value="">Pilih Tahun Ajaran</option>
                                         <?php foreach ($tahunAjaran as $thn) : ?>
-                                            <option value="<?= $thn->Term_Year_Name ?>" <?= (date('Y-m-d H:i:s', strtotime($thn->Start_Date)) <= date('Y-m-d H:i:s') && date('Y-m-d H:i:s', strtotime($thn->End_Date))  >= date('Y-m-d H:i:s')) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
+                                            <option value="<?= $thn->Term_Year_Name ?>" <?= ($thn->Term_Year_Name == $tahunAjaranAktif) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
                                         <?php endforeach ?>
                                     </select>
                                 </div>
@@ -76,16 +76,25 @@
                                                     <?php if (!empty($dosen)) : ?>
                                                         <?php
                                                         $no = 1;
-                                                        foreach ($dosen as $data) : ?>
+                                                        foreach ($dosen as $i => $data) : ?>
                                                             <tr>
                                                                 <td style="text-align:center" scope="row" class="frezz"><?= $no++; ?></td>
                                                                 <td class="frezz">
                                                                     <p class="ft12"><?= $data->dosenFullname; ?></p>
                                                                 </td>
                                                                 <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
-                                                                    <?php foreach ($hari as $key => $value) : ?>
+                                                                    <?php foreach ($hari as $h => $value) : ?>
                                                                         <td style="text-align:center" scope="col">
-                                                                            <input type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $key ?>')" data-dosen="<?= $data->dosenId ?>" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
+                                                                            <?php foreach ($jadwalTentatifSemester as $t => $tentatif) : ?>
+                                                                                <?php $dosenId = $tentatif->jadwalTentatifDosenId ?>
+                                                                                <?php $session = json_decode($tentatif->jadwalTentatifDetail)->data ?>
+                                                                                <?php foreach ($session as $s => $ses) : ?>
+                                                                                    <?php if ($dosenId == $data->dosenId && $ses->sesi == $sesi->sesiId) : ?>
+                                                                                        <input <?= (in_array($h,  array_map('intval', $ses->hari))) ? "checked" : "" ?> type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $key ?>')" data-dosen="<?= $data->dosenId ?>" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
+                                                                                    <?php elseif ($dosenId == $data->dosenId && $ses->sesi != $sesi->sesiId) : ?>
+                                                                                    <?php endif ?>
+                                                                                <?php endforeach ?>
+                                                                            <?php endforeach ?>
                                                                         </td>
                                                                     <?php endforeach ?>
                                                                 <?php endforeach ?>
