@@ -34,7 +34,7 @@
                         <div class="card-body">
                             <div class="form-row">
                                 <div class="form-group col-md-2">
-                                    <select class="form-control" name="jadwalTentatifTahunAjaran">
+                                    <select class="form-control" name="jadwalTentatifTahunAjaran" onchange="tahunAjaran()">
                                         <option value="">Pilih Tahun Ajaran</option>
                                         <?php foreach ($tahunAjaran as $thn) : ?>
                                             <option value="<?= $thn->Term_Year_Name ?>" <?= ($thn->Term_Year_Name == $tahunAjaranAktif) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
@@ -45,7 +45,7 @@
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <?php foreach ($jadwal as $key => $jdwl) : ?>
                                     <li class="nav-item">
-                                        <a class="nav-link <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'active' : '' ?>" id="<?= $jdwl->unic ?>-tab" data-toggle="tab" href="#<?= $jdwl->unic ?>" role="tab" aria-controls="<?= $jdwl->unic ?>" aria-selected="<?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'true' : 'false' ?>"><?= $jdwl->jenisJadwalKode ?></a>
+                                        <a class="nav-link <?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'active' : '' ?> " id="<?= $jdwl->unic ?>-tab" data-toggle="tab" href="#<?= $jdwl->unic ?>" role="tab" aria-controls="<?= $jdwl->unic ?>" aria-selected="<?= ($jadwal[0]->jenisJadwalKode == $jdwl->jenisJadwalKode) ? 'true' : 'false' ?>"><?= $jdwl->jenisJadwalKode ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
@@ -85,16 +85,19 @@
                                                                 <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
                                                                     <?php foreach ($hari as $h => $value) : ?>
                                                                         <td style="text-align:center" scope="col">
-                                                                            <?php foreach ($jadwalTentatifSemester as $t => $tentatif) : ?>
-                                                                                <?php $dosenId = $tentatif->jadwalTentatifDosenId ?>
-                                                                                <?php $session = json_decode($tentatif->jadwalTentatifDetail)->data ?>
-                                                                                <?php foreach ($session as $s => $ses) : ?>
-                                                                                    <?php if ($dosenId == $data->dosenId && $ses->sesi == $sesi->sesiId) : ?>
-                                                                                        <input <?= (in_array($h,  array_map('intval', $ses->hari))) ? "checked" : "" ?> type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $key ?>')" data-dosen="<?= $data->dosenId ?>" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $key ?>">
-                                                                                    <?php elseif ($dosenId == $data->dosenId && $ses->sesi != $sesi->sesiId) : ?>
-                                                                                    <?php endif ?>
+                                                                            <?php if (count($jadwalTentatifSemester) > 0) : ?>
+                                                                                <?php foreach ($jadwalTentatifSemester as $jad => $dtjadwal) : ?>
+                                                                                    <?php if ($dtjadwal['dosen'] == $data->dosenId && $dtjadwal['sesi'] == $sesi->sesiId && in_array($h, array_map('intval', $dtjadwal['hari'])) && $jdwl->unic == $dtjadwal['jenis']) {
+                                                                                        $status = "checked";
+                                                                                        break;
+                                                                                    } else {
+                                                                                        $status = "";
+                                                                                    } ?>
                                                                                 <?php endforeach ?>
-                                                                            <?php endforeach ?>
+                                                                                <input <?= $status ?> type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $h . ',' . $jdwl->unic ?>')" data-dosen="<?= $data->dosenId ?>" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $h . ',' . $jdwl->unic ?>">
+                                                                            <?php else : ?>
+                                                                                <input type="checkbox" onchange="checklistTentatif('<?= $data->dosenId . ',' . $sesi->sesiId . ',' . $h . ',' . $jdwl->unic ?>')" data-dosen="<?= $data->dosenId ?>" name="<?= $data->dosenId . $jdwl->unic ?>" value="<?= $sesi->sesiId . ',' . $h . ',' . $jdwl->unic ?>">
+                                                                            <?php endif ?>
                                                                         </td>
                                                                     <?php endforeach ?>
                                                                 <?php endforeach ?>
