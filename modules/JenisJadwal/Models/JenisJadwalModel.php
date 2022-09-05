@@ -31,6 +31,7 @@ class JenisJadwalModel extends Model
     public function getJadwalTentatif()
     {
         $builder = $this->table($this->table);
-        $builder->where([$this->table . 'jenisJadwalIsTentatif' => 1, $this->table . 'jenisJadwalIsAktif' => 1]);
+        $builder->where([$this->table . '.jenisJadwalIsTentatif' => 1, $this->table . '.jenisJadwalIsAktif' => 1]);
+        return $builder;
     }
 }
