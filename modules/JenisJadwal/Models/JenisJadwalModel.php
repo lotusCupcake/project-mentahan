@@ -27,4 +27,10 @@ class JenisJadwalModel extends Model
         $builder = $this->db->table($this->table)->select(["jenisJadwalId", "CONCAT (jenisJadwalKode, '0') AS unic", "CONCAT (jenisJadwalKode, ' Online') AS jenisJadwalKode"])->where('jenisJadwalIsTentatif', 1)->where('jenisJadwalAvailOl', 1);
         return $builder->union($union);
     }
+
+    public function getJadwalTentatif()
+    {
+        $builder = $this->table($this->table);
+        $builder->where([$this->table . 'jenisJadwalIsTentatif' => 1, $this->table . 'jenisJadwalIsAktif' => 1]);
+    }
 }
