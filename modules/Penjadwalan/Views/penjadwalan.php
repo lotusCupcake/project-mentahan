@@ -84,7 +84,7 @@
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
                                                 <td><span data-toggle="modal" data-target="#viewJadwal<?= $jadwal->penjadwalanId ?>" class="text-primary" style="cursor:pointer" onclick="detailJadwal('<?= $jadwal->penjadwalanId ?>','<?= $jadwal->penjadwalanCalenderId ?>')">Klik untuk lihat detail</span></td>
                                                 <td style="text-align:center">
-                                                    <button class="btn btn-info"><i class="fas fa-clone"></i></button>
+                                                    <button class="btn btn-info" data-toggle="modal" data-target="#clonePenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-clone"></i></button>
                                                     <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
                                                     <button class="btn btn-danger" data-confirm="Konfirmasi|Apakah Kamu yakin akan menghapus penjadwalan <strong><?= $jadwal->penjadwalanJudul; ?></strong>?<p class='text-warning'><small>This action cannot be undone</small></p>" data-confirm-yes='hapusEvent(<?= $jadwal->penjadwalanId; ?>,"<?= $jadwal->penjadwalanJudul; ?>","penjadwalan")'><i class="fas fa-trash"></i></button>
                                                 </td>
@@ -345,6 +345,144 @@
                                 <div class=" form-group">
                                     <label>Catatan Ekstra</label>
                                     <textarea name="noteAcara" class="summernote-simple"><?= $jadwalEdit->penjadwalanNotes ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endforeach ?>
+
+<?php foreach ($penjadwalan as $jadwalClone) : ?>
+    <div class="modal fade" role="dialog" id="clonePenjadwalan<?= $jadwalClone->penjadwalanId; ?>" data-jenisjadwalid="<?= $jadwalClone->penjadwalanJenisJadwalId ?>" data-sesi="<?= $jadwalClone->penjadwalanSesiId ?>">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <form action="/penjadwalan/edit/<?= $jadwalClone->penjadwalanId ?>" id="formEdit<?= $jadwalClone->penjadwalanId ?>" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Data <strong><?= $title; ?></strong></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" value="PUT" name="_method">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jadwal</label>
+                                    <div class="selectgroup selectgroup-pills">
+                                        <?php foreach ($jenisJadwal as $key => $jenis) : ?>
+                                            <label class="selectgroup-item">
+                                                <input type="radio" name="jenisJadwal" value="<?= $jenis->jenisJadwalId ?>,<?= $jenis->jenisJadwalKode ?>" class="selectgroup-input" <?= ($jenis->jenisJadwalId == $jadwalClone->penjadwalanJenisJadwalId) ? "checked" : "" ?>>
+                                                <span class="selectgroup-button"><?= $jenis->jenisJadwalKode ?></span>
+                                            </label>
+                                        <?php endforeach ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Nama Blok</label>
+                                            <select class="form-control select2" name="blok">
+                                                <option value="">Pilih Blok</option>
+                                                <?php foreach ($blok as $key => $bk) : ?>
+                                                    <option value="<?= $bk->matkulBlokId ?>,<?= $bk->matkulBlokNama ?>" <?= ($bk->matkulBlokId == $jadwalClone->penjadwalanMatkulBlokId) ? "selected" : "" ?>><?= $bk->matkulBlokNama ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Angkatan</label>
+                                            <select class="form-control select2" name="angkatan">
+                                                <option value="">Pilih Angkatan</option>
+                                                <?php for ($i = 2016; $i <= date("Y"); $i++) : ?>
+                                                    <option value="<?= $i ?>" <?= ($i == $jadwalClone->penjadwalanAngkatan) ? "selected" : "" ?>><?= $i ?></option>
+                                                <?php endfor ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="typeSesi">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Tanggal</label>
+                                                <input type="date" class="form-control" placeholder="Pilih Tanggal" name="startDate" value="<?= reformat($jadwalClone->penjadwalanStartDate) ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Sesi</label>
+                                                <select class="form-control select2" name="sesi">
+                                                    <option value="">Pilih Sesi</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="typeManual">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Waktu Mulai</label>
+                                                <input type="datetime-local" class="form-control" placeholder="Pilih Tanggal" name="waktuStart" value="<?= reformatManual($jadwalClone->penjadwalanStartDate) ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Waktu Selesai</label>
+                                                <input type="datetime-local" class="form-control" placeholder="Pilih Tanggal" name="waktuEnd" value="<?= reformatManual($jadwalClone->penjadwalanEndDate) ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dosen</label>
+                                    <select class="form-control select2" multiple="" name="dosen[]">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Acara</label>
+                                    <input name="namaAcara" type="text" class="form-control" value="<?= $jadwalClone->penjadwalanJudul ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label>Lokasi Acara</label>
+                                    <input name="lokasi" type="text" class="form-control" value="<?= $jadwalClone->penjadwalanLokasi; ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label>Kelas</label>
+                                    <input type="text" name="deskripsiAcara" class="form-control" value="<?= $jadwalClone->penjadwalanDeskripsi ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Warna Acara</label>
+                                    <div class="row gutters-xs">
+                                        <div class="col-auto">
+                                            <?php foreach ($color as $key => $col) : ?>
+                                                <label class="colorinput">
+                                                    <input name="color" type="radio" value="<?= $col['id'] ?>" class="colorinput-input" <?= ($col['id'] == $jadwalClone->penjadwalanColorId) ? "checked" : "" ?> />
+                                                    <span class="colorinput-color rounded" style="background-color: <?= $col['background'] ?>;"></span>
+                                                </label>
+                                            <?php endforeach ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class=" form-group">
+                                    <label>Catatan Ekstra</label>
+                                    <textarea name="noteAcara" class="summernote-simple"><?= $jadwalClone->penjadwalanNotes ?></textarea>
                                 </div>
                             </div>
                         </div>
