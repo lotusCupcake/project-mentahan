@@ -387,21 +387,13 @@ function cekDosenSelect(id, result, from) {
                         element.dosenFullname +
                         "</option>";
                 });
-                if (from == 'edit') {
-                    $("#editPenjadwalan" + id)
-                        .find('[name="dosen[]"]')
-                        .empty();
-                    $("#editPenjadwalan" + id)
-                        .find('[name="dosen[]"]')
-                        .append(html);
-                } else if (from == 'clone') {
-                    $("#clonePenjadwalan" + id)
-                        .find('[name="dosen[]"]')
-                        .empty();
-                    $("#clonePenjadwalan" + id)
-                        .find('[name="dosen[]"]')
-                        .append(html);
-                }
+                $("#editPenjadwalan" + id)
+                    .find('[name="dosen[]"]')
+                    .empty();
+                $("#editPenjadwalan" + id)
+                    .find('[name="dosen[]"]')
+                    .append(html);
+
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -434,7 +426,7 @@ function cekAvailDosen({
                 }
             },
             success: function(response) {
-                if (id == null) {
+                if (id == null || id != null && from == 'clone') {
                     let html = "";
                     response.forEach((element) => {
                         html +=
@@ -446,8 +438,15 @@ function cekAvailDosen({
                             element.dosenFullname +
                             "</option>";
                     });
-                    $('[name="dosen[]"]').empty();
-                    $('[name="dosen[]"]').append(html);
+                    if (from != null) {
+                        $("#clonePenjadwalan" + id)
+                            .find('[name="dosen[]"]').empty();
+                        $("#clonePenjadwalan" + id)
+                            .find('[name="dosen[]"]').append(html);
+                    } else {
+                        $('[name="dosen[]"]').empty();
+                        $('[name="dosen[]"]').append(html);
+                    }
                 } else {
                     cekDosenSelect(id, response, from);
                 }
