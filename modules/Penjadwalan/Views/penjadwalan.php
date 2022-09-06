@@ -284,7 +284,6 @@
                                                 <label>Sesi</label>
                                                 <select class="form-control select2" name="sesi">
                                                     <option value="">Pilih Sesi</option>
-
                                                 </select>
                                             </div>
                                         </div>

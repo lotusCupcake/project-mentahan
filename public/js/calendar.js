@@ -235,7 +235,7 @@ function getSesi(jenis) {
         collectSesi({
             jenisJadwal: jenisJadwalId,
             type: 'add',
-            obj: $('[name=sesi]'),
+            obj: $('[name="sesi"]'),
             sesi: null
         });
     } else {
@@ -275,6 +275,7 @@ function collectSesi({
                 obj.empty();
                 obj.append(html);
             } else if (type = 'edit') {
+                console.log('hai');
                 obj.empty();
                 obj.append(html);
             }
@@ -313,7 +314,6 @@ function editJadwal(id) {
         .find("[name=angkatan]")
         .val();
     cekAvailDosen({
-        from: 'edit',
         id: id
     });
 }
