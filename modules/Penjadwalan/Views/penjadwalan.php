@@ -365,7 +365,7 @@
             <div class="modal-content">
                 <form action="/penjadwalan/edit/<?= $jadwalClone->penjadwalanId ?>" id="formEdit<?= $jadwalClone->penjadwalanId ?>" method="post">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Data <strong><?= $title; ?></strong></h5>
+                        <h5 class="modal-title">Duplikat Data <strong><?= $title; ?></strong></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
