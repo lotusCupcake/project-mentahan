@@ -436,3 +436,44 @@ function displayMessageError(message) {
         progressBarColor: "rgb(255, 0, 72)",
     });
 }
+
+function detailJadwal(id, calid) {
+    let element = $("#viewJadwal" + id).find(".partisipan");
+    getDataDetail(calid,element);
+}
+
+function getDataDetail(calid, element) {
+    let stat = { "needsAction": "badge-info", "accepted": "badge-success", "declined": "badge-dangger", "tentative": "badge-warning" };
+    $.ajax({
+        type: "POST",
+        url: "/penjadwalan/detail",
+        dataType: "json",
+        data: {
+            calId: calid,
+        },
+        beforeSend: function(e) {
+            if (e && e.overrideMimeType) {
+                e.overrideMimeType("application/json;charset=UTF-8");
+            }
+        },
+        success: function (response) {
+            console.log(response);
+            let html = '';
+            let status;
+            response.forEach(data => {
+                status = stat[data.responseStatus];
+                html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+                html += data.displayName+' - '+data.email;
+                html += '<span class="badge '+status+' badge-pill"> </span>';
+                html += '</li>';
+            });
+            $('.jmlDosen').empty();
+            $('.jmlDosen').append(response.length);
+            element.empty();
+            element.append(html);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+        },
+    });
+}

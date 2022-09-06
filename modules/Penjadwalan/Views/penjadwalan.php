@@ -82,7 +82,7 @@
                                                 <td><?= $jadwal->penjadwalanJudul; ?></td>
                                                 <td class="align-middle"><i class="fas fa-location-arrow text-info"></i> <?= $jadwal->penjadwalanLokasi ?></td>
                                                 <td><?= $jadwal->penjadwalanStartDate ?> s/d <?= $jadwal->penjadwalanEndDate ?></td>
-                                                <td><span data-calid="calendarId" data-toggle="modal" data-target="#viewJadwal<?= $jadwal->penjadwalanId ?>" class="text-primary" style="cursor:pointer">Klik untuk lihat detail</span></td>
+                                                <td><span data-toggle="modal" data-target="#viewJadwal<?= $jadwal->penjadwalanId ?>" class="text-primary" style="cursor:pointer" onclick="detailJadwal('<?= $jadwal->penjadwalanId ?>','<?= $jadwal->penjadwalanCalenderId ?>')">Klik untuk lihat detail</span></td>
                                                 <td style="text-align:center">
                                                     <button class="btn btn-info"><i class="fas fa-clone"></i></button>
                                                     <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal->penjadwalanId ?>)" data-toggle="modal" data-target="#editPenjadwalan<?= $jadwal->penjadwalanId ?>"><i class="fas fa-pen"></i></button>
@@ -373,33 +373,33 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h5>Jadwal</h5>
-                            <p><i class="fas fa-clipboard-list mr-2 text-info"></i><?= $view->jenisJadwalNama ?></p>
+                            <p><i class="fas fa-clipboard-list mr-2 text-info"></i> <?= $view->jenisJadwalNama ?></p>
                             <h5>Blok</h5>
-                            <p><i class="fas fa-book mr-2 text-info"></i></i><?= $view->matkulBlokNama ?></p>
+                            <p><i class="fas fa-book mr-2 text-info"></i><?= $view->matkulBlokNama ?></p>
                             <h5>Tanggal/Sesi</h5>
                             <p><i class="fas fa-calendar mr-2 text-info"></i><?= $view->penjadwalanStartDate ?> - <?= $view->penjadwalanEndDate ?></p>
-                            <h5>Dosen</h5>
-                            <p>
-                                <?php foreach (json_decode($peserta)->data as $key => $dsn) : ?>
-                                    <img alt="image" src=' <?= base_url("template/assets/img/avatar/avatar-3.png") ?>' class="rounded-circle" width="35" data-toggle="tooltip" title="<?= $dsn->email ?>">
-                                <?php endforeach; ?>
-                            </p>
                         </div>
                         <div class="col-md-6">
-                            <h5>Nama Acara</h5>
-                            <p><i class="fab fa-elementor mr-2 text-info"></i></i></i><?= $view->penjadwalanJudul ?></p>
-                            <h5>Angkatan</h5>
-                            <p><i class="fas fa-graduation-cap mr-2 text-info"></i></i><?= $view->penjadwalanAngkatan ?></p>
-                            <h5>Lokasi</h5>
-                            <p><i class="fas fa-location-arrow mr-2 text-info"></i><?= $view->penjadwalanLokasi ?></p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Lokasi</h5>
+                                    <p><i class="fas fa-location-arrow mr-2 text-info"></i><?= $view->penjadwalanLokasi ?></p>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h5>Kelas</h5>
-                                    <p><i class="fas fa-building mr-2 text-info"></i></i><?= $view->penjadwalanDeskripsi ?></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Catatan</h5>
-                                    <p><i class="fas fa-align-left mr-2 text-info"></i></i><?= $view->penjadwalanNotes ?></p>
+                                    <h5>Nama Acara</h5>
+                                    <p><i class="fab fa-elementor mr-2 text-info"></i></i></i><?= $view->penjadwalanJudul ?></p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5>Angkatan</h5>
+                                            <p><i class="fas fa-graduation-cap mr-2 text-info"></i></i><?= $view->penjadwalanAngkatan ?></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>Kelas</h5>
+                                            <p><i class="fas fa-building mr-2 text-info"></i></i><?= $view->penjadwalanDeskripsi ?></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -408,34 +408,19 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4>Dosen</h4>
+                                    <h4>Catatan</h4>
                                 </div>
                                 <div class="card-body">
+                                    <?= $view->penjadwalanNotes ?>
                                     <div id="accordion">
                                         <div class="accordion">
                                             <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-1" aria-expanded="true">
-                                                <h4>5 Partisipan</h4>
+                                                <h4><span class="jmlDosen"></span> Dosen</h4>
                                             </div>
                                             <div class="accordion-body collapse" id="panel-body-1" data-parent="#accordion">
-                                                <ul class="list-group">
+                                                <ul class="list-group partisipan">
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                         A list item
-                                                        <span class="badge badge-success badge-pill"> </span>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                        A second list item
-                                                        <span class="badge badge-success badge-pill"> </span>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                        A third list item
-                                                        <span class="badge badge-warning badge-pill"> </span>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                        A second list item
-                                                        <span class="badge badge-danger badge-pill"> </span>
-                                                    </li>
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                        A third list item
                                                         <span class="badge badge-success badge-pill"> </span>
                                                     </li>
                                                 </ul>

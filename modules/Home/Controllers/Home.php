@@ -73,6 +73,12 @@ class Home extends BaseController
         dd(delEvent($id));
     }
 
+    public function detailCalendar()
+    {
+        $id = 'um660ek68827objcq7kt1desa4';
+        dd(detailCalendar($id));
+    }
+
     public function listCalendar()
     {
         dd(listevent());

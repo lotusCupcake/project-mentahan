@@ -42,6 +42,14 @@ function colorEvent()
     return $exe;
 }
 
+
+function detailCalendar($id)
+{
+    $google = new App\Libraries\GoogleCalendar;
+    $exe = $google->detailCalendar($id);
+    return $exe->attendees;
+}
+
 function calendar()
 {
     $google = new App\Libraries\GoogleCalendar;
