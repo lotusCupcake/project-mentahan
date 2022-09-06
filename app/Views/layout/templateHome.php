@@ -109,7 +109,7 @@
   <?= script_tag('template/node_modules/izitoast/dist/js/iziToast.min.js') ?>
 
   <!-- Template JS File -->
-  <?= script_tag('js/lottie-player.js') ?>
+  <?= script_tag('https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js') ?>
 
   <!-- Page Specific JS File -->
   <?= script_tag('template/assets/js/page/modules-datatables.js') ?>
