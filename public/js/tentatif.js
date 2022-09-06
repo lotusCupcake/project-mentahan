@@ -52,7 +52,6 @@
 
         });
 
-
         let jadwal = JSON.stringify({ "data": genNewArray });
 
         let data = { dosen: dosen, ta: ta, jadwal: jadwal }

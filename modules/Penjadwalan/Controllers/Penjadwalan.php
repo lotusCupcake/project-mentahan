@@ -369,4 +369,10 @@ class Penjadwalan extends BaseController
             echo json_encode(['status' => false, 'message' => 'Ada Jadwal Dosen yang Bentrok']);
         }
     }
+
+    public function detailCalendar()
+    {
+        $id = $this->request->getVar('calId');
+        echo json_encode(detailCalendar($id));
+    }
 }

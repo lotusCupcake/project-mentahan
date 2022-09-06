@@ -110,9 +110,14 @@ class GoogleCalendar
         return $data;
     }
 
+    public function detailCalendar($id)
+    {
+        $event = $this->service->events->get($this->calId, $id);
+        return $event;
+    }
+
     public function colorCalendar()
     {
-        // $calendarId = $this->calId;
         $event = $this->service->colors->get()->event;
         $data = [];
         foreach ($event as $key => $value) {

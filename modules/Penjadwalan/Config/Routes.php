@@ -10,3 +10,4 @@ $routes->post('penjadwalan/eventAjax', '\Modules\Penjadwalan\Controllers\Penjadw
 $routes->post('penjadwalan/select', '\Modules\Penjadwalan\Controllers\Penjadwalan::select');
 $routes->put('penjadwalan/edit/(:num)', '\Modules\Penjadwalan\Controllers\Penjadwalan::penjadwalanEdit/$1');
 $routes->post('penjadwalan/cekBentrok', '\Modules\Penjadwalan\Controllers\Penjadwalan::cekBentrok');
+$routes->post('penjadwalan/detail', '\Modules\Penjadwalan\Controllers\Penjadwalan::detailCalendar');
