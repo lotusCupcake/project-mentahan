@@ -69,7 +69,7 @@ var calendar = $("#calendar").fullCalendar({
         cekAvailDosen();
         $("#tambahJadwalDashboard").modal("show");
     },
-    eventDrop: function(event, delta) {
+    eventDrop: function (event, delta) {
         cekJadwalBentrok(event, delta, calendar);
     },
     loading: function(bool) {
@@ -81,12 +81,13 @@ var calendar = $("#calendar").fullCalendar({
 });
 
 function cekJadwalBentrok(event, delta, calendar) {
-    console.log(event);
+    // console.log(event.id);
+    let id = event.id;
     $.ajax({
         url: "/penjadwalan/cekBentrok",
         data: {
             interval: delta._days,
-            id: event.id,
+            id: id,
         },
         type: "POST",
         success: function(response) {
