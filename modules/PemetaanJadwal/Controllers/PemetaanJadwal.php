@@ -10,18 +10,22 @@ use App\Controllers\BaseController;
 use Modules\PemetaanJadwal\Models\PemetaanJadwalModel;
 use Modules\Dosen\Models\DosenModel;
 use Modules\JenisJadwal\Models\JenisJadwalModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class PemetaanJadwal extends BaseController
 {
     protected $pemetaanJadwalModel;
     protected $dosenModel;
     protected $jenisJadwalModel;
+    protected $spreadsheet;
 
     public function __construct()
     {
         $this->pemetaanJadwalModel = new PemetaanJadwalModel();
         $this->dosenModel = new DosenModel();
         $this->jenisJadwalModel = new JenisJadwalModel();
+        $this->spreadsheet = new Spreadsheet();
     }
 
     public function index()
@@ -60,37 +64,48 @@ class PemetaanJadwal extends BaseController
         return view('Modules\PemetaanJadwal\Views\pemetaanJadwal', $data);
     }
 
-    public function add()
+    public function print()
     {
-        $dataExist = $this->pemetaanJadwalModel->dataExist(
-            [
-                'jadwalTentatifTahunAjaran' => trim($this->request->getvar('ta')),
-                'jadwalPemetaanJadwalDosenId' => trim($this->request->getvar('dosen')),
-            ]
-        )->findAll();
-        if (count($dataExist) == 0) {
-            $data = [
-                'jadwalTentatifTahunAjaran' => trim($this->request->getvar('ta')),
-                'jadwalPemetaanJadwalDosenId' => trim($this->request->getvar('dosen')),
-                'jadwalPemetaanJadwalDetail' => trim($this->request->getvar('jadwal')),
-            ];
-            if ($this->pemetaanJadwalModel->insert($data)) {
-                $response = ['status' => true, 'message' => 'Berhasil Tambah'];
-            } else {
-                $response = ['status' => false, 'message' => 'Tidak Berhasil Tambah'];
+        $tahunAjaran = $this->request->getVar('jadwalTentatifTahunAjaran');
+        $jadwalPemetaanJadwalSemester = $this->pemetaanJadwalModel->dataExist(['jadwalTentatifTahunAjaran' => $tahunAjaran])->findAll();
+        $detailJadwalExist = [];
+        if (count($jadwalPemetaanJadwalSemester) > 0) {
+            foreach ($jadwalPemetaanJadwalSemester as $jad => $jadwal) {
+                $dosenId = $jadwal->jadwalTentatifDosenId;
+                foreach (json_decode($jadwal->jadwalTentatifDetail)->data as $det => $detail) {
+                    $detailJadwalExist[] = [
+                        'dosen' => $dosenId,
+                        'sesi' => $detail->sesi,
+                        'hari' => $detail->hari,
+                        'jenis' => $detail->jenis
+                    ];
+                }
             }
-            echo json_encode($response);
-        } else {
-            $id = $dataExist[0]->jadwalPemetaanJadwalId;
-            $data = [
-                'jadwalPemetaanJadwalDetail' => trim($this->request->getvar('jadwal')),
-            ];
-            if ($this->pemetaanJadwalModel->update($id, $data)) {
-                $response = ['status' => true, 'message' => 'Berhasil Update'];
-            } else {
-                $response = ['status' => false, 'message' => 'Tidak Berhasil Update'];
-            }
-            echo json_encode($response);
         }
+        $keyword = $this->request->getVar('keyword');
+        $dosen =  $this->dosenModel->getDataDosen($keyword)->findAll();
+        $hari = ['S', 'S', 'R', 'K', 'J'];
+        $jadwal = $this->jenisJadwalModel->getTentatif()->get()->getResult();
+        $jadwalTentatif = $this->jenisJadwalModel->getJadwalTentatif()->get()->getResult();
+        $jadwalPemetaanJadwalSemester = $detailJadwalExist;
+
+        $spreadsheet = new Spreadsheet();
+
+        $default = 1;
+        $konten = 0;
+        $konten = $default + $konten;
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A' . $konten, 'No.')
+            ->setCellValue('B' . $konten, 'Jenis Kegiatan')
+            ->setCellValue('C' . $konten, 'Nilai (Bobot X Nilai)')->getStyle("A" . $konten . ":" . "C" . $konten)->getFont()->setBold(true);
+        $konten++;
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Tentatif Jadwal Tahun Ajaran ' . $tahunAjaran;
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
     }
 }

@@ -4,4 +4,4 @@
     Define PemetaanJadwal Routes
 */
 $routes->get('pemetaanJadwal', '\Modules\PemetaanJadwal\Controllers\PemetaanJadwal::index');
-$routes->post('pemetaanJadwal/tambah', '\Modules\PemetaanJadwal\Controllers\PemetaanJadwal::add');
+$routes->post('pemetaanJadwal/cetak', '\Modules\PemetaanJadwal\Controllers\PemetaanJadwal::print');
