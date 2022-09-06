@@ -506,8 +506,8 @@ function getDataDetail(calid, element) {
             response.forEach(data => {
                 status = stat[data.responseStatus];
                 html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-                html += data.displayName + ' - ' + data.email;
-                html += '<span class="badge ' + status + ' badge-pill"> </span>';
+                html += data.displayName+' - '+data.email;
+                html += '<span class="badge '+ status +' badge-pill"> </span>';
                 html += '</li>';
             });
             $('.jmlDosen').empty();
