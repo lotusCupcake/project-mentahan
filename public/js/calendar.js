@@ -313,6 +313,7 @@ function editJadwal(id) {
         .find("[name=angkatan]")
         .val();
     cekAvailDosen({
+        from: 'edit',
         id: id
     });
 }
@@ -345,6 +346,7 @@ function duplikatJadwal(id) {
         .find("[name=angkatan]")
         .val();
     cekAvailDosen({
+        from: 'clone',
         id: id
     });
 }
@@ -353,7 +355,7 @@ function dateIsValid(date) {
     return date instanceof Date && !isNaN(date);
 }
 
-function cekDosenSelect(id, result) {
+function cekDosenSelect(id, result, from) {
     if (typeof sesi !== "undefined" && typeof startDate !== "undefined") {
         $.ajax({
             type: "POST",
@@ -385,12 +387,21 @@ function cekDosenSelect(id, result) {
                         element.dosenFullname +
                         "</option>";
                 });
-                $("#editPenjadwalan" + id)
-                    .find('[name="dosen[]"]')
-                    .empty();
-                $("#editPenjadwalan" + id)
-                    .find('[name="dosen[]"]')
-                    .append(html);
+                if (from == 'edit') {
+                    $("#editPenjadwalan" + id)
+                        .find('[name="dosen[]"]')
+                        .empty();
+                    $("#editPenjadwalan" + id)
+                        .find('[name="dosen[]"]')
+                        .append(html);
+                } else if (from == 'clone') {
+                    $("#clonePenjadwalan" + id)
+                        .find('[name="dosen[]"]')
+                        .empty();
+                    $("#clonePenjadwalan" + id)
+                        .find('[name="dosen[]"]')
+                        .append(html);
+                }
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -400,6 +411,7 @@ function cekDosenSelect(id, result) {
 }
 
 function cekAvailDosen({
+    from = null,
     id = null
 } = {}) {
     console.log([sesi, startDate]);
@@ -437,7 +449,7 @@ function cekAvailDosen({
                     $('[name="dosen[]"]').empty();
                     $('[name="dosen[]"]').append(html);
                 } else {
-                    cekDosenSelect(id, response);
+                    cekDosenSelect(id, response, from);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
