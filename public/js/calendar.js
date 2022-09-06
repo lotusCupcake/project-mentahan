@@ -317,6 +317,38 @@ function editJadwal(id) {
     });
 }
 
+function duplikatJadwal(id) {
+    let jenisJadwalId = $("#clonePenjadwalan" + id).data('jenisjadwalid');
+    if (jenisJadwalId != 3) {
+        $(".typeManual").hide();
+        $(".typeSesi").show();
+        collectSesi({
+            jenisJadwal: jenisJadwalId,
+            type: 'edit',
+            obj: $("#clonePenjadwalan" + id).find("[name=sesi]"),
+            sesi: $("#clonePenjadwalan" + id).data('sesi')
+        });
+    } else {
+        $(".typeManual").show();
+        $(".typeSesi").hide();
+    }
+
+    sesi = $("#clonePenjadwalan" + id).data('sesi');
+    startDate = $("#clonePenjadwalan" + id)
+        .find("[name=startDate]")
+        .val();
+    jenis = $("#clonePenjadwalan" + id).data('jenisjadwalid');
+    blok = $("#clonePenjadwalan" + id)
+        .find("[name=blok]")
+        .val();
+    angkatan = $("#clonePenjadwalan" + id)
+        .find("[name=angkatan]")
+        .val();
+    cekAvailDosen({
+        id: id
+    });
+}
+
 function dateIsValid(date) {
     return date instanceof Date && !isNaN(date);
 }
@@ -439,7 +471,7 @@ function displayMessageError(message) {
 
 function detailJadwal(id, calid) {
     let element = $("#viewJadwal" + id).find(".partisipan");
-    getDataDetail(calid,element);
+    getDataDetail(calid, element);
 }
 
 function getDataDetail(calid, element) {
@@ -456,15 +488,15 @@ function getDataDetail(calid, element) {
                 e.overrideMimeType("application/json;charset=UTF-8");
             }
         },
-        success: function (response) {
+        success: function(response) {
             console.log(response);
             let html = '';
             let status;
             response.forEach(data => {
                 status = stat[data.responseStatus];
                 html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-                html += data.displayName+' - '+data.email;
-                html += '<span class="badge '+status+' badge-pill"> </span>';
+                html += data.displayName + ' - ' + data.email;
+                html += '<span class="badge ' + status + ' badge-pill"> </span>';
                 html += '</li>';
             });
             $('.jmlDosen').empty();
