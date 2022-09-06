@@ -81,7 +81,6 @@ var calendar = $("#calendar").fullCalendar({
 });
 
 function cekJadwalBentrok(event, delta, calendar) {
-    // console.log(event.id);
     let id = event.id;
     $.ajax({
         url: "/penjadwalan/cekBentrok",
