@@ -67,9 +67,11 @@
                                             <?php endforeach ?>
                                         </tr>
                                         <tr>
-                                            <?php foreach ($jadwal as $key => $jdwl) : ?>
+                                            <?php $span = 0;
+                                            foreach ($jadwal as $key => $jdwl) : ?>
                                                 <?php foreach (getSesiWhere(['jenis_jadwal.jenisJadwalId' => $jdwl->jenisJadwalId]) as $key => $sesi) : ?>
                                                     <?php foreach ($hari as $key => $value) : ?>
+                                                        <?php $span++ ?>
                                                         <th style="text-align:center" scope="col"><?= $value; ?></th>
                                                     <?php endforeach ?>
                                                 <?php endforeach ?>
@@ -109,7 +111,7 @@
                                                 </tr>
                                             <?php endforeach ?>
                                         <?php else : ?>
-                                            <?= view('layout/templateEmpty', ['jumlahSpan' => 4]); ?>
+                                            <?= view('layout/templateEmpty', ['jumlahSpan' => $span + 7]); ?>
                                         <?php endif ?>
                                     </tbody>
                                 </table>
