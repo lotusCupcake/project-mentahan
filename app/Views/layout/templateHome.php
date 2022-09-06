@@ -89,7 +89,7 @@
   <?= script_tag('js/jquery.min.js') ?>
   <?= script_tag('template/node_modules/moment/min/moment.min.js') ?>
   <?= script_tag('js/fullcalendar.js') ?>
-  <?= script_tag('js/popper.min.js') ?>
+  <?= script_tag('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js') ?>
   <?= script_tag('template/node_modules/bootstrap/dist/js/bootstrap.min.js') ?>
   <?= script_tag('template/node_modules/jquery.nicescroll/dist/jquery.nicescroll.min.js') ?>
   <?= script_tag('template/assets/js/stisla.js') ?>
