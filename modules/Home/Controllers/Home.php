@@ -3,8 +3,6 @@
 namespace Modules\Home\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\I18n\Time;
-use CodeIdniter\I18n\DateTime as DateTime;
 
 class Home extends BaseController
 {
@@ -69,7 +67,7 @@ class Home extends BaseController
 
     public function delCalendar()
     {
-        $id = '2dtniq19l3dcd4k0grnptkcoic';
+        $id = 'bppi6tt3u20gnid1fp7su8lb48';
         dd(delEvent($id));
     }
 
