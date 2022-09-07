@@ -108,4 +108,29 @@ class PemetaanJadwal extends BaseController
 
         $writer->save('php://output');
     }
+
+    public function testexcel()
+    {
+        $spreadsheet = new Spreadsheet();
+
+        $default = 1;
+        $konten = 0;
+        $konten = $default + $konten;
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A' . $konten, 'No.')
+            ->setCellValue('B' . $konten, 'Jenis Kegiatan')
+            ->setCellValue('C' . $konten, 'Nilai (Bobot X Nilai)')->getStyle("A" . $konten . ":" . "C" . $konten)->getFont()->setBold(true);
+        $konten++;
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Tentatif Jadwal Tahun Ajaran ';
+
+        header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=sjis');
+        header('Content-Disposition: attachment;filename="myfile.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        ob_end_clean();
+        $writer->save('php://output');
+        exit();
+    }
 }
