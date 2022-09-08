@@ -107,29 +107,51 @@ class PemetaanJadwal extends BaseController
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
+        exit();
+
+        // $htmlString =
+        //     '<table>
+        //           <tr>
+        //               <td>Hello World</td>
+        //           </tr>
+        //           <tr>
+        //               <td>Hello<br />World</td>
+        //           </tr>
+        //           <tr>
+        //               <td>Hello<br>World</td>
+        //           </tr>
+        //       </table>';
+
+        // $reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
+        // $spreadsheet = $reader->loadFromString($htmlString);
+        // $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        // $spreadsheet = new Spreadsheet();
+        // $sheet = $spreadsheet->getActiveSheet();
+        // $sheet->setCellValue('A1', 'Hello World !');
+        // $fileName = 'Tentatif Jadwal Tahun Ajaran ' . $tahunAjaran;
+        // $writer = new Xlsx($spreadsheet);
+        // header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        // header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
+        // header('Cache-Control: max-age=0');
+
+        // $writer->setOffice2003Compatibility(true);
+        // ob_end_clean();
+        // $writer->save('php://output');
+        // exit();
     }
 
-    public function testexcel()
+    public function test()
     {
         $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
 
-        $default = 1;
-        $konten = 0;
-        $konten = $default + $konten;
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('A' . $konten, 'No.')
-            ->setCellValue('B' . $konten, 'Jenis Kegiatan')
-            ->setCellValue('C' . $konten, 'Nilai (Bobot X Nilai)')->getStyle("A" . $konten . ":" . "C" . $konten)->getFont()->setBold(true);
-        $konten++;
         $writer = new Xlsx($spreadsheet);
-        $fileName = 'Tentatif Jadwal Tahun Ajaran ';
-
-        header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=sjis');
+        ob_end_clean();
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="myfile.xlsx"');
         header('Cache-Control: max-age=0');
 
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        ob_end_clean();
         $writer->save('php://output');
         exit();
     }
