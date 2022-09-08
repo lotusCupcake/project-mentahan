@@ -132,10 +132,10 @@ function hapusEvent(id, title, from) {
         success: function(response) {
             if (from == "penjadwalan") {
                 window.location.replace("/penjadwalan");
-                displayMessage(title + " Deleted Successfully");
+                displayMessage(title.title + " Deleted Successfully");
             } else {
                 calendar.fullCalendar("removeEvents", id);
-                displayMessage(title + " Deleted Successfully");
+                displayMessage(title.title + " Deleted Successfully");
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -393,7 +393,6 @@ function cekDosenSelect(id, result, from) {
                 $("#editPenjadwalan" + id)
                     .find('[name="dosen[]"]')
                     .append(html);
-
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -425,17 +424,24 @@ function cekAvailDosen({
                     e.overrideMimeType("application/json;charset=UTF-8");
                 }
             },
-            success: function(response) {
+            success: function (response) {
+                let dayofweek = new Date(startDate).getDay()-1;
                 if (id == null || id != null && from == 'clone') {
                     let html = "";
                     response.forEach((element) => {
+                        let jadwalTen;
+                        let statprint = ' - **';
+                        (element.jadwalTentatif != null) ? jadwalTen = JSON.parse(element.jadwalTentatif).data : jadwalTen = [];
+                        for (let [index, jt] of Object.entries(Object.entries(jadwalTen))) {
+                            if (sesi == jadwalTen[index].sesi && jadwalTen[index].hari.includes(dayofweek.toString())) { statprint = ""; break; } else { statprint = ' - **'; }
+                        }
                         html +=
                             '<option value="' +
                             element.dosenSimakadId + ',' + element.dosenEmailGeneral +
-                            '"> <strong>' +
+                            '">' +
                             element.jumlahAmpu +
-                            "</strong> | " +
-                            element.dosenFullname +
+                            " | " +
+                            element.dosenFullname + statprint +
                             "</option>";
                     });
                     if (from != null) {
@@ -486,7 +492,7 @@ function detailJadwal(id, calid) {
 }
 
 function getDataDetail(calid, element) {
-    let stat = { "needsAction": "badge-info", "accepted": "badge-success", "declined": "badge-dangger", "tentative": "badge-warning" };
+    let stat = { "needsAction": "badge-info", "accepted": "badge-success", "declined": "badge-danger", "tentative": "badge-warning" };
     $.ajax({
         type: "POST",
         url: "/penjadwalan/detail",

@@ -103,12 +103,12 @@ class Penjadwalan extends BaseController
         }
         $angkatan  = $this->request->getVar('angkatan');
         $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
-        $noteEktra = ($this->request->getVar('noteAcara') != null) ? "(" . $this->request->getVar('noteAcara') . ")" : "";
-        $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1] . " " . $noteEktra;
+        $noteEktra = ($this->request->getVar('noteAcara') != null) ?  $this->request->getVar('noteAcara')  : "";
+        $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1];
 
         $event = array(
             'summary' => $judul,
-            'description' => $this->request->getVar('deskripsiAcara'),
+            'description' => $noteEktra,
             'location' => $this->request->getVar('lokasi'),
             'colorId' => $this->request->getVar('color'),
             'start' => array(
@@ -245,12 +245,12 @@ class Penjadwalan extends BaseController
         }
         $angkatan  = $this->request->getVar('angkatan');
         $jadwal = explode(',', $this->request->getVar('jenisJadwal'))[1];
-        $noteEktra = ($this->request->getVar('noteAcara') != null) ? "(" . $this->request->getVar('noteAcara') . ")" : "";
-        $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1] . " " . $noteEktra;
+        $noteEktra = ($this->request->getVar('noteAcara') != null) ? $this->request->getVar('noteAcara')  : "";
+        $judul = $jadwal . " " . $angkatan . " " . $this->request->getVar('namaAcara') . "-" . explode(',', $this->request->getVar('blok'))[1];
 
         $event = array(
             'summary' => $judul,
-            'description' => $this->request->getVar('deskripsiAcara'),
+            'description' => $noteEktra,
             'location' => $this->request->getVar('lokasi'),
             'colorId' => $this->request->getVar('color'),
             'start' => array(
