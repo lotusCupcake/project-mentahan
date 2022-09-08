@@ -177,12 +177,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Dosen</label>
-                    <select class="form-control select2" multiple="" name="dosen[]">
+                    <label for="kt_stat">Dosen</label>
+                    <select class=" form-control select2" multiple="" name="dosen[]" id="kt_stat">
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class=" col-md-6">
                 <div class="form-group">
                     <label>Nama Acara</label>
                     <input name="namaAcara" type="text" class="form-control" value="<?= old('namaAcara'); ?>">
@@ -284,7 +284,6 @@
                                                 <label>Sesi</label>
                                                 <select class="form-control select2" name="sesi">
                                                     <option value="">Pilih Sesi</option>
-
                                                 </select>
                                             </div>
                                         </div>
@@ -363,7 +362,7 @@
     <div class="modal fade" role="dialog" id="clonePenjadwalan<?= $jadwalClone->penjadwalanId; ?>" data-jenisjadwalid="<?= $jadwalClone->penjadwalanJenisJadwalId ?>" data-sesi="<?= $jadwalClone->penjadwalanSesiId ?>">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
-                <form action="/penjadwalan/edit/<?= $jadwalClone->penjadwalanId ?>" id="formEdit<?= $jadwalClone->penjadwalanId ?>" method="post">
+                <form action="/penjadwalan/add" id="formEdit<?= $jadwalClone->penjadwalanId ?>" method="post">
                     <div class="modal-header">
                         <h5 class="modal-title">Duplikat Data <strong><?= $title; ?></strong></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -371,7 +370,6 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" value="PUT" name="_method">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
