@@ -56,9 +56,9 @@ class Dosen extends BaseController
             $dtDosen = [];
 
             foreach ($dataDosen as $dosen) {
-                $dosenEmail = $this->dosenModel->cekDosen(['dosenEmailGeneral' => explode('#', $dosen)[3],])->findAll();
-                $dosenId = $this->dosenModel->cekDosen(['dosenSimakadId' => explode('#', $dosen)[5],])->findAll();
-                $idDosen = $this->dosenModel->cekDosen(['dosenSimakadId' => explode('#', $dosen)[5],])->findAll();
+                $dosenEmail = $this->dosenModel->cekDosen(['dosenEmailGeneral' => explode('#', $dosen)[3], 'dosenDeletedDate' => null,])->findAll();
+                $dosenId = $this->dosenModel->cekDosen(['dosenSimakadId' => explode('#', $dosen)[5], 'dosenDeletedDate' => null,])->findAll();
+                $idDosen = $this->dosenModel->cekDosen(['dosenSimakadId' => explode('#', $dosen)[5], 'dosenDeletedDate' => null,])->findAll();
                 $email = [];
                 foreach ($dosenEmail as $key => $value) {
                     $email[] = $value->dosenEmailGeneral;
@@ -105,9 +105,9 @@ class Dosen extends BaseController
                 return redirect()->to($url)->withInput();
             };
             $dosenSimakadId = md5($this->request->getvar('dosenEmailGeneral'));
-            $dosenEmail = $this->dosenModel->cekDosen(['dosenEmailGeneral' => $this->request->getvar('dosenEmailGeneral')])->findAll();
-            $dosenId = $this->dosenModel->cekDosen(['dosenSimakadId' => $dosenSimakadId])->findAll();
-            $idDosen = $this->dosenModel->cekDosen(['dosenSimakadId' => $dosenSimakadId])->findAll();
+            $dosenEmail = $this->dosenModel->cekDosen(['dosenEmailGeneral' => $this->request->getvar('dosenEmailGeneral'), 'dosenDeletedDate' => null,])->findAll();
+            $dosenId = $this->dosenModel->cekDosen(['dosenSimakadId' => $dosenSimakadId, 'dosenDeletedDate' => null,])->findAll();
+            $idDosen = $this->dosenModel->cekDosen(['dosenSimakadId' => $dosenSimakadId, 'dosenDeletedDate' => null,])->findAll();
             $email = [];
             foreach ($dosenEmail as $key => $value) {
                 $email[] = $value->dosenEmailGeneral;
@@ -196,6 +196,7 @@ class Dosen extends BaseController
                     'dosenEmailGeneral' => $value['dosenEmailGeneral'],
                     'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
                     'dosenStatus' => ($value['dosenStatus'] == 'Internal') ? 1 : 0,
+                    'dosenCreatedBy' => user()->email,
                 ];
                 if ($this->dosenModel->insert($data)) {
                     $counts['inserted']++;
@@ -211,6 +212,7 @@ class Dosen extends BaseController
                     'dosenEmailGeneral' => $value['dosenEmailGeneral'],
                     'dosenPhone' => ($value['dosenPhone'] == null) ? null : $value['dosenPhone'],
                     'dosenStatus' => ($value['dosenStatus'] == 'Internal') ? 1 : 0,
+                    'dosenCreatedBy' => user()->email,
                 ];
                 if ($this->dosenModel->update($value['dosenId'], $data)) {
                     $counts['updated']++;
@@ -244,10 +246,14 @@ class Dosen extends BaseController
             $jumlah = $this->dosenModel->dataExist(
                 [
                     'dosenEmailGeneral' => $this->request->getVar('dosenEmailGeneral'),
+                    'dosenDeletedDate' => null,
                 ]
             );
             if ($jumlah == 0) {
-                $data = ['dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral'))];
+                $data = [
+                    'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
+                    'dosenModifiedBy' => user()->email,
+                ];
                 if ($this->dosenModel->update($id, $data)) {
                     session()->setFlashdata('update', 'Data Dosen Berhasil Diupdate');
                 }
@@ -268,6 +274,7 @@ class Dosen extends BaseController
             $jumlah = $this->dosenModel->dataExist(
                 [
                     'dosenEmailGeneral' => $this->request->getVar('dosenEmailGeneral'),
+                    'dosenDeletedDate' => null,
                 ]
             );
             if ($jumlah == 0) {
@@ -276,6 +283,7 @@ class Dosen extends BaseController
                     'dosenShortname' => trim($this->request->getVar('dosenShortname')),
                     'dosenEmailGeneral' => trim($this->request->getVar('dosenEmailGeneral')),
                     'dosenPhone' => trim($this->request->getVar('dosenPhone')),
+                    'dosenModifiedBy' => user()->email,
                 ];
                 if ($this->dosenModel->update($id, $data)) {
                     session()->setFlashdata('update', 'Data Dosen Berhasil Diupdate');

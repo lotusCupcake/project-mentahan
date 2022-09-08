@@ -64,13 +64,15 @@ class Blok extends BaseController
             $jumlah = $this->blokModel->dataExist(
                 [
                     'matkulBlokNama' => explode('#', $blok)[0],
+                    'matkulBlokDeletedDate' => null,
                 ]
             );
             if ($jumlah == 0) {
                 $data = [
                     'matkulBlokNama' => trim(explode('#', $blok)[0]),
                     'matkulBlokProdiNama' => trim(explode('#', $blok)[1]),
-                    'matkulBlokType' => trim($matkulBlokType)
+                    'matkulBlokType' => trim($matkulBlokType),
+                    'matkulBlokCreatedBy' => user()->email
                 ];
                 $this->blokModel->insert($data);
                 session()->setFlashdata('success', 'Data Mata Kuliah Berhasil Ditambahkan');

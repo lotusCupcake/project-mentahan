@@ -8,7 +8,12 @@ class SesiModel extends Model
 {
     protected $table = 'sesi';
     protected $primaryKey = 'sesiId';
-    protected $allowedFields = ['sesiJenisJadwalId', 'sesiNama', 'sesiStart', 'sesiEnd'];
+    protected $allowedFields = ['sesiJenisJadwalId', 'sesiNama', 'sesiStart', 'sesiEnd', 'sesiCreatedBy', 'sesiCreatedDate', 'sesiModifiedBy', 'sesiModifiedDate', 'sesiDeletedDate'];
+    protected $useTimestamps = 'false';
+    protected $useSoftDeletes = 'true';
+    protected $createdField = 'sesiCreatedDate';
+    protected $updatedField = 'sesiModifiedDate';
+    protected $deletedField = 'sesiDeletedDate';
     protected $returnType = 'object';
 
     public function getSesiJadwal($keyword = null, $jenis = null)

@@ -8,7 +8,12 @@ class BlokModel extends Model
 {
     protected $table = 'matkul_blok';
     protected $primaryKey = 'matkulBlokId';
-    protected $allowedFields = ['matkulBlokNama', 'matkulBlokProdiNama', 'matkulBlokType'];
+    protected $allowedFields = ['matkulBlokNama', 'matkulBlokProdiNama', 'matkulBlokType', 'matkulBlokCreatedBy', 'matkulBlokCreatedDate', 'matkulBlokModifiedBy', 'matkulBlokModifiedDate', 'matkulBlokDeletedDate'];
+    protected $useTimestamps = 'false';
+    protected $useSoftDeletes = 'true';
+    protected $createdField = 'matkulBlokCreatedDate';
+    protected $updatedField = 'matkulBlokModifiedDate';
+    protected $deletedField = 'matkulBlokDeletedDate';
     protected $returnType = 'object';
 
     public function getMatkulBlok($keyword = null, $tipe = null)

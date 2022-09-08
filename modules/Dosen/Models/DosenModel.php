@@ -8,7 +8,12 @@ class DosenModel extends Model
 {
     protected $table = 'dosen';
     protected $primaryKey = 'dosenId';
-    protected $allowedFields = ['dosenSimakadId', 'dosenFullname', 'dosenShortname', 'dosenEmailCorporate', 'dosenEmailGeneral', 'dosenPhone', 'dosenStatus'];
+    protected $allowedFields = ['dosenSimakadId', 'dosenFullname', 'dosenShortname', 'dosenEmailCorporate', 'dosenEmailGeneral', 'dosenPhone', 'dosenStatus', 'dosenCreatedBy', 'dosenCreatedDate', 'dosenModifiedBy', 'dosenModifiedDate', 'dosenDeletedDate'];
+    protected $useTimestamps = 'false';
+    protected $useSoftDeletes = 'true';
+    protected $createdField = 'dosenCreatedDate';
+    protected $updatedField = 'dosenModifiedDate';
+    protected $deletedField = 'dosenDeletedDate';
     protected $returnType = 'object';
 
     public function getDataDosen($keyword = null)

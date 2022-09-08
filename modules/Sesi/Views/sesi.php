@@ -201,6 +201,7 @@
             </div>
             <form action="/sesi/tambah" method="post">
                 <?= csrf_field(); ?>
+                <input type="hidden" name="sesiCreatedBy" value="<?= user()->email ?>">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Jadwal</label>
@@ -247,6 +248,7 @@
                 </div>
                 <form action="/sesi/ubah/<?= $edit->sesiId; ?>" method="post">
                     <?= csrf_field(); ?>
+                    <input type="hidden" name="sesiModifiedBy" value="<?= user()->email ?>">
                     <div class="modal-body">
                         <input type="hidden" name="sesiJenisJadwalId" value="<?= $edit->sesiJenisJadwalId; ?>">
                         <div class="form-group">
