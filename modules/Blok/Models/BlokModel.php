@@ -23,9 +23,9 @@ class BlokModel extends Model
             $builder->where('matkul_blok.matkulBlokType', $tipe);
         }
         if ($keyword) {
-            $builder->orlike('matkul_blok.matkulBlokNama', $keyword)->where('matkul_blok.matkulBlokDeletedDate', 'null');
-            $builder->orlike('matkul_blok.matkulBlokProdiNama', $keyword)->where('matkul_blok.matkulBlokDeletedDate', 'null');
-            $builder->orlike('matkul_blok.matkulBlokType', $keyword)->where('matkul_blok.matkulBlokDeletedDate', 'null');
+            $builder->orlike('matkul_blok.matkulBlokNama', $keyword)->where('matkul_blok.matkulBlokDeletedDate', NULL);
+            $builder->orlike('matkul_blok.matkulBlokProdiNama', $keyword)->where('matkul_blok.matkulBlokDeletedDate', NULL);
+            $builder->orlike('matkul_blok.matkulBlokType', $keyword)->where('matkul_blok.matkulBlokDeletedDate', NULL);
         }
         $builder->orderBy('matkul_blok.matkulBlokId', 'DESC');
         return $builder;

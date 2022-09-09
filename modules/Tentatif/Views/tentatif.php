@@ -18,26 +18,15 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h4></h4>
-                            <div class="card-header-form">
-                                <form action="">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search" name="keyword" value="<?= isset($_GET['keyword']) ? $_GET['keyword'] : "" ?>">
-                                        <div class="input-group-btn">
-                                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <div class="card-header"></div>
                         <div class="card-body">
                             <div class="form-row">
                                 <div class="form-group col-md-2">
-                                    <select class="form-control" name="jadwalTentatifTahunAjaran" onchange="tahunAjaran()">
+                                    <select class="form-control" name="tahunAjaran" onchange="tahunAjaran()">
                                         <option value="">Pilih Tahun Ajaran</option>
-                                        <?php foreach ($tahunAjaran as $thn) : ?>
-                                            <option value="<?= $thn->Term_Year_Name ?>" <?= ($thn->Term_Year_Name == $tahunAjaranAktif) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
+                                        <?php $year = isset($_GET['ta']) ? $_GET['ta'] : $tahunAjaranAktif;
+                                        foreach ($tahunAjaran as $thn) : ?>
+                                            <option value="<?= $thn->Term_Year_Name ?>" <?= ($thn->Term_Year_Name == $year) ? 'selected' : '' ?>><?= $thn->Term_Year_Name ?></option>
                                         <?php endforeach ?>
                                     </select>
                                 </div>

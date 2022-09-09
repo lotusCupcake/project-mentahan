@@ -2,8 +2,7 @@
     var base_url = myUrl.split('?')[0];
 
     function tahunAjaran() {
-        // console.log($("[name='jadwalTentatifTahunAjaran']").val());
-        addQSParm('ta', $("[name='jadwalTentatifTahunAjaran']").val());
+        addQSParm('ta', $("[name='tahunAjaran']").val());
         window.location.replace(myUrl);
     }
 

@@ -11,7 +11,7 @@ use Modules\PemetaanJadwal\Models\PemetaanJadwalModel;
 use Modules\Dosen\Models\DosenModel;
 use Modules\JenisJadwal\Models\JenisJadwalModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class PemetaanJadwal extends BaseController
 {
@@ -32,8 +32,7 @@ class PemetaanJadwal extends BaseController
 
     public function index()
     {
-        $keyword = $this->request->getVar('keyword');
-        $tahunAjaran = $this->request->getVar('tahun_ajaran') ? $this->request->getVar('tahun_ajaran') : getTahunAjaran();
+        $tahunAjaran = isset($_GET['ta']) ? $_GET['ta'] : getTahunAjaran();
         $jadwalPemetaanJadwalSemester = $this->pemetaanJadwalModel->dataExist(['jadwalTentatifTahunAjaran' => $tahunAjaran])->findAll();
         $detailJadwalExist = [];
         if (count($jadwalPemetaanJadwalSemester) > 0) {
@@ -54,7 +53,7 @@ class PemetaanJadwal extends BaseController
             'menu' => $this->fetchMenu(),
             'title' => "Pemetaan Jadwal",
             'breadcrumb' => ['Proses', 'Pemetaan Jadwal'],
-            'dosen' =>  $this->dosenModel->getDataDosen($keyword)->findAll(),
+            'dosen' =>  $this->dosenModel->getDataDosen()->findAll(),
             'tahunAjaran' => getListTahunAjaran(),
             'hari' => ['S', 'S', 'R', 'K', 'J'],
             'jadwal' => $this->jenisJadwalModel->getTentatif()->get()->getResult(),
@@ -68,7 +67,7 @@ class PemetaanJadwal extends BaseController
 
     public function print()
     {
-        $tahunAjaran = $this->request->getVar('jadwalTentatifTahunAjaran');
+        $tahunAjaran = isset($_GET['ta']) ? $_GET['ta'] : getTahunAjaran();
         $jadwalPemetaanJadwalSemester = $this->pemetaanJadwalModel->dataExist(['jadwalTentatifTahunAjaran' => $tahunAjaran])->findAll();
         $detailJadwalExist = [];
         if (count($jadwalPemetaanJadwalSemester) > 0) {
@@ -84,14 +83,12 @@ class PemetaanJadwal extends BaseController
                 }
             }
         }
-        $keyword = $this->request->getVar('keyword');
-        $dosen =  $this->dosenModel->getDataDosen($keyword)->findAll();
+        $dosen =  $this->dosenModel->getDataDosen()->findAll();
         $hari = ['S', 'S', 'R', 'K', 'J'];
         $jlhHari = count($hari);
         $jadwal = $this->jenisJadwalModel->getTentatif()->get()->getResult();
         $jadwalTentatif = $this->jenisJadwalModel->getJadwalTentatif()->get()->getResult();
         $jadwalPemetaanJadwalSemester = $detailJadwalExist;
-        $span = 0;
 
         $this->spreadsheet = new Spreadsheet();
         $htmlString = '';
@@ -161,11 +158,11 @@ class PemetaanJadwal extends BaseController
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Html($this->spreadsheet);
         $this->spreadsheet = $reader->loadFromString($htmlString);
 
-        $writer = new Xlsx($this->spreadsheet);
+        $writer = new Xls($this->spreadsheet);
         $fileName = 'Tentatif Jadwal Tahun Ajaran ' . $tahunAjaran;
         ob_end_clean();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $fileName . '.xlsx"');
+        header('Content-Disposition: attachment;filename="' . $fileName . '.xls"');
         header('Cache-Control: max-age=0');
 
         ob_end_clean();
