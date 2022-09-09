@@ -20,11 +20,11 @@ class DosenModel extends Model
     {
         $builder = $this->table('dosen');
         if ($keyword) {
-            $builder->like('dosen.dosenFullname', $keyword);
-            $builder->orlike('dosen.dosenShortname', $keyword);
-            $builder->orlike('dosen.dosenEmailCorporate', $keyword);
-            $builder->orlike('dosen.dosenEmailGeneral', $keyword);
-            $builder->orlike('dosen.dosenPhone', $keyword);
+            $builder->like('dosen.dosenFullname', $keyword)->where('dosen.dosenDeletedDate', 'null');
+            $builder->orlike('dosen.dosenShortname', $keyword)->where('dosen.dosenDeletedDate', 'null');
+            $builder->orlike('dosen.dosenEmailCorporate', $keyword)->where('dosen.dosenDeletedDate', 'null');
+            $builder->orlike('dosen.dosenEmailGeneral', $keyword)->where('dosen.dosenDeletedDate', 'null');
+            $builder->orlike('dosen.dosenPhone', $keyword)->where('dosen.dosenDeletedDate', 'null');
         }
         $builder->orderBy('dosen.dosenId', 'DESC');
         return $builder;

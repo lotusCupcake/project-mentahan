@@ -25,8 +25,8 @@ class SesiModel extends Model
         }
         $builder->whereNotIn('jenis_jadwal.jenisJadwalId', ['3']);
         if ($keyword) {
-            $builder->like('jenis_jadwal.jenisJadwalNama', $keyword);
-            $builder->orlike('sesi.sesiNama', $keyword);
+            $builder->like('jenis_jadwal.jenisJadwalNama', $keyword)->where('sesi.sesiDeletedDate', 'null');
+            $builder->orlike('sesi.sesiNama', $keyword)->where('sesi.sesiDeletedDate', 'null');
         }
         $builder->groupBy('sesi.sesiJenisJadwalId');
         return $builder;
