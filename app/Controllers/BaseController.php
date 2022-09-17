@@ -130,18 +130,6 @@ abstract class BaseController extends Controller
             case "superadmin":
                 $file = "public/menu/menuSuperadmin.json";
                 break;
-            case "operatorX":
-                $file = "public/menu/menuOperatorX.json";
-                break;
-            case "operatorY":
-                $file = "public/menu/menuOperatorY.json";
-                break;
-            case "superoperator":
-                $file = "public/menu/menuSuperoperator.json";
-                break;
-            case "biasa":
-                $file = "public/menu/menuGeneralUser.json";
-                break;
             default:
                 $file = "public/menu/menuGeneralUser.json";
         }
